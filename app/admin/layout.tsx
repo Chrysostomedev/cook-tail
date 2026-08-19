@@ -5,17 +5,17 @@ import { AdminSidebar } from "@/components/layout/AdminSidebar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-[#F4EBD9]">
-      {/* 1. Navbar fixe tout en haut (Pleine largeur) */}
+    <div className="flex flex-col h-screen overflow-hidden bg-[#0B1B33]">
+      {/* 1. Navbar fixe tout en haut */}
       <AdminNavbar />
 
-      {/* 2. Zone principale : Sidebar à gauche + Contenu à droite */}
+      {/* 2. Zone principale : Sidebar + Contenu */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar fixe verticalement */}
         <AdminSidebar />
 
-        {/* Zone de contenu dynamique avec défilement indépendant */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8">
+        {/* Zone de contenu dynamique */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 bg-[#071324] text-slate-100">
           {children}
         </main>
       </div>

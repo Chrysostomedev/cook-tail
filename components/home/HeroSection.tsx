@@ -10,9 +10,9 @@ import { formatCFA } from "@/lib/utils";
 
 // Images d'ambiance chaleureuse & rétro
 const HERO_IMAGES = [
-  "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=80", // Table extérieure / fête
-  "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1600&q=80", // Ambiance festive
-  "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1600&q=80", // Amis / Rires / Brunch
+  "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1600&q=80",
 ];
 
 export const HeroSection = () => {
@@ -29,100 +29,102 @@ export const HeroSection = () => {
   const prevSlide = () => setCurrentImg((prev) => (prev === 0 ? HERO_IMAGES.length - 1 : prev - 1));
 
   return (
-    <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden rounded-3xl my-4 shadow-2xl border border-amber-900/10">
+    <section className="relative w-full overflow-hidden rounded-2xl md:rounded-3xl my-2 md:my-4 shadow-xl border border-white/10 bg-slate-950">
       {/* Slider d'images en arrière-plan */}
       <AnimatePresence mode="wait">
         <motion.div
           key={currentImg}
-          initial={{ opacity: 0, scale: 1.08 }}
+          initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
+          transition={{ duration: 1, ease: "easeOut" }}
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('${HERO_IMAGES[currentImg]}')` }}
         />
       </AnimatePresence>
 
-      {/* Overlay dégradé chaleureux pour lisibilité du texte */}
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/50 to-slate-950/30 backdrop-blur-[2px]" />
+      {/* Overlay dégradé sombre pour lisibilité */}
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-slate-950/40 backdrop-blur-[1px]" />
 
-      {/* Flèches du Slider */}
+      {/* Flèches du Slider (Desktop) */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/20 text-white backdrop-blur-md hover:bg-white/40 transition-all border border-white/30 hidden sm:flex"
+        aria-label="Image précédente"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-slate-900/40 text-white backdrop-blur-md hover:bg-slate-900/60 transition-all border border-white/20 hidden sm:flex"
       >
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="w-5 h-5" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/20 text-white backdrop-blur-md hover:bg-white/40 transition-all border border-white/30 hidden sm:flex"
+        aria-label="Image suivante"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-slate-900/40 text-white backdrop-blur-md hover:bg-slate-900/60 transition-all border border-white/20 hidden sm:flex"
       >
-        <ChevronRight className="w-6 h-6" />
+        <ChevronRight className="w-5 h-5" />
       </button>
 
-      {/* Contenu Central */}
-      <div className="relative z-10 max-w-4xl mx-auto text-center px-6 py-16 space-y-8">
-        
-        {/* Badges Élégants */}
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <span className="inline-flex items-center gap-2 bg-amber-500/20 text-amber-300 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-semibold border border-amber-400/30 shadow-lg">
-            <Sparkles className="w-4 h-4 text-amber-400" />
+      {/* Contenu Central Épuré */}
+      <div className="relative z-10 max-w-3xl mx-auto text-center px-4 py-8 sm:py-12 md:py-16 space-y-5 md:space-y-6">
+
+        {/* Badges Élégants et Compacts */}
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <span className="inline-flex items-center gap-1.5 bg-amber-500/15 text-amber-300 backdrop-blur-md px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold border border-amber-400/20">
+
             Événement Exclusif Abidjan
           </span>
-          <span className="bg-amber-400 text-slate-950 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg">
-            Places Limitées : 30 Élèves
+          <span className="bg-amber-400 text-slate-950 px-3 py-1 rounded-full text-[11px] sm:text-xs font-extrabold tracking-wider">
+            30 Places Uniquement
           </span>
         </div>
 
         {/* Titre Principal & Sous-titre */}
-        <div className="space-y-4">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight uppercase drop-shadow-md leading-tight">
+        <div className="space-y-2 md:space-y-3">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight uppercase leading-tight">
             {EVENT_INFO.title}
           </h1>
-          <p className="text-lg sm:text-2xl text-amber-100/90 font-serif italic max-w-2xl mx-auto leading-relaxed">
-            "{EVENT_INFO.subtitle}" — Une parenthèse de joie, de retrouvailles et de saveurs gourmandes.
+          <p className="text-sm sm:text-lg text-slate-200/90 font-serif italic max-w-xl mx-auto leading-relaxed">
+            "{EVENT_INFO.subtitle}"
           </p>
         </div>
 
-        {/* Encadré Infos (Date & Lieu) avec Effet Verre (Glassmorphism) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto text-white/90 text-sm">
-          <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-center gap-3 shadow-xl">
-            <Calendar className="w-5 h-5 text-amber-400 shrink-0" />
-            <span className="font-medium">{EVENT_INFO.date}</span>
+        {/* Encadré Infos (Date & Lieu) - Format Compact */}
+        {/* <div className="grid grid-cols-2 gap-2 sm:gap-3 max-w-md mx-auto text-xs sm:text-sm text-slate-200">
+          <div className="bg-white/10 backdrop-blur-md px-3 py-2.5 rounded-xl border border-white/15 flex items-center justify-center gap-2">
+            <Calendar className="w-4 h-4 text-amber-400 shrink-0" />
+            <span className="font-medium truncate">{EVENT_INFO.date}</span>
           </div>
-          <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex items-center justify-center gap-3 shadow-xl">
-            <MapPin className="w-5 h-5 text-amber-400 shrink-0" />
-            <span className="font-medium">{EVENT_INFO.location}</span>
+          <div className="bg-white/10 backdrop-blur-md px-3 py-2.5 rounded-xl border border-white/15 flex items-center justify-center gap-2">
+            <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
+            <span className="font-medium truncate">{EVENT_INFO.location}</span>
           </div>
-        </div>
+        </div> */}
 
         {/* Boutons d'Action */}
-        <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4">
           <Link
             href="/reservation"
-            className="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-base uppercase px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all flex items-center justify-center gap-3"
+            className="w-full sm:w-auto bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-lg hover:shadow-amber-400/20 transition-all flex items-center justify-center gap-2 active:scale-95"
           >
             Réserver Mon Pass ({formatCFA(EVENT_INFO.price)})
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-4 h-4" />
           </Link>
 
           <Link
             href="/programme"
-            className="w-full sm:w-auto bg-white/15 hover:bg-white/25 text-white backdrop-blur-md font-semibold text-base uppercase px-8 py-4 rounded-2xl border border-white/30 transition-all flex items-center justify-center"
+            className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white backdrop-blur-md font-semibold text-xs sm:text-sm px-6 py-3.5 rounded-xl border border-white/20 transition-all flex items-center justify-center active:scale-95"
           >
-            Découvrir le Programme
+            Programme
           </Link>
         </div>
 
         {/* Indicateurs de Slide */}
-        <div className="flex justify-center gap-2 pt-6">
+        <div className="flex justify-center gap-1.5 pt-2">
           {HERO_IMAGES.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentImg(idx)}
-              className={`h-2 rounded-full transition-all ${
-                idx === currentImg ? "w-8 bg-amber-400" : "w-2 bg-white/40"
-              }`}
+              aria-label={`Aller à l'image ${idx + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentImg ? "w-6 bg-amber-400" : "w-1.5 bg-white/30"
+                }`}
             />
           ))}
         </div>
