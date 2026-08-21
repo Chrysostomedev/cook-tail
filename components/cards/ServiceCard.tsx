@@ -13,17 +13,62 @@ interface ServiceCardProps {
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon: Icon, badge }) => {
   return (
-    <div className="bg-[#F4EBD9] border-2 border-[#0B1B33] p-5 rounded-xs shadow-[4px_4px_0px_0px_#0B1B33] space-y-3">
+    <div style={{
+      backgroundColor: "var(--theme-bgPrimary)",
+      borderColor: "var(--theme-borderColor)",
+      borderWidth: "2px",
+      padding: "1.25rem",
+      borderRadius: "8px",
+      boxShadow: "var(--shadow-retro-md)",
+      display: "flex",
+      flexDirection: "column",
+      gap: "0.75rem"
+    }}>
       {badge && (
-        <span className="bg-[#FEF08A] text-[#0B1B33] font-mono font-bold text-[9px] uppercase px-2 py-0.5 border border-black">
+        <span style={{
+          backgroundColor: "var(--theme-accent)",
+          color: "white",
+          fontFamily: "var(--ff-space-mono)",
+          fontWeight: 700,
+          fontSize: "0.5625rem",
+          textTransform: "uppercase",
+          padding: "0.5rem 0.5rem",
+          border: "1px solid var(--theme-borderColor)",
+          borderRadius: "4px",
+          width: "fit-content"
+        }}>
           {badge}
         </span>
       )}
-      <div className="w-10 h-10 bg-[#0B1B33] text-white border border-black rounded-xs flex items-center justify-center">
-        <Icon className="w-5 h-5 text-[#FEF08A]" />
+      <div style={{
+        width: "2.5rem",
+        height: "2.5rem",
+        backgroundColor: "var(--theme-primary)",
+        color: "white",
+        border: "1px solid var(--theme-borderColor)",
+        borderRadius: "8px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }}>
+        <Icon className="w-5 h-5" style={{ color: "var(--theme-secondary)" }} />
       </div>
-      <h4 className="font-extrabold text-sm uppercase text-[#0B1B33]">{title}</h4>
-      <p className="text-xs font-mono text-gray-700 leading-relaxed">{description}</p>
+      <h4 style={{
+        fontWeight: 800,
+        fontSize: "0.875rem",
+        textTransform: "uppercase",
+        color: "var(--theme-primary)"
+      }}>
+        {title}
+      </h4>
+      <p style={{
+        fontSize: "0.75rem",
+        fontFamily: "var(--ff-space-mono)",
+        color: "var(--theme-textSecondary)",
+        lineHeight: 1.5
+      }}>
+        {description}
+      </p>
     </div>
   );
 };

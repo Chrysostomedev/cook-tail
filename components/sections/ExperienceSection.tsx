@@ -28,17 +28,17 @@ const EXPERIENCE_PHOTOS = [
 
 export const ExperienceSection: React.FC = () => {
   return (
-    <section id="experience" className="py-20 bg-[#F4EBD9] text-[#0B1B33] relative overflow-hidden">
+    <section id="experience" className="py-20 bg-[var(--theme-bgPrimary)] text-[var(--theme-primary)] relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-4">
         {/* Titre de Section Style Cahier */}
         <div className="text-center mb-16">
-          <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#556B2F] bg-[#556B2F]/15 px-3 py-1 rounded-xs border border-[#556B2F]/30">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-[var(--theme-secondary)] bg-[var(--theme-secondary)]/15 px-3 py-1 rounded-xs border border-[var(--theme-secondary)]/30">
             L'Atmosphère Unique
           </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold mt-3 text-[#0B1B33]">
+          <h2 className="text-3xl md:text-5xl font-extrabold mt-3 text-[var(--theme-primary)]">
             Une journée d'exception hors du temps
           </h2>
-          <p className="mt-3 text-base md:text-lg font-serif italic text-[#0B1B33]/80 max-w-2xl mx-auto">
+          <p className="mt-3 text-base md:text-lg font-serif italic text-[var(--theme-primary)]/80 max-w-2xl mx-auto">
             Revivez les blagues de comptoir, le goût de la cantine revisitée et les tubes de notre adolescence.
           </p>
         </div>

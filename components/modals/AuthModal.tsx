@@ -40,7 +40,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="bg-[#1C2826] text-[#F4EBD9] border-3 border-[#0B1B33] p-6 md:p-8 max-w-sm w-full rounded-xs shadow-[8px_8px_0px_0px_#556B2F] relative"
+          className="bg-[#1C2826] text-[var(--theme-bgPrimary)] border-3 border-[var(--theme-primary)] p-6 md:p-8 max-w-sm w-full rounded-xs shadow-[8px_8px_0px_0px_var(--theme-secondary)] relative"
         >
           <button
             onClick={onClose}
@@ -50,7 +50,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           </button>
 
           <div className="text-center mb-6">
-            <div className="w-12 h-12 bg-[#556B2F] text-[#FEF08A] border-2 border-white rounded-xs flex items-center justify-center mx-auto mb-3 shadow-[3px_3px_0px_0px_#0B1B33]">
+            <div className="w-12 h-12 bg-[var(--theme-secondary)] text-[var(--theme-accent)] border-2 border-white rounded-xs flex items-center justify-center mx-auto mb-3 shadow-[3px_3px_0px_0px_var(--theme-primary)]">
               <Lock className="w-6 h-6" />
             </div>
             <h3 className="text-xl font-black text-white">Espace Responsable</h3>
@@ -77,12 +77,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                       placeholder="admin@cooktail.ci"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 bg-black/40 border-2 border-white/20 rounded-xs font-bold text-white text-sm focus:border-[#FEF08A] focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2.5 bg-black/40 border-2 border-white/20 rounded-xs font-bold text-white text-sm focus:border-[var(--theme-accent)] focus:outline-hidden"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full mt-5 bg-[#556B2F] text-white font-black py-3 rounded-xs border-2 border-black flex items-center justify-center gap-2 uppercase text-xs tracking-wider shadow-[3px_3px_0px_0px_#0B1B33]"
+                    className="w-full mt-5 bg-[var(--theme-secondary)] text-white font-black py-3 rounded-xs border-2 border-black flex items-center justify-center gap-2 uppercase text-xs tracking-wider shadow-[3px_3px_0px_0px_var(--theme-primary)]"
                   >
                     Suivant <ArrowRight className="w-4 h-4" />
                   </button>
@@ -105,7 +105,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 bg-black/40 border-2 border-white/20 rounded-xs font-bold text-white text-sm focus:border-[#FEF08A] focus:outline-hidden"
+                      className="w-full pl-9 pr-3 py-2.5 bg-black/40 border-2 border-white/20 rounded-xs font-bold text-white text-sm focus:border-[var(--theme-accent)] focus:outline-hidden"
                     />
                   </div>
                   <div className="flex gap-2 mt-5">
@@ -119,7 +119,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-2/3 bg-[#FEF08A] text-[#0B1B33] font-black py-3 rounded-xs border-2 border-black uppercase text-xs shadow-[3px_3px_0px_0px_#DC2626] flex items-center justify-center gap-2"
+                      className="w-2/3 bg-[var(--theme-accent)] text-[var(--theme-primary)] font-black py-3 rounded-xs border-2 border-black uppercase text-xs shadow-[3px_3px_0px_0px_var(--theme-danger)] flex items-center justify-center gap-2"
                     >
                       {loading ? "Vérification..." : "Accéder"}
                       <ShieldCheck className="w-4 h-4" />

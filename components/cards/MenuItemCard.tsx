@@ -18,34 +18,99 @@ export const MenuItemCard: React.FC<MenuItemCardProps> = ({
   isNostalgicFav = false,
 }) => {
   return (
-    <div className="relative bg-[#1C2826] text-[#F4EBD9] border-2 border-[#0B1B33] p-5 rounded-sm shadow-[4px_4px_0px_0px_#556B2F]">
+    <div style={{
+      position: "relative",
+      backgroundColor: "var(--theme-bgSecondary)",
+      color: "var(--theme-textPrimary)",
+      borderWidth: "2px",
+      borderColor: "var(--theme-borderColor)",
+      padding: "1.25rem",
+      borderRadius: "8px",
+      boxShadow: "4px 4px 0px 0px var(--theme-shadowColor)"
+    }}>
       {/* Coin plié rétro */}
-      <div className="absolute top-0 right-0 w-0 h-0 border-t-[16px] border-t-[#0B1B33] border-l-[16px] border-l-transparent" />
+      <div style={{
+        position: "absolute",
+        top: 0,
+        right: 0,
+        width: 0,
+        height: 0,
+        borderTop: "16px solid var(--theme-primary)",
+        borderLeft: "16px solid transparent"
+      }} />
 
-      <div className="flex items-start justify-between gap-3 mb-2">
-        <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 bg-[#556B2F] text-[#F4EBD9] rounded-xs font-bold">
+      <div style={{
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        gap: "0.75rem",
+        marginBottom: "0.5rem"
+      }}>
+        <span style={{
+          fontSize: "0.625rem",
+          fontFamily: "var(--ff-space-mono)",
+          textTransform: "uppercase",
+          letterSpacing: "0.05em",
+          padding: "0.25rem 0.5rem",
+          backgroundColor: "var(--theme-secondary)",
+          color: "white",
+          borderRadius: "8px",
+          fontWeight: 700
+        }}>
           {category}
         </span>
         {isNostalgicFav && (
-          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-yellow-300 bg-yellow-950/60 border border-yellow-500/40 px-2 py-0.5 rounded-full">
-            <Heart className="w-3 h-3 fill-yellow-300" />
+          <span style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.25rem",
+            fontSize: "0.6875rem",
+            fontWeight: 600,
+            color: "var(--theme-accent)",
+            backgroundColor: "rgba(245, 158, 11, 0.15)",
+            border: "1px solid var(--theme-accent)",
+            padding: "0.25rem 0.5rem",
+            borderRadius: "9999px"
+          }}>
+            <Heart className="w-3 h-3" style={{ fill: "var(--theme-accent)" }} />
             Classique Récré
           </span>
         )}
       </div>
 
-      {/* Nom du plat style écriture craie */}
-      <h4 className="text-base md:text-lg font-bold tracking-wide text-white mb-2 flex items-center gap-2">
-        <Utensils className="w-4 h-4 text-[#8FBC8F] shrink-0" />
+      {/* Nom du plat */}
+      <h4 style={{
+        fontSize: "1rem",
+        fontWeight: 700,
+        letterSpacing: "0.025em",
+        color: "var(--theme-textPrimary)",
+        marginBottom: "0.5rem",
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem"
+      }}>
+        <Utensils className="w-4 h-4" style={{ color: "var(--theme-secondary)" }} />
         {name}
       </h4>
 
-      {/* Liste des ingrédients sous forme d'étiquettes */}
-      <div className="flex flex-wrap gap-1.5 mt-3">
+      {/* Ingrédients */}
+      <div style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "0.375rem",
+        marginTop: "0.75rem"
+      }}>
         {ingredients.map((ing, i) => (
           <span
             key={i}
-            className="text-xs bg-[#0B1B33]/80 border border-white/10 px-2 py-0.5 rounded-xs text-neutral-300"
+            style={{
+              fontSize: "0.75rem",
+              backgroundColor: "rgba(0, 0, 0, 0.1)",
+              border: "1px solid var(--theme-borderColor)",
+              padding: "0.25rem 0.5rem",
+              borderRadius: "8px",
+              color: "var(--theme-textSecondary)"
+            }}
           >
             {ing}
           </span>

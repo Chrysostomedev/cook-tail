@@ -10,13 +10,42 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const Input: React.FC<InputProps> = ({ label, className, ...props }) => {
   return (
-    <div className="space-y-1">
-      {label && <label className="block text-xs font-mono font-bold uppercase text-[#0B1B33]">{label}</label>}
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+      {label && (
+        <label style={{
+          fontSize: "0.75rem",
+          fontFamily: "var(--ff-space-mono)",
+          fontWeight: 700,
+          textTransform: "uppercase",
+          color: "var(--theme-textPrimary)"
+        }}>
+          {label}
+        </label>
+      )}
       <input
-        className={cn(
-          "w-full px-3 py-2.5 bg-white border-2 border-[#0B1B33] rounded-xs font-mono text-xs font-bold text-[#0B1B33] focus:bg-[#FEF08A]/20 focus:outline-hidden",
-          className
-        )}
+        style={{
+          width: "100%",
+          padding: "0.75rem 0.75rem",
+          backgroundColor: "var(--theme-bgSecondary)",
+          borderWidth: "2px",
+          borderColor: "var(--theme-borderColor)",
+          borderRadius: "8px",
+          fontFamily: "var(--ff-space-mono)",
+          fontSize: "0.75rem",
+          fontWeight: 700,
+          color: "var(--theme-textPrimary)",
+          transition: "all 200ms ease-out"
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.backgroundColor = "var(--theme-bgPrimary)";
+          e.currentTarget.style.borderColor = "var(--theme-primary)";
+          e.currentTarget.style.boxShadow = "0 0 0 3px rgba(236, 72, 153, 0.1)";
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.backgroundColor = "var(--theme-bgSecondary)";
+          e.currentTarget.style.borderColor = "var(--theme-borderColor)";
+          e.currentTarget.style.boxShadow = "none";
+        }}
         {...props}
       />
     </div>

@@ -33,34 +33,34 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="bg-[#F4EBD9] border-3 border-[#0B1B33] p-6 max-w-md w-full rounded-xs shadow-[8px_8px_0px_0px_#0B1B33] relative"
+          className="bg-[var(--theme-bgPrimary)] border-3 border-[var(--theme-primary)] p-6 max-w-md w-full rounded-xs shadow-[8px_8px_0px_0px_var(--theme-primary)] relative"
         >
           <button
             onClick={onCancel}
-            className="absolute top-3 right-3 text-[#0B1B33] hover:opacity-70"
+            className="absolute top-3 right-3 text-[var(--theme-primary)] hover:opacity-70"
           >
             <X className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center gap-3 text-[#DC2626] mb-3">
+          <div className="flex items-center gap-3 text-[var(--theme-danger)] mb-3">
             <AlertCircle className="w-7 h-7 shrink-0" />
-            <h3 className="text-lg font-black uppercase text-[#0B1B33]">{title}</h3>
+            <h3 className="text-lg font-black uppercase text-[var(--theme-primary)]">{title}</h3>
           </div>
 
-          <p className="text-sm font-sans text-[#0B1B33]/80 leading-relaxed mb-6">
+          <p className="text-sm font-sans text-[var(--theme-primary)]/80 leading-relaxed mb-6">
             {message}
           </p>
 
           <div className="flex gap-3">
             <button
               onClick={onCancel}
-              className="flex-1 bg-white text-[#0B1B33] font-bold py-3 rounded-xs border-2 border-[#0B1B33] hover:bg-gray-100 uppercase text-xs"
+              className="flex-1 bg-white text-[var(--theme-primary)] font-bold py-3 rounded-xs border-2 border-[var(--theme-primary)] hover:bg-gray-100 uppercase text-xs"
             >
               {cancelLabel}
             </button>
             <button
               onClick={onConfirm}
-              className="flex-1 bg-[#DC2626] text-white font-black py-3 rounded-xs border-2 border-[#0B1B33] shadow-[3px_3px_0px_0px_#0B1B33] hover:translate-x-0.5 uppercase text-xs"
+              className="flex-1 bg-[var(--theme-danger)] text-white font-black py-3 rounded-xs border-2 border-[var(--theme-primary)] shadow-[3px_3px_0px_0px_var(--theme-primary)] hover:translate-x-0.5 uppercase text-xs"
             >
               {confirmLabel}
             </button>

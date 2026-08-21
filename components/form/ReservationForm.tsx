@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Phone, Users, Instagram, ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
+import { User, Phone, Users, Share2, ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 import { FormStepper } from "@/components/form/FormStepper";
 import { EVENT_INFO } from "@/lib/constants";
 import { formatCFA } from "@/lib/utils";
@@ -35,9 +35,9 @@ export const ReservationForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-[#F4EBD9] border-3 border-[#0B1B33] p-6 md:p-10 rounded-sm shadow-[8px_8px_0px_0px_#0B1B33] relative">
+    <div className="max-w-2xl mx-auto border-3 p-6 md:p-10 rounded-sm relative" style={{ backgroundColor: 'var(--theme-bgPrimary)', borderColor: 'var(--theme-primary)', boxShadow: `8px 8px 0px 0px var(--theme-primary)` }}>
       {/* Pince à dessin décorative en haut */}
-      <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-20 h-6 bg-[#0B1B33] rounded-xs flex items-center justify-center">
+      <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-20 h-6 rounded-xs flex items-center justify-center" style={{ backgroundColor: 'var(--theme-primary)' }}>
         <div className="w-12 h-1 bg-neutral-400 rounded-full" />
       </div>
 
@@ -54,7 +54,7 @@ export const ReservationForm: React.FC = () => {
               className="space-y-5"
             >
               <div>
-                <label className="block text-xs font-mono font-bold uppercase text-[#0B1B33] mb-1">
+                <label className="block text-xs font-mono font-bold uppercase mb-1" style={{ color: 'var(--theme-primary)' }}>
                   Nom & Prénom Complexe *
                 </label>
                 <div className="relative">
@@ -65,13 +65,13 @@ export const ReservationForm: React.FC = () => {
                     placeholder="Ex: Kouassi Jean-Philippe"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full pl-10 pr-4 py-3 bg-white border-2 border-[#0B1B33] rounded-xs font-bold text-[#0B1B33] focus:outline-hidden focus:ring-2 focus:ring-[#556B2F]"
+                    className="w-full pl-10 pr-4 py-3 bg-white border-2 rounded-xs font-bold focus:outline-hidden focus:ring-2" style={{ borderColor: 'var(--theme-primary)', color: 'var(--theme-primary)', '--focus-ring': `var(--theme-secondary)` } as any}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-mono font-bold uppercase text-[#0B1B33] mb-1">
+                <label className="block text-xs font-mono font-bold uppercase mb-1" style={{ color: 'var(--theme-primary)' }}>
                   Numéro WhatsApp (Pour le Pass) *
                 </label>
                 <div className="relative">
@@ -82,23 +82,23 @@ export const ReservationForm: React.FC = () => {
                     placeholder="07XX XX XX XX"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full pl-10 pr-4 py-3 bg-white border-2 border-[#0B1B33] rounded-xs font-bold text-[#0B1B33] focus:outline-hidden focus:ring-2 focus:ring-[#556B2F]"
+                    className="w-full pl-10 pr-4 py-3 bg-white border-2 rounded-xs font-bold focus:outline-hidden focus:ring-2" style={{ borderColor: 'var(--theme-primary)', color: 'var(--theme-primary)', '--focus-ring': `var(--theme-secondary)` } as any}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-mono font-bold uppercase text-[#0B1B33] mb-1">
+                <label className="block text-xs font-mono font-bold uppercase mb-1" style={{ color: 'var(--theme-primary)' }}>
                   Compte Instagram (Optionnel)
                 </label>
                 <div className="relative">
-                  <Instagram className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                  <Share2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                   <input
                     type="text"
                     placeholder="@ton_pseudo"
                     value={formData.instagram}
                     onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
-                    className="w-full pl-10 pr-4 py-3 bg-white border-2 border-[#0B1B33] rounded-xs font-bold text-[#0B1B33] focus:outline-hidden focus:ring-2 focus:ring-[#556B2F]"
+                    className="w-full pl-10 pr-4 py-3 bg-white border-2 rounded-xs font-bold focus:outline-hidden focus:ring-2" style={{ borderColor: 'var(--theme-primary)', color: 'var(--theme-primary)', '--focus-ring': `var(--theme-secondary)` } as any}
                   />
                 </div>
               </div>
@@ -106,10 +106,10 @@ export const ReservationForm: React.FC = () => {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full bg-[#0B1B33] text-white font-black py-4 px-6 rounded-xs border-2 border-black shadow-[4px_4px_0px_0px_#556B2F] hover:translate-x-0.5 hover:translate-y-0.5 transition-all flex items-center justify-center gap-2 uppercase tracking-wide cursor-pointer"
+                  className="w-full text-white font-black py-4 px-6 rounded-xs border-2 border-black uppercase tracking-wide cursor-pointer flex items-center justify-center gap-2 hover:translate-x-0.5 hover:translate-y-0.5 transition-all" style={{ backgroundColor: 'var(--theme-primary)', boxShadow: `4px 4px 0px 0px var(--theme-secondary)` }}
                 >
                   Étape Suivante : Sélection des Places
-                  <ArrowRight className="w-5 h-5 text-[#FEF08A]" />
+                  <ArrowRight className="w-5 h-5" style={{ color: 'var(--theme-bgSecondary)' }} />
                 </button>
               </div>
             </motion.div>
@@ -124,29 +124,29 @@ export const ReservationForm: React.FC = () => {
               className="space-y-6"
             >
               <div>
-                <label className="block text-xs font-mono font-bold uppercase text-[#0B1B33] mb-2">
+                <label className="block text-xs font-mono font-bold uppercase mb-2" style={{ color: 'var(--theme-primary)' }}>
                   Nombre d'Accès / Billets (10 000 CFA / Pers.)
                 </label>
-                <div className="flex items-center gap-4 bg-white p-3 border-2 border-[#0B1B33] rounded-xs">
-                  <Users className="w-6 h-6 text-[#556B2F]" />
+                <div className="flex items-center gap-4 bg-white p-3 border-2 rounded-xs" style={{ borderColor: 'var(--theme-primary)' }}>
+                  <Users className="w-6 h-6" style={{ color: 'var(--theme-secondary)' }} />
                   <input
                     type="number"
                     min={1}
                     max={5}
                     value={formData.guests}
                     onChange={(e) => setFormData({ ...formData, guests: Math.max(1, parseInt(e.target.value) || 1) })}
-                    className="w-20 font-black text-xl text-[#0B1B33] focus:outline-hidden"
+                    className="w-20 font-black text-xl focus:outline-hidden" style={{ color: 'var(--theme-primary)' }}
                   />
                   <span className="text-xs font-mono text-gray-600">Max 5 pass par réservation</span>
                 </div>
               </div>
 
               {/* Récapitulatif Tarif */}
-              <div className="bg-[#1C2826] text-[#F4EBD9] p-5 rounded-xs border-2 border-[#0B1B33]">
+              <div className="text-yellow-100 p-5 rounded-xs border-2" style={{ backgroundColor: 'var(--theme-primary)', borderColor: 'var(--theme-primary)' }}>
                 <p className="text-xs font-mono uppercase text-gray-400 mb-1">Récapitulatif de la commande</p>
                 <div className="flex justify-between items-center font-bold text-lg">
                   <span>{formData.guests}x Billet(s) Brunch Récréation</span>
-                  <span className="text-[#FEF08A]">{formatCFA(totalAmount)}</span>
+                  <span style={{ color: 'var(--theme-bgSecondary)' }}>{formatCFA(totalAmount)}</span>
                 </div>
               </div>
 
@@ -154,14 +154,14 @@ export const ReservationForm: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="w-1/3 bg-gray-200 text-[#0B1B33] font-bold py-4 rounded-xs border-2 border-[#0B1B33]"
+                  className="w-1/3 bg-gray-200 font-bold py-4 rounded-xs border-2" style={{ color: 'var(--theme-primary)', borderColor: 'var(--theme-primary)' }}
                 >
                   Retour
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-2/3 bg-[#DC2626] text-white font-black py-4 rounded-xs border-2 border-[#0B1B33] shadow-[4px_4px_0px_0px_#0B1B33] hover:translate-x-0.5 uppercase tracking-wide flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-2/3 text-white font-black py-4 rounded-xs border-2 uppercase tracking-wide flex items-center justify-center gap-2 cursor-pointer hover:translate-x-0.5 transition-all" style={{ backgroundColor: 'var(--theme-danger)', borderColor: 'var(--theme-primary)', boxShadow: `4px 4px 0px 0px var(--theme-primary)` }}
                 >
                   {isSubmitting ? "Validation..." : "Confirmer la Réservation"}
                 </button>
@@ -176,17 +176,17 @@ export const ReservationForm: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               className="text-center py-6 space-y-4"
             >
-              <div className="w-16 h-16 bg-[#556B2F] text-white rounded-full flex items-center justify-center mx-auto border-2 border-[#0B1B33] shadow-[4px_4px_0px_0px_#0B1B33]">
+              <div className="w-16 h-16 text-white rounded-full flex items-center justify-center mx-auto border-2" style={{ backgroundColor: 'var(--theme-secondary)', borderColor: 'var(--theme-primary)', boxShadow: `4px 4px 0px 0px var(--theme-primary)` }}>
                 <CheckCircle2 className="w-10 h-10" />
               </div>
-              <h3 className="text-2xl font-black text-[#0B1B33]">Réservation Enregistrée !</h3>
-              <p className="text-sm text-[#0B1B33]/80 font-serif italic max-w-md mx-auto">
-                Votre référence de pass est <span className="font-mono font-bold bg-[#FEF08A] px-1">BR-2026-0089</span>. Présentez ce code QR à l'entrée.
+              <h3 className="text-2xl font-black uppercase" style={{ color: 'var(--theme-primary)' }}>Réservation Enregistrée !</h3>
+              <p className="text-sm font-serif italic max-w-md mx-auto" style={{ color: `var(--theme-primary)80` }}>
+                Votre référence de pass est <span className="font-mono font-bold px-1" style={{ backgroundColor: 'var(--theme-bgSecondary)' }}>BR-2026-0089</span>. Présentez ce code QR à l'entrée.
               </p>
               <div className="pt-4">
                 <a
                   href="/mon-pass/BR-2026-0089"
-                  className="inline-block bg-[#0B1B33] text-white font-extrabold px-6 py-3 rounded-xs border-2 border-black shadow-[4px_4px_0px_0px_#DC2626]"
+                  className="inline-block text-white font-extrabold px-6 py-3 rounded-xs border-2 border-black" style={{ backgroundColor: 'var(--theme-primary)', boxShadow: `4px 4px 0px 0px var(--theme-danger)` }}
                 >
                   Télécharger mon Pass QR
                 </a>

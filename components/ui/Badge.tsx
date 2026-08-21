@@ -2,30 +2,40 @@
 "use client";
 
 import React from "react";
-import { cn } from "@/lib/utils";
 
 interface BadgeProps {
   children: React.ReactNode;
-  color?: "kaki" | "blue" | "red" | "yellow";
+  variant?: "primary" | "secondary" | "danger" | "success" | "accent";
   className?: string;
 }
 
-export const Badge: React.FC<BadgeProps> = ({ children, color = "kaki", className }) => {
-  const colorStyles = {
-    kaki: "bg-[#556B2F] text-white",
-    blue: "bg-[#0B1B33] text-white",
-    red: "bg-[#DC2626] text-white",
-    yellow: "bg-[#FEF08A] text-[#0B1B33]",
+export const Badge: React.FC<BadgeProps> = ({ children, variant = "primary" }) => {
+  const variantColors = {
+    primary: { bg: "var(--theme-primary)", text: "white" },
+    secondary: { bg: "var(--theme-secondary)", text: "white" },
+    danger: { bg: "var(--theme-danger)", text: "white" },
+    success: { bg: "var(--theme-success)", text: "white" },
+    accent: { bg: "var(--theme-accent)", text: "black" }
   };
 
+  const colors = variantColors[variant];
+
   return (
-    <span
-      className={cn(
-        "inline-block font-mono font-black text-[10px] uppercase tracking-widest px-2 py-0.5 border border-black rounded-xs shadow-[2px_2px_0px_0px_#0B1B33]",
-        colorStyles[color],
-        className
-      )}
-    >
+    <span style={{
+      display: "inline-block",
+      fontFamily: "var(--ff-space-mono)",
+      fontWeight: 900,
+      fontSize: "0.625rem",
+      textTransform: "uppercase",
+      letterSpacing: "0.05em",
+      padding: "0.5rem 0.5rem",
+      borderWidth: "1px",
+      borderColor: "var(--theme-borderColor)",
+      borderRadius: "8px",
+      boxShadow: "var(--shadow-retro-sm)",
+      backgroundColor: colors.bg,
+      color: colors.text
+    }}>
       {children}
     </span>
   );

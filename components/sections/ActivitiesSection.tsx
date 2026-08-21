@@ -38,10 +38,10 @@ const TIMETABLE = [
 
 export const ActivitiesSection: React.FC = () => {
   return (
-    <section className="py-20 bg-[#0B1B33] text-[#F4EBD9] relative">
+    <section className="py-20 bg-[var(--theme-primary)] text-[var(--theme-bgPrimary)] relative">
       <div className="max-w-5xl mx-auto px-4">
         <div className="text-center mb-16">
-          <span className="text-xs font-mono font-bold uppercase tracking-widest bg-[#FEF08A] text-[#0B1B33] px-3 py-1 rounded-xs border border-black">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest bg-[var(--theme-accent)] text-[var(--theme-primary)] px-3 py-1 rounded-xs border border-black">
             Planning officiel
           </span>
           <h2 className="text-3xl md:text-5xl font-black mt-4 text-white">

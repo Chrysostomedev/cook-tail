@@ -28,24 +28,24 @@ export const CountdownSection = () => {
   ];
 
   return (
-    <div className="bg-[#FEF9C3] p-6 md:p-8 rounded-3xl shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden group">
+    <div className="p-6 md:p-8 rounded-3xl shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden group" style={{ backgroundColor: 'var(--theme-bgSecondary)' }}>
 
       {/* Icône décorative en arrière-plan */}
-      <Clock className="absolute -bottom-6 -right-6 w-32 h-32 text-[#0B1B33] opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-500" />
+      <Clock className="absolute -bottom-6 -right-6 w-32 h-32 opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-500" style={{ color: 'var(--theme-primary)' }} />
 
       {/* Section Texte */}
       <div className="space-y-4 text-center lg:text-left relative z-10 max-w-xl">
         <div className="flex items-center gap-2.5 justify-center lg:justify-start">
-          <AlarmClock className="w-5 h-5 text-[#DC2626] animate-pulse" />
-          <span className="text-xs font-mono font-bold uppercase bg-[#0B1B33] text-white px-3.5 py-1.5 rounded-full inline-block tracking-wider shadow-md">
+          <AlarmClock className="w-5 h-5 text-red-600 animate-pulse" style={{ color: 'var(--theme-danger)' }} />
+          <span className="text-xs font-mono font-bold uppercase text-white px-3.5 py-1.5 rounded-full inline-block tracking-wider shadow-md" style={{ backgroundColor: 'var(--theme-primary)' }}>
             INSCRIPTIONS • DERNIER APPEL
           </span>
         </div>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-[#0B1B33] uppercase leading-tight tracking-tight">
-          Le Portail Se <span className="text-[#DC2626] font-extrabold">Ferme</span> Bientôt !
+        <h2 className="text-2xl md:text-3xl font-extrabold uppercase leading-tight tracking-tight" style={{ color: 'var(--theme-primary)' }}>
+          Le Portail Se <span style={{ color: 'var(--theme-danger)' }} className="font-extrabold">Ferme</span> Bientôt !
         </h2>
-        <p className="text-sm md:text-base font-medium italic text-[#1E293B] flex items-center gap-2 justification-center lg:justify-start">
-          <Sparkles className="w-4 h-4 text-[#556B2F]" />
+        <p className="text-sm md:text-base font-medium italic flex items-center gap-2 lg:justify-start" style={{ color: 'var(--theme-textSecondary)' }}>
+          <Sparkles className="w-4 h-4" style={{ color: 'var(--theme-secondary)' }} />
           Ne manquez pas la rentrée récréative de l'année.
         </p>
       </div>
@@ -54,8 +54,8 @@ export const CountdownSection = () => {
       <div className="flex gap-2 sm:gap-4 font-mono text-center relative z-10 items-center">
         {timeUnits.map((unit, i) => (
           <React.Fragment key={i}>
-            <div className="bg-[#111827] text-white p-3 md:p-4 rounded-2xl min-w-[70px] md:min-w-[85px] shadow-lg hover:-translate-y-1 hover:shadow-2xl transition-all duration-200 group/card">
-              <span className="block text-3xl md:text-4xl font-extrabold text-[#FEF08A] tracking-tighter group-hover/card:scale-105 transition-transform">
+            <div className="text-white p-3 md:p-4 rounded-2xl min-w-[70px] md:min-w-[85px] shadow-lg hover:-translate-y-1 hover:shadow-2xl transition-all duration-200 group/card" style={{ backgroundColor: 'var(--theme-primary)' }}>
+              <span className="block text-3xl md:text-4xl font-extrabold tracking-tighter group-hover/card:scale-105 transition-transform" style={{ color: 'var(--theme-bgSecondary)' }}>
                 {String(unit.val).padStart(2, "0")}
               </span>
               <span className="text-[10px] md:text-xs uppercase font-extrabold text-gray-300 tracking-widest border-t border-white/10 pt-1.5 mt-1.5 block">
@@ -65,7 +65,7 @@ export const CountdownSection = () => {
 
             {/* Séparateur clignotant (exclu après le dernier élément) */}
             {i < timeUnits.length - 1 && (
-              <span className="text-3xl font-black text-[#0B1B33] animate-pulse hidden sm:block">
+              <span className="text-3xl font-black animate-pulse hidden sm:block" style={{ color: 'var(--theme-primary)' }}>
                 :
               </span>
             )}

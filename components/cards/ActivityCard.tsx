@@ -3,7 +3,6 @@
 
 import React from "react";
 import { Sparkles, Clock } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export interface ActivityCardProps {
   title: string;
@@ -25,44 +24,129 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   const isEven = index % 2 === 0;
 
   return (
-    <div
-      className={cn(
-        "relative p-6 rounded-md border-2 border-[#0B1B33] transition-all duration-200",
-        "shadow-[4px_4px_0px_0px_#0B1B33] hover:shadow-[7px_7px_0px_0px_#0B1B33] hover:-translate-y-1",
-        isEven ? "bg-[#F4EBD9] rotate-[-1deg]" : "bg-white rotate-[1deg]"
-      )}
-    >
-      {/* Ligne Marge Rouge style cahier d'écolier */}
-      <div className="absolute top-0 bottom-0 left-6 w-[2px] bg-red-400/40 pointer-events-none" />
+    <div style={{
+      position: "relative",
+      padding: "1.5rem",
+      borderRadius: "8px",
+      borderWidth: "2px",
+      backgroundColor: isEven ? "var(--theme-bgPrimary)" : "var(--theme-bgSecondary)",
+      borderColor: "var(--theme-borderColor)",
+      transition: "all 200ms ease-out",
+      boxShadow: "var(--shadow-retro-md)",
+      transform: isEven ? "rotate(-1deg)" : "rotate(1deg)",
+      cursor: "pointer"
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.boxShadow = "var(--shadow-retro-lg)";
+      e.currentTarget.style.transform = isEven ? "rotate(-1deg) translateY(-4px)" : "rotate(1deg) translateY(-4px)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.boxShadow = "var(--shadow-retro-md)";
+      e.currentTarget.style.transform = isEven ? "rotate(-1deg)" : "rotate(1deg)";
+    }}>
+      {/* Ligne Marge style cahier */}
+      <div style={{
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: "1.5rem",
+        width: "2px",
+        backgroundColor: "var(--theme-danger)",
+        opacity: 0.4,
+        pointerEvents: "none"
+      }} />
 
-      <div className="pl-4">
-        {/* En-tête : Badge Horaire & Categorie */}
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="inline-flex items-center gap-1 text-xs font-mono font-bold bg-[#0B1B33] text-[#F4EBD9] px-2 py-1 rounded-xs">
+      <div style={{ paddingLeft: "1rem" }}>
+        {/* En-tête : Horaire & Catégorie */}
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "0.5rem",
+          marginBottom: "0.75rem"
+        }}>
+          <span style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.25rem",
+            fontSize: "0.75rem",
+            fontFamily: "var(--ff-space-mono)",
+            fontWeight: 700,
+            backgroundColor: "var(--theme-primary)",
+            color: "white",
+            padding: "0.5rem",
+            borderRadius: "8px"
+          }}>
             <Clock className="w-3 h-3" />
             {timeSlot}
           </span>
-          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#556B2F] bg-[#556B2F]/10 px-2 py-1 border border-[#556B2F]/30 rounded-xs">
+          <span style={{
+            fontSize: "0.75rem",
+            fontFamily: "var(--ff-space-mono)",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+            color: "var(--theme-secondary)",
+            backgroundColor: "rgba(74, 222, 128, 0.1)",
+            padding: "0.25rem 0.5rem",
+            borderRadius: "8px",
+            border: "1px solid var(--theme-secondary)"
+          }}>
             {category}
           </span>
         </div>
 
-        {/* Titre style raturé/surligné */}
-        <h3 className="text-lg md:text-xl font-extrabold text-[#0B1B33] mb-2 leading-tight">
-          <span className="bg-[#FEF08A] px-1 py-0.5 rounded-xs box-decoration-clone">
-            {title}
-          </span>
+        {/* Titre */}
+        <h3 style={{
+          fontSize: "1.125rem",
+          fontWeight: 800,
+          color: "var(--theme-primary)",
+          marginBottom: "0.5rem",
+          lineHeight: 1.2,
+          backgroundColor: "var(--theme-accent)",
+          padding: "0.25rem 0.5rem",
+          borderRadius: "4px",
+          display: "inline-block",
+          boxDecorationBreak: "clone"
+        }}>
+          {title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-[#0B1B33]/80 leading-relaxed font-sans">
+        <p style={{
+          fontSize: "0.875rem",
+          color: "var(--theme-textPrimary)",
+          opacity: 0.8,
+          lineHeight: 1.5,
+          marginTop: "0.5rem"
+        }}>
           {description}
         </p>
 
-        {/* Tampon / Badge exclusif si spécifié */}
+        {/* Badge exclusif */}
         {badgeText && (
-          <div className="mt-4 pt-3 border-t border-dashed border-[#0B1B33]/20 flex items-center justify-between">
-            <span className="inline-flex items-center gap-1 text-xs font-black text-red-600 uppercase tracking-widest border border-red-600 px-2 py-0.5 rounded-xs rotate-[-3deg]">
+          <div style={{
+            marginTop: "1rem",
+            paddingTop: "0.75rem",
+            borderTop: "1px dashed var(--theme-borderColor)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between"
+          }}>
+            <span style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.25rem",
+              fontSize: "0.75rem",
+              fontWeight: 900,
+              color: "var(--theme-danger)",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              border: "1px solid var(--theme-danger)",
+              padding: "0.25rem 0.5rem",
+              borderRadius: "8px",
+              transform: "rotate(-3deg)"
+            }}>
               <Sparkles className="w-3 h-3" />
               {badgeText}
             </span>

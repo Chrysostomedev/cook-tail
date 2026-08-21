@@ -36,7 +36,7 @@ export const AdminSidebar: React.FC = () => {
       groupLabel: "Vue d'ensemble",
       items: [
         { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-        { label: "Statistiques", href: "/admin/analytics", icon: BarChart3 },
+        { label: "Statistiques", href: "/admin/statistiques", icon: BarChart3 },
       ],
     },
     {
@@ -44,6 +44,7 @@ export const AdminSidebar: React.FC = () => {
       items: [
         { label: "Scanner Pass", href: "/admin/scanner", icon: QrCode, badge: "Live" },
         { label: "Réservations", href: "/admin/reservations", icon: Ticket },
+         { label: "Evenements", href: "/admin/evenement", icon: Ticket },
         { label: "Participants", href: "/admin/participants", icon: Users },
       ],
     },
@@ -51,13 +52,13 @@ export const AdminSidebar: React.FC = () => {
       groupLabel: "Administration",
       items: [
         { label: "Mon Profil", href: "/admin/profil", icon: User },
-        { label: "Paramètres", href: "/admin/settings", icon: Settings },
+        // { label: "Paramètres", href: "/admin/settings", icon: Settings },
       ],
     },
   ];
 
   return (
-    <aside className="w-64 bg-[#0B1B33] border-r border-slate-800 text-white hidden md:flex flex-col justify-between p-4 shrink-0 shadow-xl">
+    <aside className="w-64 text-white hidden md:flex flex-col justify-between p-4 shrink-0 shadow-xl border-r" style={{ backgroundColor: 'var(--theme-primary)', borderColor: 'var(--theme-borderColor)' }}>
       <div className="space-y-6">
         {/* Banner statut terminal */}
         <div className="px-3 py-2.5 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
@@ -88,19 +89,21 @@ export const AdminSidebar: React.FC = () => {
                       className={cn(
                         "flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all group",
                         isActive
-                          ? "bg-amber-400 text-slate-950 font-extrabold shadow-md shadow-amber-400/10"
+                          ? "text-slate-950 font-extrabold shadow-md"
                           : "text-slate-400 hover:text-white hover:bg-white/5"
                       )}
+                      style={isActive ? { backgroundColor: 'var(--theme-accent)', boxShadow: `0 0 0 10px var(--theme-accent)40` } : {}}
                     >
                       <div className="flex items-center gap-3">
-                        <Icon className={cn("w-4 h-4 transition-transform group-hover:scale-110", isActive ? "text-slate-950" : "text-slate-400 group-hover:text-amber-400")} />
+                        <Icon className={cn("w-4 h-4 transition-transform group-hover:scale-110", isActive ? "text-slate-950" : "text-slate-400")} style={!isActive ? { '--hover-color': 'var(--theme-accent)' } as any : {}} />
                         <span>{item.label}</span>
                       </div>
                       {item.badge && (
                         <span className={cn(
                           "text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md uppercase",
-                          isActive ? "bg-slate-950 text-amber-400" : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                        )}>
+                          isActive ? "text-white border border-transparent" : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                        )}
+                        style={isActive ? { backgroundColor: 'var(--theme-primary)' } : {}}>
                           {item.badge}
                         </span>
                       )}
@@ -114,9 +117,9 @@ export const AdminSidebar: React.FC = () => {
       </div>
 
       {/* Zone Profil Rapide & Déconnexion */}
-      <div className="border-t border-slate-800 pt-4 space-y-3">
+      <div className="pt-4 space-y-3 border-t" style={{ borderColor: 'var(--theme-borderColor)' }}>
         <div className="px-3 py-2 rounded-xl bg-white/5 border border-white/5 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-lg text-slate-950 font-black text-xs flex items-center justify-center shrink-0" style={{ backgroundColor: 'var(--theme-accent)' }}>
             A
           </div>
           <div className="overflow-hidden">
@@ -126,7 +129,7 @@ export const AdminSidebar: React.FC = () => {
         </div>
 
         <Link
-          href="/admin/login"
+          href="/login"
           className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-red-400 hover:bg-red-500/10 transition-all border border-transparent hover:border-red-500/20"
         >
           <LogOut className="w-4 h-4" /> Déconnexion

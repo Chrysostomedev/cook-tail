@@ -36,10 +36,10 @@ function fontFav() { return true; }
 
 export const MenuSection: React.FC = () => {
   return (
-    <section className="py-20 bg-[#1C2826] text-[#F4EBD9] relative border-t-4 border-b-4 border-[#0B1B33]">
+    <section className="py-20 bg-[var(--theme-bgSecondary)] text-[var(--theme-bgPrimary)] relative border-t-4 border-b-4 border-[var(--theme-primary)]">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-14">
-          <span className="text-xs font-mono font-bold uppercase tracking-wider bg-[#556B2F] text-white px-3 py-1 rounded-xs">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider bg-[var(--theme-secondary)] text-white px-3 py-1 rounded-xs">
             Gastronomie Nostalgique
           </span>
           <h2 className="text-3xl md:text-5xl font-black mt-3 text-white">

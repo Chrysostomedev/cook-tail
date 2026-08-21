@@ -21,18 +21,18 @@ export const StatCard: React.FC<StatCardProps> = ({
 }) => {
   const bgStyles =
     variant === "blue"
-      ? "bg-[#0B1B33] text-white shadow-[4px_4px_0px_0px_#556B2F]"
+      ? "bg-[var(--theme-primary)] text-white shadow-[4px_4px_0px_0px_var(--theme-secondary)]"
       : variant === "kaki"
-      ? "bg-[#556B2F] text-white shadow-[4px_4px_0px_0px_#0B1B33]"
-      : "bg-[#DC2626] text-white shadow-[4px_4px_0px_0px_#0B1B33]";
+      ? "bg-[var(--theme-secondary)] text-white shadow-[4px_4px_0px_0px_var(--theme-primary)]"
+      : "bg-[var(--theme-danger)] text-white shadow-[4px_4px_0px_0px_var(--theme-primary)]";
 
   return (
-    <div className={`p-5 rounded-xs border-2 border-[#0B1B33] ${bgStyles}`}>
+    <div className={`p-5 rounded-xs border-2 border-[var(--theme-primary)] ${bgStyles}`}>
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs font-mono font-bold uppercase tracking-wider opacity-80">
           {title}
         </span>
-        <Icon className="w-6 h-6 text-[#FEF08A]" />
+        <Icon className="w-6 h-6 text-[var(--theme-accent)]" />
       </div>
       <p className="text-3xl font-black tracking-tight">{value}</p>
       {subtitle && (

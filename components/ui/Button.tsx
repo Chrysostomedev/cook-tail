@@ -17,24 +17,44 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    "font-black uppercase tracking-wider rounded-xs border-2 border-[#0B1B33] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50";
+    "font-extrabold uppercase tracking-wider rounded-lg border-2 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 duration-200 ease-out";
 
   const sizeStyles = {
-    sm: "px-3 py-1.5 text-xs",
-    md: "px-5 py-3 text-sm shadow-[3px_3px_0px_0px_#0B1B33] hover:translate-x-0.5 hover:translate-y-0.5",
-    lg: "px-7 py-4 text-base shadow-[5px_5px_0px_0px_#0B1B33] hover:translate-x-1 hover:translate-y-1",
+    sm: "px-3 py-1.5 text-xs gap-1.5",
+    md: "px-5 py-3 text-sm shadow-retro-md hover:translate-x-0.5 hover:translate-y-0.5",
+    lg: "px-7 py-4 text-base shadow-retro-lg hover:translate-x-1 hover:translate-y-1",
   };
 
   const variantStyles = {
-    primary: "bg-[#FEF08A] text-[#0B1B33] hover:bg-yellow-200",
-    secondary: "bg-[#0B1B33] text-white hover:bg-[#1E3A8A]",
-    danger: "bg-[#DC2626] text-white hover:bg-red-700",
-    ghost: "bg-transparent border-transparent shadow-none hover:bg-black/5",
+    primary: "text-white border-2 hover:opacity-90",
+    secondary: "text-white border-2 hover:opacity-90",
+    danger: "text-white border-2 shadow-retro-md hover:opacity-90",
+    ghost: "bg-transparent border-transparent shadow-none hover:opacity-70",
+  };
+
+  // Styles dynamiques basés sur le thème
+  const dynamicStyles = {
+    primary: {
+      backgroundColor: "var(--theme-primary)",
+      borderColor: "var(--theme-primary)",
+    },
+    secondary: {
+      backgroundColor: "var(--theme-secondary)",
+      borderColor: "var(--theme-secondary)",
+    },
+    danger: {
+      backgroundColor: "var(--theme-danger)",
+      borderColor: "var(--theme-danger)",
+    },
+    ghost: {
+      color: "var(--theme-textPrimary)",
+    },
   };
 
   return (
     <button
       className={cn(baseStyles, sizeStyles[size], variantStyles[variant], className)}
+      style={dynamicStyles[variant]}
       {...props}
     >
       {children}

@@ -1,4 +1,4 @@
-// components/ui/Modal.tsx
+// components/modals/Modal.tsx
 "use client";
 
 import React from "react";
@@ -17,17 +17,61 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+      <div style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 50,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "1rem",
+        backgroundColor: "rgba(0, 0, 0, 0.6)",
+        backdropFilter: "blur(4px)"
+      }}>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="bg-[#F4EBD9] border-3 border-[#0B1B33] p-6 max-w-lg w-full rounded-xs shadow-[8px_8px_0px_0px_#0B1B33] relative"
+          style={{
+            backgroundColor: "var(--theme-bgPrimary)",
+            borderWidth: "3px",
+            borderColor: "var(--theme-borderColor)",
+            padding: "1.5rem",
+            maxWidth: "32rem",
+            width: "100%",
+            borderRadius: "8px",
+            boxShadow: "var(--shadow-retro-lg)",
+            position: "relative"
+          }}
         >
-          <button onClick={onClose} className="absolute top-3 right-3 text-[#0B1B33] hover:opacity-70">
+          <button
+            onClick={onClose}
+            style={{
+              position: "absolute",
+              top: "0.75rem",
+              right: "0.75rem",
+              color: "var(--theme-textPrimary)",
+              cursor: "pointer",
+              opacity: 0.7,
+              transition: "opacity 200ms"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = "0.7"}
+          >
             <X className="w-5 h-5" />
           </button>
-          <h3 className="text-lg font-black uppercase text-[#0B1B33] mb-4 pb-2 border-b-2 border-black">{title}</h3>
+          <h3 style={{
+            fontSize: "1.125rem",
+            fontWeight: 900,
+            textTransform: "uppercase",
+            color: "var(--theme-textPrimary)",
+            marginBottom: "1rem",
+            paddingBottom: "0.5rem",
+            borderBottomWidth: "2px",
+            borderBottomColor: "var(--theme-borderColor)"
+          }}>
+            {title}
+          </h3>
           {children}
         </motion.div>
       </div>
