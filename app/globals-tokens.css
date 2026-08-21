@@ -1,0 +1,168 @@
+/* app/globals-tokens.css */
+/* Design Tokens — BRUNCH RÉCRÉATION 2026 */
+/* Utilise les variables de thème définies par ThemeContext */
+
+:root {
+  /* ═══════════════════════════════════════════════════════════ */
+  /* THEME COLORS — Dynamiques (définies par ThemeContext) */
+  /* ═══════════════════════════════════════════════════════════ */
+  
+  /* Primary — Magenta du logo Cook'Tail (par défaut #EC4899) */
+  --theme-primary: #aa105d;
+  --theme-primaryLight: #700e41;
+  --theme-primaryDark: #6f0651;
+  
+  /* Secondary — Vert du logo Cook'Tail (par défaut #4ADE80) */
+  --theme-secondary: #4ADE80;
+  --theme-secondaryLight: #86EFAC;
+  --theme-secondaryDark: #16A34A;
+  
+  /* Text & Background */
+  --theme-textPrimary: #1F2937;
+  --theme-textSecondary: #6B7280;
+  --theme-bgPrimary: #FFFFFF;
+  --theme-bgSecondary: #F9FAFB;
+  
+  /* Accents */
+  --theme-accent: #d3e9a8;
+  --theme-danger: #DC2626;
+  --theme-success: #10B981;
+  
+  /* Borders & Shadows */
+  --theme-borderColor: #E5E7EB;
+  --theme-shadowColor: #000000;
+  
+  /* ═══════════════════════════════════════════════════════════ */
+  /* TYPOGRAPHIE — Families & Sizes (Inchangé) */
+  /* ═══════════════════════════════════════════════════════════ */
+  
+  /* Font Families */
+  --ff-fraunces: 'Fraunces', 'Georgia', serif;
+  --ff-manrope: 'Manrope', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', sans-serif;
+  --ff-space-mono: 'Space Mono', 'Courier New', monospace;
+  
+  /* Font Sizes — Modular scale (1.2x ratio) */
+  --fs-2xs: 0.5625rem;     /* 9px */
+  --fs-xs: 0.625rem;        /* 10px */
+  --fs-sm: 0.75rem;         /* 12px */
+  --fs-base: 1rem;          /* 16px */
+  --fs-lg: 1.25rem;         /* 20px */
+  --fs-xl: 1.5rem;          /* 24px */
+  --fs-2xl: 2rem;           /* 32px */
+  --fs-3xl: 2.5rem;         /* 40px */
+  --fs-4xl: 3rem;           /* 48px */
+  --fs-5xl: 3.5rem;         /* 56px */
+  --fs-6xl: 4rem;           /* 64px */
+  
+  /* Font Weights */
+  --fw-light: 300;
+  --fw-normal: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+  --fw-black: 900;
+  
+  /* Line Heights */
+  --lh-tight: 1.1;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.75;
+  
+  /* Letter Spacing */
+  --ls-tight: -0.02em;
+  --ls-normal: 0;
+  --ls-wide: 0.025em;
+  --ls-wider: 0.05em;
+  --ls-widest: 0.1em;
+  
+  /* ═══════════════════════════════════════════════════════════ */
+  /* ESPACEMENT — Modular spacing scale (Inchangé) */
+  /* ═══════════════════════════════════════════════════════════ */
+  
+  --sp-2xs: 0.25rem;       /* 4px */
+  --sp-xs: 0.5rem;         /* 8px */
+  --sp-sm: 0.75rem;        /* 12px */
+  --sp-md: 1rem;           /* 16px */
+  --sp-lg: 1.5rem;         /* 24px */
+  --sp-xl: 2rem;           /* 32px */
+  --sp-2xl: 2.5rem;        /* 40px */
+  --sp-3xl: 3rem;          /* 48px */
+  --sp-4xl: 4rem;          /* 64px */
+  --sp-5xl: 5rem;          /* 80px */
+  
+  /* ═══════════════════════════════════════════════════════════ */
+  /* RAYONS DE BORDURE */
+  /* ═══════════════════════════════════════════════════════════ */
+  
+  --radius-retro: 2px;
+  --radius-default: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+  
+  /* ═══════════════════════════════════════════════════════════ */
+  /* OMBRES — Dynamiques basées sur le shadowColor du thème */
+  /* ═══════════════════════════════════════════════════════════ */
+  
+  /* Rétro — Décalage fixe */
+  --shadow-retro-sm: 2px 2px 0px 0px var(--theme-shadowColor);
+  --shadow-retro-md: 4px 4px 0px 0px var(--theme-shadowColor);
+  --shadow-retro-lg: 6px 6px 0px 0px var(--theme-shadowColor);
+  
+  /* Moderne — Soft blur */
+  --shadow-soft-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-soft-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-soft-lg: 0 8px 20px rgba(0, 0, 0, 0.12);
+  
+  /* ═══════════════════════════════════════════════════════════ */
+  /* TRANSITIONS & ANIMATIONS */
+  /* ═══════════════════════════════════════════════════════════ */
+  
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* ═══════════════════════════════════════════════════════════ */
+  /* BORDERS */
+  /* ═══════════════════════════════════════════════════════════ */
+  
+  --border-thin: 1px;
+  --border-default: 2px;
+  --border-bold: 3px;
+  
+  /* ═══════════════════════════════════════════════════════════ */
+  /* Z-INDEX LAYER */
+  /* ═══════════════════════════════════════════════════════════ */
+  
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* PREFERS REDUCED MOTION */
+/* ═══════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

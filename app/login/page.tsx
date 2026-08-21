@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center p-4 selection:bg-amber-200 selection:text-amber-950">
+        <div className="min-h-screen bg-[var(--theme-bgPrimary)] flex items-center justify-center p-4 selection:bg-amber-200 selection:text-amber-950">
 
             {/* Carte de connexion principale */}
             <div className="w-full max-w-md bg-white rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-900/5 p-6 sm:p-8 space-y-6 relative overflow-hidden">
@@ -44,7 +44,7 @@ export default function AdminLoginPage() {
 
                 {/* Branding & En-tête */}
                 <div className="text-center space-y-3 relative z-10">
-                    <div className="w-14 h-14 bg-[#0B1B33] rounded-2xl p-2.5 mx-auto shadow-md flex items-center justify-center">
+                    <div className="w-14 h-14 bg-[var(--theme-primary)] rounded-2xl p-2.5 mx-auto shadow-md flex items-center justify-center">
                         <Image
                             src="/img/logo.png"
                             alt="Logo Cook'Tail"
@@ -117,7 +117,7 @@ export default function AdminLoginPage() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-[#0B1B33] hover:bg-slate-800 text-amber-300 font-bold py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-75 disabled:pointer-events-none mt-2"
+                        className="w-full bg-[var(--theme-primary)] hover:bg-slate-800 text-amber-300 font-bold py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-75 disabled:pointer-events-none mt-2"
                     >
                         {isLoading ? (
                             <>

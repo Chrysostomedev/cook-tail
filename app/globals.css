@@ -1,15 +1,17 @@
 @import "tailwindcss";
+@import "./globals-tokens.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: var(--rnc-parchment);
+  --foreground: var(--rnc-ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--ff-manrope);
+  --font-serif: var(--ff-fraunces);
+  --font-mono: var(--ff-space-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,3 +26,141 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+/* ═══════════════════════════════════════════════════════════ */
+/* THEME COLOR OVERRIDES — Remap Tailwind colors to theme vars */
+/* ═══════════════════════════════════════════════════════════ */
+
+/* Override les couleurs Tailwind hardcodées vers les variables de thème */
+:root {
+  /* Map old hardcoded colors to theme variables */
+  --color-primary-theme: var(--theme-primary);
+  --color-secondary-theme: var(--theme-secondary);
+  --color-text-primary: var(--theme-textPrimary);
+  --color-text-secondary: var(--theme-textSecondary);
+  --color-bg-primary: var(--theme-bgPrimary);
+  --color-bg-secondary: var(--theme-bgSecondary);
+  --color-border: var(--theme-borderColor);
+  --color-danger: var(--theme-danger);
+  --color-success: var(--theme-success);
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* Utility Classes for Dynamic Colors */
+/* ═══════════════════════════════════════════════════════════ */
+
+.bg-theme-primary { background-color: var(--theme-primary); }
+.bg-theme-secondary { background-color: var(--theme-secondary); }
+.bg-theme-danger { background-color: var(--theme-danger); }
+.bg-theme-success { background-color: var(--theme-success); }
+.bg-theme-primary-light { background-color: rgba(236, 72, 153, 0.15); }
+.bg-theme-secondary-light { background-color: rgba(74, 222, 128, 0.15); }
+
+.text-theme-primary { color: var(--theme-primary); }
+.text-theme-secondary { color: var(--theme-secondary); }
+.text-theme-primary-text { color: var(--theme-textPrimary); }
+.text-theme-secondary-text { color: var(--theme-textSecondary); }
+.text-theme-danger { color: var(--theme-danger); }
+
+.border-theme-primary { border-color: var(--theme-primary); }
+.border-theme-secondary { border-color: var(--theme-secondary); }
+.border-theme-border { border-color: var(--theme-borderColor); }
+
+.shadow-theme-retro { box-shadow: var(--shadow-retro-md); }
+.shadow-theme-soft { box-shadow: var(--shadow-soft-md); }
+
+/* ═══════════════════════════════════════════════════════════ */
+/* CSS Cascade Override for Hardcoded Tailwind Classes */
+/* ═══════════════════════════════════════════════════════════ */
+
+/* When Tailwind classes don't support dynamic values,
+   we use CSS to override them with theme variables */
+
+[class*="bg-\[#0B1B33\"]"],
+[class*="bg-\[#0b1b33\"]"] {
+  background-color: var(--theme-primary) !important;
+}
+
+[class*="text-\[#0B1B33\"]"],
+[class*="text-\[#0b1b33\"]"] {
+  color: var(--theme-primary) !important;
+}
+
+[class*="border-\[#0B1B33\"]"],
+[class*="border-\[#0b1b33\"]"] {
+  border-color: var(--theme-primary) !important;
+}
+
+[class*="bg-\[#F4EBD9\"]"],
+[class*="bg-\[#f4ebda\"]"] {
+  background-color: var(--theme-bgPrimary) !important;
+}
+
+[class*="text-\[#F4EBD9\"]"],
+[class*="text-\[#f4ebda\"]"] {
+  color: var(--theme-bgPrimary) !important;
+}
+
+[class*="bg-\[#556B2F\"]"],
+[class*="bg-\[#556b2f\"]"] {
+  background-color: var(--theme-secondary) !important;
+}
+
+[class*="text-\[#556B2F\"]"],
+[class*="text-\[#556b2f\"]"] {
+  color: var(--theme-secondary) !important;
+}
+
+[class*="border-\[#556B2F\"]"],
+[class*="border-\[#556b2f\"]"] {
+  border-color: var(--theme-secondary) !important;
+}
+
+[class*="bg-\[#DC2626\"]"],
+[class*="bg-\[#dc2626\"]"] {
+  background-color: var(--theme-danger) !important;
+}
+
+[class*="text-\[#DC2626\"]"],
+[class*="text-\[#dc2626\"]"] {
+  color: var(--theme-danger) !important;
+}
+
+[class*="bg-\[#FEF08A\"]"],
+[class*="bg-\[#fef08a\"]"] {
+  background-color: var(--theme-accent) !important;
+}
+
+[class*="text-\[#FEF08A\"]"],
+[class*="text-\[#fef08a\"]"] {
+  color: var(--theme-accent) !important;
+}
+
+[class*="bg-\[#1C2826\"]"],
+[class*="bg-\[#1c2826\"]"] {
+  background-color: var(--theme-bgSecondary) !important;
+}
+
+[class*="text-\[#1C2826\"]"],
+[class*="text-\[#1c2826\"]"] {
+  color: var(--theme-bgSecondary) !important;
+}
+
+[class*="bg-\[#ad8653\"]"],
+[class*="bg-\[#AD8653\"]"] {
+  background-color: var(--theme-accent) !important;
+}
+
+[class*="text-\[#ad8653\"]"],
+[class*="text-\[#AD8653\"]"] {
+  color: var(--theme-accent) !important;
+}
+
+/* Override Tailwind standard colors if they're used */
+.bg-slate-50 { background-color: var(--theme-bgSecondary) !important; }
+.bg-slate-100 { background-color: var(--theme-bgSecondary) !important; }
+.bg-white { background-color: var(--theme-bgPrimary) !important; }
+.text-slate-900 { color: var(--theme-textPrimary) !important; }
+.text-slate-700 { color: var(--theme-textSecondary) !important; }
+.border-slate-200 { border-color: var(--theme-borderColor) !important; }

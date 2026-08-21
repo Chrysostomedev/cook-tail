@@ -67,7 +67,7 @@ export default function AdminProfilePage() {
             </div>
 
             {/* Hero Banner Profil */}
-            <div className="relative bg-gradient-to-r from-[#0B1B33] via-[#10274A] to-[#0B1B33] border border-white/10 rounded-3xl p-6 sm:p-8 overflow-hidden shadow-2xl">
+            <div className="relative bg-gradient-to-r from-[var(--theme-primary)] via-[#10274A] to-[var(--theme-primary)] border border-white/10 rounded-3xl p-6 sm:p-8 overflow-hidden shadow-2xl">
                 <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 relative z-10">
@@ -100,7 +100,7 @@ export default function AdminProfilePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                 {/* Formulaire des Informations */}
-                <div className="md:col-span-2 bg-[#0B1B33] border border-white/10 rounded-3xl p-6 space-y-6 shadow-xl">
+                <div className="md:col-span-2 bg-[var(--theme-primary)] border border-white/10 rounded-3xl p-6 space-y-6 shadow-xl">
                     <div className="flex items-center justify-between border-b border-white/10 pb-4">
                         <div>
                             <h2 className="text-base font-bold text-white flex items-center gap-2">
@@ -175,7 +175,7 @@ export default function AdminProfilePage() {
 
                 {/* Panneau Sécurité & Actions */}
                 <div className="space-y-6">
-                    <div className="bg-[#0B1B33] border border-white/10 rounded-3xl p-6 space-y-4 shadow-xl">
+                    <div className="bg-[var(--theme-primary)] border border-white/10 rounded-3xl p-6 space-y-4 shadow-xl">
                         <h2 className="text-base font-bold text-white flex items-center gap-2 border-b border-white/10 pb-3">
                             <Lock className="w-4 h-4 text-amber-400" /> Sécurité
                         </h2>
@@ -210,7 +210,7 @@ export default function AdminProfilePage() {
             </div>
 
             {/* Log d'Activités Récentes */}
-            <div className="bg-[#0B1B33] border border-white/10 rounded-3xl p-6 space-y-4 shadow-xl">
+            <div className="bg-[var(--theme-primary)] border border-white/10 rounded-3xl p-6 space-y-4 shadow-xl">
                 <h2 className="text-base font-bold text-white flex items-center gap-2 border-b border-white/10 pb-3">
                     <History className="w-4 h-4 text-amber-400" /> Historique d'Accès & Activités
                 </h2>

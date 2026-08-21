@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { GlassWater, Utensils, PartyPopper, Check, ArrowRight, ShieldCheck } from "lucide-react";
+import { GlassWater, Utensils, PartyPopper, Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function ServicesPage() {
@@ -51,15 +51,15 @@ export default function ServicesPage() {
   return (
     <div className="space-y-10 max-w-6xl mx-auto">
       {/* En-tête */}
-      <div className="bg-amber-800 text-white p-8 md:p-12 rounded-3xl shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/20 rounded-full blur-3xl pointer-events-none" />
-        <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest text-amber-300 bg-white/10 px-3.5 py-1 rounded-full border border-white/20">
+      <div className="text-white p-8 md:p-12 rounded-3xl shadow-xl relative overflow-hidden" style={{ backgroundColor: 'var(--theme-primary)' }}>
+        <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-20" style={{ backgroundColor: 'var(--theme-secondary)' }} />
+        <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest px-3.5 py-1 rounded-full border" style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'var(--theme-bgSecondary)', borderColor: 'rgba(255,255,255,0.2)' }}>
           Cook'Tail Service Abidjan
         </span>
         <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mt-3">
-          Nos Prestations <span className="font-serif italic text-amber-300">Sur-Mesure</span>
+          Nos Prestations <span className="font-serif italic" style={{ color: 'var(--theme-bgSecondary)' }}>Sur-Mesure</span>
         </h1>
-        <p className="text-xs md:text-sm text-amber-100 mt-2 max-w-xl leading-relaxed">
+        <p className="text-xs md:text-sm mt-2 max-w-xl leading-relaxed opacity-90">
           Pour vos réceptions privées, mariages et événements d'entreprise à Abidjan, offrez le savoir-faire Cook'Tail.
         </p>
       </div>
@@ -71,34 +71,34 @@ export default function ServicesPage() {
           return (
             <div
               key={idx}
-              className="bg-white/90 backdrop-blur-md border border-amber-900/10 p-6 rounded-3xl shadow-lg shadow-amber-950/5 flex flex-col justify-between space-y-6 hover:-translate-y-1 transition-all duration-300"
+              className="bg-white/90 backdrop-blur-md border p-6 rounded-3xl shadow-lg flex flex-col justify-between space-y-6 hover:-translate-y-1 transition-all duration-300" style={{ borderColor: 'var(--theme-primary)', boxShadow: `0 4px 12px rgba(0, 0, 0, 0.1)` }}
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 bg-amber-500/10 text-amber-800 border border-amber-800/10 rounded-2xl flex items-center justify-center">
+                  <div className="w-12 h-12 border-2 rounded-2xl flex items-center justify-center" style={{ backgroundColor: `var(--theme-primary)20`, color: 'var(--theme-primary)', borderColor: `var(--theme-primary)20` }}>
                     <Icon className="w-6 h-6" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold uppercase bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full">
+                  <span className="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-full" style={{ backgroundColor: 'var(--theme-bgSecondary)', color: 'var(--theme-primary)' }}>
                     {srv.tag}
                   </span>
                 </div>
 
-                <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">
+                <h3 className="text-xl font-extrabold tracking-tight" style={{ color: 'var(--theme-textPrimary)' }}>
                   {srv.title}
                 </h3>
 
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <p className="text-xs leading-relaxed" style={{ color: 'var(--theme-textSecondary)' }}>
                   {srv.desc}
                 </p>
 
-                <div className="p-3 bg-amber-50 border border-amber-200/60 rounded-2xl font-mono text-xs font-bold text-amber-900">
+                <div className="p-3 border-2 rounded-2xl font-mono text-xs font-bold" style={{ backgroundColor: `var(--theme-bgSecondary)`, color: 'var(--theme-primary)', borderColor: `var(--theme-primary)` }}>
                   {srv.price}
                 </div>
 
                 <ul className="space-y-2.5 pt-2">
                   {srv.features.map((feat, fIdx) => (
-                    <li key={fIdx} className="text-xs text-slate-700 flex items-start gap-2">
-                      <Check className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                    <li key={fIdx} className="text-xs flex items-start gap-2" style={{ color: 'var(--theme-textSecondary)' }}>
+                      <Check className="w-4 h-4 shrink-0 mt-0.5" style={{ color: 'var(--theme-secondary)' }} />
                       <span>{feat}</span>
                     </li>
                   ))}
@@ -107,7 +107,7 @@ export default function ServicesPage() {
 
               <Link
                 href="/contact"
-                className="w-full bg-slate-950 hover:bg-slate-800 text-amber-300 font-bold py-3.5 rounded-2xl text-center text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-md"
+                className="w-full font-bold py-3.5 rounded-2xl text-center text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all" style={{ backgroundColor: 'var(--theme-primary)', color: 'white', boxShadow: `4px 4px 0px 0px var(--theme-secondary)` }}
               >
                 Demander un Devis <ArrowRight className="w-4 h-4" />
               </Link>

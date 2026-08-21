@@ -1,21 +1,14 @@
 import type { Metadata } from "next";
 import { ToastProvider } from "@/context/ToastContext";
-import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "@/context/ThemeContext";
+import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Cook'Tail Service - Brunch Récréation",
-  description: "Application vitrine",
+  title: "Cook'Tail Service - Brunch Récréation 2026",
+  description: "Retrouvailles nostalgiques des années collège & lycée • Pass QR exclusif • 30 places • Abidjan",
+  keywords: ["brunch", "récréation", "événement", "Abidjan"],
+  authors: [{ name: "Cook'Tail Service" }],
 };
 
 export default function RootLayout({
@@ -24,11 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-   <html lang="fr">
-      <body>
-        <ToastProvider>
-          {children}
-        </ToastProvider>
+    <html lang="fr">
+      <body className={fontVariables}>
+        <ThemeProvider>
+          <ToastProvider>
+            {children}
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

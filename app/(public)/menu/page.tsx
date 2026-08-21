@@ -78,15 +78,15 @@ export default function MenuPage() {
   return (
     <div className="space-y-10 max-w-6xl mx-auto">
       {/* En-tête de la carte */}
-      <div className="bg-white/80 backdrop-blur-md border border-amber-900/10 p-6 md:p-10 rounded-3xl shadow-xl shadow-amber-950/5 text-center space-y-3 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-        <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest text-amber-800 bg-amber-500/10 px-3.5 py-1 rounded-full border border-amber-800/10">
-          <Flame className="w-3.5 h-3.5 text-amber-600" /> Buffet Récréation à Volonté
+      <div className="backdrop-blur-md border border-amber-900/10 p-6 md:p-10 rounded-3xl shadow-xl shadow-amber-950/5 text-center space-y-3 relative overflow-hidden" style={{ backgroundColor: 'var(--theme-bgPrimary)' }}>
+        <div className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl pointer-events-none opacity-20" style={{ backgroundColor: 'var(--theme-secondary)' }} />
+        <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest px-3.5 py-1 rounded-full border" style={{ backgroundColor: 'var(--theme-accent)', color: 'var(--theme-primary)', borderColor: 'var(--theme-secondary)' }}>
+          <Flame className="w-3.5 h-3.5" style={{ color: 'var(--theme-secondary)' }} /> Buffet Récréation à Volonté
         </span>
-        <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-          La Carte des <span className="text-amber-700 font-serif italic">Gourmandises</span>
+        <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight" style={{ color: 'var(--theme-textPrimary)' }}>
+          La Carte des <span className="font-serif italic" style={{ color: 'var(--theme-secondary)' }}>Gourmandises</span>
         </h1>
-        <p className="text-xs md:text-sm text-slate-600 max-w-xl mx-auto">
+        <p className="text-xs md:text-sm max-w-xl mx-auto" style={{ color: 'var(--theme-textSecondary)' }}>
           Tous les plats, jus locaux, cocktails et friandises de notre enfance sont entièrement inclus dans votre Pass Droit d'Accès !
         </p>
       </div>
@@ -98,11 +98,11 @@ export default function MenuPage() {
           return (
             <div key={idx} className="space-y-6">
               {/* Titre de Catégorie */}
-              <div className="flex items-center gap-3 border-b border-amber-900/10 pb-3">
-                <div className="p-2.5 bg-amber-500/10 text-amber-800 rounded-2xl border border-amber-800/10">
+              <div className="flex items-center gap-3 pb-3" style={{ borderBottom: `1px solid rgba(0,0,0,0.1)` }}>
+                <div className="p-2.5 rounded-2xl border" style={{ backgroundColor: 'var(--theme-accent)', color: 'var(--theme-primary)', borderColor: 'var(--theme-secondary)' }}>
                   <Icon className="w-5 h-5" />
                 </div>
-                <h2 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">
+                <h2 className="text-xl md:text-2xl font-extrabold tracking-tight" style={{ color: 'var(--theme-textPrimary)' }}>
                   {cat.title}
                 </h2>
               </div>

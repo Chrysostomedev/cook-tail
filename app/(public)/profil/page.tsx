@@ -71,7 +71,7 @@ export default function ProfilPage() {
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-300">
 
       {/* En-tête Carnet Scolaire Moderne */}
-      <div className="bg-[#0B1B33] text-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative overflow-hidden">
+      <div className="bg-[var(--theme-primary)] text-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative overflow-hidden">
         <div className="space-y-2 relative z-10">
 
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">Carnet de Correspondance</h1>
@@ -249,7 +249,7 @@ export default function ProfilPage() {
                     className={cn(
                       "px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5",
                       isSelected
-                        ? "bg-[#0B1B33] text-white"
+                        ? "bg-[var(--theme-primary)] text-white"
                         : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                     )}
                   >

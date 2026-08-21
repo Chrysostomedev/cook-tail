@@ -127,7 +127,7 @@ export default function AdminScannerPage() {
       </div>
 
       {/* Main Terminal Scanner */}
-      <div className="bg-[#0B1B33] border border-white/10 rounded-3xl p-6 shadow-2xl space-y-6 relative overflow-hidden backdrop-blur-xl">
+      <div className="bg-[var(--theme-primary)] border border-white/10 rounded-3xl p-6 shadow-2xl space-y-6 relative overflow-hidden backdrop-blur-xl">
         {/* En-tête HUD */}
         <div className="text-center space-y-1">
           <h1 className="text-xl font-black text-white tracking-tight flex items-center justify-center gap-2">

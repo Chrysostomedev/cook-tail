@@ -40,7 +40,7 @@ export default function AdminDashboardPage() {
     <div className="space-y-6 max-w-6xl mx-auto pb-10">
 
       {/* Banner En-tête de Contrôle */}
-      <div className="bg-[#0B1B33] text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-800 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-[var(--theme-primary)] text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-800 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="absolute -top-16 -right-16 w-52 h-52 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="space-y-2 relative z-10">
@@ -109,7 +109,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-            {MOCK_STATS.checkedInCount} <span className="text-xs text-slate-400 font-normal">élèves</span>
+            {MOCK_STATS.checkedInCount} <span className="text-xs text-slate-400 font-normal">inscrits</span>
           </p>
         </div>
 
@@ -135,7 +135,7 @@ export default function AdminDashboardPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
           <div>
             <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-              Liste des Élèves Inscrits
+              Liste des Inscrits
             </h2>
             <p className="text-xs text-slate-400">
               {filtered.length} inscription(s) trouvée(s)
@@ -164,7 +164,7 @@ export default function AdminDashboardPage() {
                 reference={p.ref}
                 phone="07 00 00 00 00"
                 guestsCount={p.guests}
-                status={p.status}
+                status={(p.status as "pending" | "confirmed" | "checked_in") || "pending"}
                 onCheckIn={() => handleCheckIn(p.id)}
               />
             ))

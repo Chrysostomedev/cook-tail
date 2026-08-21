@@ -88,29 +88,29 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="group relative bg-amber-300 border-3 border-[#0B1B33] p-5 sm:p-6 rounded-2xl shadow-[6px_6px_0px_0px_#0B1B33] md:shadow-[8px_8px_0px_0px_#0B1B33] flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden transition-all duration-300 hover:shadow-[10px_10px_0px_0px_#0B1B33]">
+      <section className="group relative border-3 p-5 sm:p-6 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden transition-all duration-300" style={{ backgroundColor: 'var(--theme-accent)', borderColor: 'var(--theme-primary)', boxShadow: `6px 6px 0px 0px var(--theme-primary)` }}>
         {/* Motif rétro/pop en tâche d'arrière-plan */}
-        <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-rose-400/20 rounded-full blur-xl pointer-events-none" />
+        <div className="absolute -right-8 -bottom-8 w-32 h-32 rounded-full blur-xl pointer-events-none opacity-20" style={{ backgroundColor: 'var(--theme-accent)' }} />
 
         {/* Bloc d'informations */}
         <div className="space-y-2 relative z-10 max-w-2xl">
 
-          <h2 className="text-xl sm:text-2xl font-black text-[#0B1B33] uppercase tracking-tight leading-snug">
-            Tenue Uniforme Obligatoire : <span className="underline decoration-rose-500 decoration-4 underline-offset-4">Pas de Blâme !</span>
+          <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-snug" style={{ color: 'var(--theme-primary)' }}>
+            Tenue Uniforme Obligatoire : <span className="underline decoration-4 underline-offset-4" style={{ textDecorationColor: 'var(--theme-danger)' }}>Pas de Blâme !</span>
           </h2>
 
-          <p className="text-xs sm:text-sm font-medium text-[#0B1B33]/90 leading-relaxed">
-            <strong className="font-black text-[#0B1B33]">Rappel :</strong> Bleu & Blanc pour les filles, Khaki pour les garçons. Tout contrevenant se verra attribuer 2 heures de colle... directement au Bar à Cocktails ! 🍹
+          <p className="text-xs sm:text-sm font-medium leading-relaxed" style={{ color: `var(--theme-primary)90` }}>
+            <strong className="font-black" style={{ color: 'var(--theme-primary)' }}>Rappel :</strong> Bleu & Blanc pour les filles, Khaki pour les garçons. Tout contrevenant se verra attribuer 2 heures de colle... directement au Bar à Cocktails ! 🍹
           </p>
         </div>
 
         {/* Bouton d'action interactif */}
         <Link
           href="/reglement"
-          className="shrink-0 w-full md:w-auto inline-flex items-center justify-center gap-2 bg-[#0B1B33] text-white font-black text-xs uppercase px-6 py-3.5 rounded-xl border-2 border-[#0B1B33] shadow-[4px_4px_0px_0px_#rose-500] hover:bg-rose-600 hover:border-rose-600 transition-all duration-200 active:translate-x-0.5 active:translate-y-0.5 group/btn"
+          className="shrink-0 w-full md:w-auto inline-flex items-center justify-center gap-2 text-white font-black text-xs uppercase px-6 py-3.5 rounded-xl border-2 transition-all duration-200 active:translate-x-0.5 active:translate-y-0.5 group/btn" style={{ backgroundColor: 'var(--theme-primary)', borderColor: 'var(--theme-primary)', boxShadow: `4px 4px 0px 0px var(--theme-secondary)` }}
         >
           <span>Consulter le Règlement Intérieur</span>
-          <ArrowUpRight className="w-4 h-4 text-amber-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+          <ArrowUpRight className="w-4 h-4" style={{ color: 'var(--theme-accent)' }} />
         </Link>
       </section>
     </div>

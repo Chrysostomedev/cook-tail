@@ -47,7 +47,7 @@ export default function ReglementPage() {
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-300">
 
       {/* Hero Header Épuré */}
-      <div className="bg-[#0B1B33] text-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-800 relative overflow-hidden">
+      <div className="bg-[var(--theme-primary)] text-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-800 relative overflow-hidden">
         <div className="relative z-10 space-y-3">
           <div className="inline-flex items-center gap-2 bg-amber-400/10 border border-amber-400/20 text-amber-300 px-3 py-1 rounded-full text-xs font-semibold">
             <ShieldCheck className="w-4 h-4 text-amber-400" />

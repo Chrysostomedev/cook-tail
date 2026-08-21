@@ -15,12 +15,12 @@ export default function AdminReservationsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-[#0B1B33] text-white p-6 border-3 border-black rounded-xs shadow-[6px_6px_0px_0px_#556B2F] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-[var(--theme-primary)] text-white p-6 border-3 border-black rounded-xs shadow-[6px_6px_0px_0px_var(--theme-secondary)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black uppercase">Registre des Inscriptions</h1>
           <p className="text-xs font-mono text-gray-300">Base de données des billets émis</p>
         </div>
-        <button className="bg-[#FEF08A] text-[#0B1B33] font-black px-4 py-2.5 rounded-xs border-2 border-black text-xs uppercase shadow-[2px_2px_0px_0px_#8FBC8F] flex items-center gap-2">
+        <button className="bg-[var(--theme-accent)] text-[var(--theme-primary)] font-black px-4 py-2.5 rounded-xs border-2 border-black text-xs uppercase shadow-[2px_2px_0px_0px_#8FBC8F] flex items-center gap-2">
           <Plus className="w-4 h-4" /> Ajouter Manuel
         </button>
       </div>
@@ -38,9 +38,9 @@ export default function AdminReservationsPage() {
         </div>
       </div>
 
-      <div className="bg-[#F4EBD9] border-3 border-[#0B1B33] rounded-xs shadow-[6px_6px_0px_0px_#0B1B33] overflow-x-auto">
+      <div className="bg-[var(--theme-bgPrimary)] border-3 border-[var(--theme-primary)] rounded-xs shadow-[6px_6px_0px_0px_var(--theme-primary)] overflow-x-auto">
         <table className="w-full text-left font-mono text-xs">
-          <thead className="bg-[#0B1B33] text-white uppercase border-b-2 border-black">
+          <thead className="bg-[var(--theme-primary)] text-white uppercase border-b-2 border-black">
             <tr>
               <th className="p-3">Référence</th>
               <th className="p-3">Participant</th>
@@ -48,14 +48,14 @@ export default function AdminReservationsPage() {
               <th className="p-3">Statut</th>
             </tr>
           </thead>
-          <tbody className="divide-y-2 divide-[#0B1B33]/20">
+          <tbody className="divide-y-2 divide-[var(--theme-primary)]/20">
             {filtered.map((item) => (
               <tr key={item.id} className="hover:bg-white/50">
-                <td className="p-3 font-bold text-[#DC2626]">{item.ref}</td>
-                <td className="p-3 font-extrabold text-[#0B1B33]">{item.name}</td>
+                <td className="p-3 font-bold text-[var(--theme-danger)]">{item.ref}</td>
+                <td className="p-3 font-extrabold text-[var(--theme-primary)]">{item.name}</td>
                 <td className="p-3 font-bold">{item.guests} pers.</td>
                 <td className="p-3">
-                  <span className="bg-[#8FBC8F] text-[#0B1B33] px-2 py-0.5 rounded-xs border border-black font-bold uppercase text-[10px]">
+                  <span className="bg-[#8FBC8F] text-[var(--theme-primary)] px-2 py-0.5 rounded-xs border border-black font-bold uppercase text-[10px]">
                     {item.status}
                   </span>
                 </td>
