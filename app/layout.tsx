@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ToastProvider } from "@/context/ToastContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { VisibilityProvider } from "@/context/VisibilityContext";
 import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
@@ -20,9 +21,11 @@ export default function RootLayout({
     <html lang="fr">
       <body className={fontVariables}>
         <ThemeProvider>
-          <ToastProvider>
-            {children}
-          </ToastProvider>
+          <VisibilityProvider>
+            <ToastProvider>
+              {children}
+            </ToastProvider>
+          </VisibilityProvider>
         </ThemeProvider>
       </body>
     </html>

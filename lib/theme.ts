@@ -5,8 +5,8 @@ export const RETRO_THEME = {
     blouseBlue: "#0b0369",
     blouseBlueLight: "#12053b",
     // Tenue des garçons
-    kakiBoys: "#556B2F",
-    kakiLight: "#8FBC8F",
+    kakiBoys: "#f5c566ff",
+    kakiLight: "#e5ca86ff",
     // Fond papier & cahier
     creamPaper: "#F4EBD9",
     chalkboard: "#1C2826",
