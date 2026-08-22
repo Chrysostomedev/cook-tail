@@ -1,52 +1,60 @@
 // app/admin/statistics/page.tsx
 "use client";
 
-import React, { useState } from "react";
-import { Users, TrendingUp, DollarSign, Target, Calendar, BarChart3, LineChart as LineChartIcon, PieChart as PieChartIcon } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Users, TrendingUp, DollarSign, Target, Calendar, BarChart3, LineChart as LineChartIcon, PieChart as PieChartIcon, Loader } from "lucide-react";
 import { StatCard } from "@/components/cards/StatCard";
+import { getStatistics } from "@/lib/services/statisticsService";
+import { getAllReservations } from "@/lib/services/reservationService";
+import { useToast } from "@/context/ToastContext";
+
+interface Statistics {
+  totalReservations: number;
+  confirmedReservations: number;
+  totalRevenue: number;
+  averagePartySize: number;
+  totalVisitors: number;
+  gamesTally: number;
+  menuItemsTally: number;
+  servicesAvailable: number;
+  lastUpdated: Date;
+}
 
 export default function StatisticsPage() {
-  // Données simulées (à remplacer par Firebase)
+  const { showToast } = useToast();
   const [selectedPeriod, setSelectedPeriod] = useState("month");
+  const [stats, setStats] = useState<Statistics | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [recentReservations, setRecentReservations] = useState<any[]>([]);
 
-  const stats = {
-    totalReservations: 28,
-    totalRevenue: 280000,
-    averageGuests: 2.8,
-    conversionRate: 0.65,
-    scannedToday: 12,
-    pendingReservations: 3,
+  useEffect(() => {
+    loadStatistics();
+  }, []);
+
+  const loadStatistics = async () => {
+    try {
+      setLoading(true);
+      const statistics = await getStatistics();
+      setStats(statistics);
+
+      const reservations = await getAllReservations();
+      const recent = reservations.slice(0, 3).map((r, idx) => ({
+        id: idx + 1,
+        name: r.fullName,
+        phone: r.phone,
+        guests: r.groupSize,
+        amount: r.amountPaid,
+        status: r.status,
+        date: (r.createdAt?.toDate?.() || new Date()).toLocaleDateString("fr-FR"),
+      }));
+      setRecentReservations(recent);
+    } catch (error) {
+      console.error("Error loading statistics:", error);
+      showToast("Erreur lors du chargement des statistiques", "error");
+    } finally {
+      setLoading(false);
+    }
   };
-
-  const recentReservations = [
-    {
-      id: 1,
-      name: "Kouassi Jean-Philippe",
-      phone: "+225 07 XX XX XX XX",
-      guests: 3,
-      amount: 30000,
-      status: "confirmed",
-      date: "Aujourd'hui à 14h30",
-    },
-    {
-      id: 2,
-      name: "Sonia Bley",
-      phone: "+225 07 XX XX XX XX",
-      guests: 2,
-      amount: 20000,
-      status: "pending",
-      date: "Hier à 10h15",
-    },
-    {
-      id: 3,
-      name: "Marc-Antoine K.",
-      phone: "+225 07 XX XX XX XX",
-      guests: 4,
-      amount: 40000,
-      status: "scanned",
-      date: "Il y a 2 jours",
-    },
-  ];
 
   const hourlyData = [
     { hour: "08h", reservations: 2, revenue: 20000 },
@@ -56,6 +64,17 @@ export default function StatisticsPage() {
     { hour: "16h", reservations: 4, revenue: 40000 },
     { hour: "18h", reservations: 3, revenue: 30000 },
   ];
+
+  if (loading || !stats) {
+    return (
+      <div className="flex justify-center items-center py-20">
+        <div className="flex flex-col items-center gap-3">
+          <Loader className="w-8 h-8 text-slate-400 animate-spin" />
+          <p className="text-sm text-slate-400">Chargement des statistiques...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
@@ -108,15 +127,15 @@ export default function StatisticsPage() {
         />
         <StatCard
           title="Moyenne par groupe"
-          value={stats.averageGuests}
+          value={stats.averagePartySize}
           subtitle="Personnes/réservation"
           icon={Target}
           variant="blue"
         />
         <StatCard
-          title="Taux de Conversion"
-          value={`${(stats.conversionRate * 100).toFixed(0)}%`}
-          subtitle="Visiteurs → Acheteurs"
+          title="Taux de Confirmation"
+          value={`${stats.totalReservations > 0 ? Math.round((stats.confirmedReservations / stats.totalReservations) * 100) : 0}%`}
+          subtitle="Confirmées → Total"
           icon={TrendingUp}
           variant="red"
         />
@@ -125,16 +144,16 @@ export default function StatisticsPage() {
       {/* KPI Cards - Deuxième Ligne (Live Tracking) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <StatCard
-          title="Scannés Aujourd'hui"
-          value={stats.scannedToday}
-          subtitle="Accès confirmés"
+          title="Total Visiteurs"
+          value={stats.totalVisitors}
+          subtitle="Personnes confirmées"
           icon={BarChart3}
           variant="blue"
         />
         <StatCard
-          title="En Attente"
-          value={stats.pendingReservations}
-          subtitle="À confirmer"
+          title="Catalogues Actifs"
+          value={stats.menuItemsTally}
+          subtitle={`${stats.gamesTally} jeux, ${stats.servicesAvailable} services`}
           icon={PieChartIcon}
           variant="red"
         />
@@ -282,18 +301,18 @@ export default function StatisticsPage() {
                         backgroundColor:
                           res.status === "confirmed"
                             ? "var(--theme-secondary)"
-                            : res.status === "scanned"
+                            : res.status === "checked_in"
                             ? "var(--theme-secondary)"
                             : "var(--theme-bgSecondary)",
                         color:
-                          res.status === "confirmed" || res.status === "scanned"
+                          res.status === "confirmed" || res.status === "checked_in"
                             ? "white"
                             : "var(--theme-primary)",
                       }}
                     >
                       {res.status === "confirmed"
                         ? "✓ Confirmé"
-                        : res.status === "scanned"
+                        : res.status === "checked_in"
                         ? "✓ Accès"
                         : "⏳ Attente"}
                     </span>

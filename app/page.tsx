@@ -28,7 +28,7 @@ export default function SplashPage() {
       clearTimeout(timer);
       clearInterval(progressInterval);
     };
-  }, [router]);
+  }, []); // ✅ FIXÉ: Dépendances vides - exécute UNE SEULE FOIS
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#FAF9F5] text-slate-900 p-6 overflow-hidden">

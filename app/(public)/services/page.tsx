@@ -1,9 +1,12 @@
 // app/(public)/services/page.tsx
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import React from "react";
 import { GlassWater, Utensils, PartyPopper, Check, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { VisibilityWrapper } from "@/components/VisibilityWrapper";
 
 export default function ServicesPage() {
   const services = [
@@ -51,7 +54,8 @@ export default function ServicesPage() {
   return (
     <div className="space-y-10 max-w-6xl mx-auto">
       {/* En-tête */}
-      <div className="text-white p-8 md:p-12 rounded-3xl shadow-xl relative overflow-hidden" style={{ backgroundColor: 'var(--theme-primary)' }}>
+      <VisibilityWrapper componentId="services.header">
+        <div className="text-white p-8 md:p-12 rounded-3xl shadow-xl relative overflow-hidden" style={{ backgroundColor: 'var(--theme-primary)' }}>
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-20" style={{ backgroundColor: 'var(--theme-secondary)' }} />
         <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest px-3.5 py-1 rounded-full border" style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'var(--theme-bgSecondary)', borderColor: 'rgba(255,255,255,0.2)' }}>
           Cook'Tail Service Abidjan
@@ -63,9 +67,11 @@ export default function ServicesPage() {
           Pour vos réceptions privées, mariages et événements d'entreprise à Abidjan, offrez le savoir-faire Cook'Tail.
         </p>
       </div>
+      </VisibilityWrapper>
 
       {/* Grid Services */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <VisibilityWrapper componentId="services.cards">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {services.map((srv, idx) => {
           const Icon = srv.icon;
           return (
@@ -114,7 +120,8 @@ export default function ServicesPage() {
             </div>
           );
         })}
-      </div>
+        </div>
+      </VisibilityWrapper>
     </div>
   );
 }

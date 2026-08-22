@@ -14,7 +14,13 @@ import {
   Settings,
   LogOut,
   Sparkles,
-  ShieldAlert
+  ShieldAlert,
+  Eye,
+  BookOpen,
+  Palette,
+  Gamepad,
+  Utensils,
+  BriefcaseBusiness
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +31,7 @@ interface NavGroup {
     href: string;
     icon: React.ElementType;
     badge?: string;
+    isExternal?: boolean;
   }[];
 }
 
@@ -36,7 +43,10 @@ export const AdminSidebar: React.FC = () => {
       groupLabel: "Vue d'ensemble",
       items: [
         { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-        { label: "Statistiques", href: "/admin/statistiques", icon: BarChart3 },
+        { label: "Statistiques", href: "/admin/statistics", icon: BarChart3 },
+{ label: "Menu", href: "/admin/menu", icon: Utensils },
+{ label: "Services", href: "/admin/services", icon: BriefcaseBusiness },    
+
       ],
     },
     {
@@ -45,31 +55,23 @@ export const AdminSidebar: React.FC = () => {
         { label: "Scanner Pass", href: "/admin/scanner", icon: QrCode, badge: "Live" },
         { label: "Réservations", href: "/admin/reservations", icon: Ticket },
          { label: "Evenements", href: "/admin/evenement", icon: Ticket },
-        { label: "Participants", href: "/admin/participants", icon: Users },
-      ],
+  ],
     },
     {
       groupLabel: "Administration",
       items: [
         { label: "Mon Profil", href: "/admin/profil", icon: User },
-        // { label: "Paramètres", href: "/admin/settings", icon: Settings },
+        { label: "Thème", href: "/admin/theme", icon: Palette },
+        { label: "Composants", href: "/admin/components", icon: Eye },
+        { label: "Jeux", href: "/admin/jeux", icon: Gamepad },
       ],
     },
+    
   ];
 
   return (
     <aside className="w-64 text-white hidden md:flex flex-col justify-between p-4 shrink-0 shadow-xl border-r" style={{ backgroundColor: 'var(--theme-primary)', borderColor: 'var(--theme-borderColor)' }}>
-      <div className="space-y-6">
-        {/* Banner statut terminal */}
-        <div className="px-3 py-2.5 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[11px] font-mono font-bold text-slate-300">Terminal Actif</span>
-          </div>
-          <span className="text-[10px] font-mono font-extrabold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/20">
-            v2.0
-          </span>
-        </div>
+      <div className="space-y-6">    
 
         {/* Groupes de navigation */}
         <div className="space-y-5">
@@ -82,18 +84,9 @@ export const AdminSidebar: React.FC = () => {
                 {group.items.map((item) => {
                   const Icon = item.icon;
                   const isActive = pathname === item.href;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        "flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all group",
-                        isActive
-                          ? "text-slate-950 font-extrabold shadow-md"
-                          : "text-slate-400 hover:text-white hover:bg-white/5"
-                      )}
-                      style={isActive ? { backgroundColor: 'var(--theme-accent)', boxShadow: `0 0 0 10px var(--theme-accent)40` } : {}}
-                    >
+                  
+                  const linkContent = (
+                    <>
                       <div className="flex items-center gap-3">
                         <Icon className={cn("w-4 h-4 transition-transform group-hover:scale-110", isActive ? "text-slate-950" : "text-slate-400")} style={!isActive ? { '--hover-color': 'var(--theme-accent)' } as any : {}} />
                         <span>{item.label}</span>
@@ -107,6 +100,39 @@ export const AdminSidebar: React.FC = () => {
                           {item.badge}
                         </span>
                       )}
+                    </>
+                  );
+
+                  if (item.isExternal) {
+                    return (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(
+                          "flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all group",
+                          "text-slate-400 hover:text-white hover:bg-white/5"
+                        )}
+                      >
+                        {linkContent}
+                      </a>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn(
+                        "flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all group",
+                        isActive
+                          ? "text-slate-950 font-extrabold shadow-md"
+                          : "text-slate-400 hover:text-white hover:bg-white/5"
+                      )}
+                      style={isActive ? { backgroundColor: 'var(--theme-accent)', boxShadow: `0 0 0 10px var(--theme-accent)40` } : {}}
+                    >
+                      {linkContent}
                     </Link>
                   );
                 })}

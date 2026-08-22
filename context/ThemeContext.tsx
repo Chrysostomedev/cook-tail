@@ -1,7 +1,7 @@
 // context/ThemeContext.tsx
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from "react";
 
 /**
  * Theme Configuration
@@ -203,17 +203,21 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return <>{children}</>;
   }
 
+  // Mémoïser la valeur du Provider pour éviter les re-renders infinis
+  const value = useMemo(
+    () => ({
+      theme,
+      presetThemes,
+      currentPreset,
+      setTheme,
+      switchPreset,
+      resetToDefault,
+    }),
+    [theme, currentPreset]
+  );
+
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        presetThemes,
-        currentPreset,
-        setTheme,
-        switchPreset,
-        resetToDefault,
-      }}
-    >
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );

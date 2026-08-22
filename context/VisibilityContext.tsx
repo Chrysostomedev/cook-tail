@@ -1,7 +1,7 @@
 // context/VisibilityContext.tsx
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from "react";
 
 export interface ComponentVisibility {
   [key: string]: boolean;
@@ -109,15 +109,19 @@ export const VisibilityProvider: React.FC<{ children: ReactNode }> = ({ children
     return <>{children}</>;
   }
 
+  // Mémoïser la valeur du Provider pour éviter les re-renders infinis
+  const value = useMemo(
+    () => ({
+      visibility,
+      toggleComponent,
+      setVisibility,
+      resetVisibility,
+    }),
+    [visibility]
+  );
+
   return (
-    <VisibilityContext.Provider
-      value={{
-        visibility,
-        toggleComponent,
-        setVisibility,
-        resetVisibility,
-      }}
-    >
+    <VisibilityContext.Provider value={value}>
       {children}
     </VisibilityContext.Provider>
   );

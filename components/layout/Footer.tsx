@@ -1,11 +1,20 @@
 // components/layout/Footer.tsx
 "use client";
 
-import React from "react";
-import { Phone, MapPin, Heart } from "lucide-react";
+import React, { useState } from "react";
+import { Phone, MapPin } from "lucide-react";
 import { EVENT_INFO } from "@/lib/constants";
+import { useVisibility } from "@/context/VisibilityContext";
 
 export const Footer: React.FC = () => {
+  const [, setShowVisibilityTools] = useState(false);
+  
+  let visibilityContext: any = null;
+  try {
+    visibilityContext = useVisibility();
+  } catch (e) {
+    // Context not available
+  }
   return (
     <footer style={{
       width: "100%",
@@ -184,7 +193,76 @@ export const Footer: React.FC = () => {
             zIndex: 10
           }}>
             <p>© 2026 Cook'Tail Service. Tous droits réservés.</p>
+            {/* {visibilityContext && (
+              <button
+                onClick={() => setShowVisibilityTools(!showVisibilityTools)}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.375rem",
+                  padding: "0.375rem 0.625rem",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  borderRadius: "0.5rem",
+                  color: "rgba(255, 255, 255, 0.8)",
+                  cursor: "pointer",
+                  fontSize: "0.6875rem",
+                  fontWeight: 600,
+                  transition: "all 200ms"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+                }}
+                title="Gérer visibilité"
+              >
+                {showVisibilityTools ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                <span>Visibilité</span>
+              </button>
+            )} */}
           </div>
+
+          {/* Visibility Tools */}
+          {false && visibilityContext && (
+            <div style={{
+              marginTop: "1rem",
+              paddingTop: "1rem",
+              borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "0.5rem",
+              position: "relative",
+              zIndex: 10
+            }}>
+              {Object.keys(visibilityContext.visibility).slice(0, 8).map((key) => (
+                <button
+                  key={key}
+                  onClick={() => visibilityContext.toggleComponent(key)}
+                  style={{
+                    fontSize: "0.625rem",
+                    padding: "0.375rem 0.625rem",
+                    backgroundColor: visibilityContext.visibility[key] ? "rgba(255, 255, 255, 0.2)" : "rgba(255, 0, 0, 0.2)",
+                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                    borderRadius: "0.375rem",
+                    color: "white",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "all 200ms"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = visibilityContext.visibility[key] ? "rgba(255, 255, 255, 0.2)" : "rgba(255, 0, 0, 0.2)";
+                  }}
+                >
+                  {visibilityContext.visibility[key] ? "✓" : "✕"} {key.split(".")[1]}
+                </button>
+              ))}
+            </div>
+          )}
 
         </div>
 

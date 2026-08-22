@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ToastProvider } from "@/context/ToastContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { VisibilityProvider } from "@/context/VisibilityContext";
+import { NotificationInitializer } from "@/components/NotificationInitializer";
 import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
         <ThemeProvider>
           <VisibilityProvider>
             <ToastProvider>
+              <NotificationInitializer />
               {children}
             </ToastProvider>
           </VisibilityProvider>
