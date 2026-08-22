@@ -198,12 +198,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     localStorage.removeItem("cooktail-theme-custom");
   };
 
-  // Éviter hydration mismatch
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
-  // Mémoïser la valeur du Provider pour éviter les re-renders infinis
+  // Mémoïser la valeur du Provider — DOIT être appelé à chaque render, avant tout return
   const value = useMemo(
     () => ({
       theme,
@@ -215,6 +210,11 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }),
     [theme, currentPreset]
   );
+
+  // Éviter hydration mismatch — le return conditionnel vient APRÈS tous les hooks
+  if (!mounted) {
+    return <>{children}</>;
+  }
 
   return (
     <ThemeContext.Provider value={value}>

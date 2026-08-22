@@ -105,11 +105,7 @@ export const VisibilityProvider: React.FC<{ children: ReactNode }> = ({ children
     setVisibilityState(defaultVisibility);
   };
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
-  // Mémoïser la valeur du Provider pour éviter les re-renders infinis
+   // Mémoïser la valeur du Provider — appelé à chaque render, avant tout return
   const value = useMemo(
     () => ({
       visibility,
@@ -119,6 +115,10 @@ export const VisibilityProvider: React.FC<{ children: ReactNode }> = ({ children
     }),
     [visibility]
   );
+
+  if (!mounted) {
+    return <>{children}</>;
+  }
 
   return (
     <VisibilityContext.Provider value={value}>
