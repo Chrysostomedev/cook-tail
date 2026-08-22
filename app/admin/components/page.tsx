@@ -7,7 +7,6 @@ import { Eye, EyeOff, RotateCcw, Search, Zap } from "lucide-react";
 
 interface ComponentGroup {
   name: string;
-  icon: React.ElementType;
   components: {
     id: string;
     label: string;
@@ -39,7 +38,7 @@ export default function ComponentsPage() {
   const componentGroups: ComponentGroup[] = [
     {
       name: "Accueil",
-      icon: Zap,
+      // icon: Zap,
       components: [
         { id: "home.hero", label: "Hero Section", description: "Bannière principale avec logo et CTA" },
         { id: "home.countdown", label: "Compte à Rebours", description: "Minuteur avant fermeture des inscriptions" },
@@ -51,7 +50,7 @@ export default function ComponentsPage() {
     },
     {
       name: "Pages Secondaires",
-      icon: Eye,
+      // icon: Eye,
       components: [
         { id: "programme.header", label: "En-tête Programme", description: "Titre et description du programme" },
         { id: "programme.timeline", label: "Timeline", description: "Timeline chronologique des événements" },
@@ -65,7 +64,7 @@ export default function ComponentsPage() {
     },
     {
       name: "Formulaires & Contact",
-      icon: Eye,
+      // icon: Eye,
       components: [
         { id: "contact.header", label: "En-tête Contact", description: "Titre et description du contact" },
         { id: "contact.form", label: "Formulaire Contact", description: "Formulaire de demande de devis" },
@@ -75,7 +74,7 @@ export default function ComponentsPage() {
     },
     {
       name: "Pages Légales & Profil",
-      icon: Eye,
+      // icon: Eye,
       components: [
         { id: "about.header", label: "En-tête À Propos", description: "Titre et description" },
         { id: "about.content", label: "Contenu À Propos", description: "Texte et informations" },
@@ -116,7 +115,7 @@ export default function ComponentsPage() {
       </div>
 
       {/* Stats Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-4 rounded-lg border-2 flex items-center justify-between" style={{ backgroundColor: "var(--theme-bgSecondary)", borderColor: "var(--theme-borderColor)" }}>
           <div>
             <p className="text-xs font-mono font-bold uppercase" style={{ color: "var(--theme-textSecondary)" }}>
@@ -126,20 +125,10 @@ export default function ComponentsPage() {
               {Object.keys(visibility).length}
             </p>
           </div>
-          <div className="text-3xl opacity-50">📊</div>
+          <div className="text-3xl opacity-50"></div>
         </div>
 
-        <div className="p-4 rounded-lg border-2 flex items-center justify-between" style={{ backgroundColor: `var(--theme-secondary)20`, borderColor: "var(--theme-secondary)" }}>
-          <div>
-            <p className="text-xs font-mono font-bold uppercase text-white">
-              Composants Visibles
-            </p>
-            <p className="text-2xl font-black text-white">
-              {visibleCount}
-            </p>
-          </div>
-          <Eye className="w-8 h-8 text-white opacity-70" />
-        </div>
+     
 
         <div className="p-4 rounded-lg border-2 flex items-center justify-between" style={{ backgroundColor: `var(--theme-danger)20`, borderColor: "var(--theme-danger)" }}>
           <div>
@@ -196,9 +185,6 @@ export default function ComponentsPage() {
             <div key={group.name} className="space-y-4">
               {/* Group Header */}
               <div className="flex items-center gap-3 pb-3 border-b-2" style={{ borderColor: "var(--theme-borderColor)" }}>
-                <div className="p-2.5 rounded-lg" style={{ backgroundColor: "var(--theme-primary)" }}>
-                  <group.icon className="w-5 h-5 text-white" />
-                </div>
                 <h2 className="text-lg font-bold" style={{ color: "var(--theme-textPrimary)" }}>
                   {group.name}
                 </h2>
@@ -272,7 +258,7 @@ export default function ComponentsPage() {
       {/* Info Box */}
       <div className="p-4 rounded-lg border-2" style={{ backgroundColor: "var(--theme-accent)20", borderColor: "var(--theme-accent)", borderLeftWidth: "4px" }}>
         <p className="text-xs" style={{ color: "var(--theme-primary)" }}>
-          💡 <strong>Les modifications s'appliquent en direct!</strong> Vous pouvez masquer/afficher des composants sans rechargement de page. Les changements sont sauvegardés dans votre navigateur.
+          <strong>Les modifications s'appliquent en direct!</strong> Vous pouvez masquer/afficher des composants sans rechargement de page. Les changements sont sauvegardés dans votre navigateur.
         </p>
       </div>
     </div>

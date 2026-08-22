@@ -1,9 +1,12 @@
 // app/(public)/programme/page.tsx
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import React from "react";
 import { PROGRAMME_DATA } from "@/data/programme";
 import { Clock, Camera, Utensils, Trophy, Music, Sparkles, Flame, Bell } from "lucide-react";
+import { VisibilityWrapper } from "@/components/VisibilityWrapper";
 
 export default function ProgrammePage() {
   const getIcon = (name: string) => {
@@ -19,7 +22,8 @@ export default function ProgrammePage() {
   return (
     <div className="space-y-10 max-w-4xl mx-auto">
       {/* Banner En-tête */}
-      <div className="text-white p-6 md:p-10 rounded-3xl shadow-xl border border-white/10 relative overflow-hidden animate-fade-in" style={{ backgroundColor: 'var(--theme-primary)' }}>
+      <VisibilityWrapper componentId="programme.header">
+        <div className="text-white p-6 md:p-10 rounded-3xl shadow-xl border border-white/10 relative overflow-hidden animate-fade-in" style={{ backgroundColor: 'var(--theme-primary)' }}>
         <div className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full blur-3xl pointer-events-none opacity-20" style={{ backgroundColor: 'var(--theme-accent)' }} />
         <div className="flex items-center gap-2 mb-2">
           <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full border" style={{ backgroundColor: 'var(--theme-accent)', color: 'var(--theme-primary)', borderColor: 'var(--theme-accent)' }}>
@@ -33,9 +37,11 @@ export default function ProgrammePage() {
           Quand la cloche sonne, c’est le moment de réjouissance ! Découvrez l'enchaînement exact des cours gourmands et des Olympiades d'enfance.
         </p>
       </div>
+      </VisibilityWrapper>
 
       {/* Timeline Chronologique Immersive */}
-      <div className="relative border-l-2 ml-4 md:ml-36 space-y-8 pl-6 md:pl-10" style={{ borderColor: 'var(--theme-secondary)' }}>
+      <VisibilityWrapper componentId="programme.timeline">
+        <div className="relative border-l-2 ml-4 md:ml-36 space-y-8 pl-6 md:pl-10" style={{ borderColor: 'var(--theme-secondary)' }}>
         {PROGRAMME_DATA.map((item, idx) => (
           <div
             key={item.id || idx}
@@ -72,7 +78,8 @@ export default function ProgrammePage() {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      </VisibilityWrapper>
     </div>
   );
 }

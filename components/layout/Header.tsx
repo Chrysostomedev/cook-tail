@@ -12,12 +12,23 @@ import {
   BookOpen,
   Phone,
   HelpCircle,
-  ShieldCheck
+  ShieldCheck,
+  Eye,
+  EyeOff
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useVisibility } from "@/context/VisibilityContext";
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showVisibilityTools, setShowVisibilityTools] = useState(false);
+  
+  let visibilityContext: any = null;
+  try {
+    visibilityContext = useVisibility();
+  } catch (e) {
+    // Context not available
+  }
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
@@ -71,6 +82,16 @@ export const Header: React.FC = () => {
 
           {/* CTA Principal */}
           <div className="flex items-center gap-2">
+            {visibilityContext && (
+              <button
+                onClick={() => setShowVisibilityTools(!showVisibilityTools)}
+                className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-amber-600 hover:text-amber-700 px-3 py-2 rounded-xl hover:bg-amber-100/50 transition-all"
+                title="Gérer visibilité composants"
+              >
+                {showVisibilityTools ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            )}
+            
             <Link
               href="/mon-pass/demo"
               className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[#0B1B33] hover:text-amber-600 px-3 py-2 rounded-xl hover:bg-amber-100/50 transition-all"
@@ -90,6 +111,44 @@ export const Header: React.FC = () => {
 
         </div>
       </header>
+
+      {/* Visibility Tools Toolbar - Desktop */}
+      {showVisibilityTools && visibilityContext && (
+        <div className="hidden sm:flex sticky top-16 z-40 bg-amber-50 border-b-2 border-amber-200 px-4 py-3">
+          <div className="max-w-6xl mx-auto w-full flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Eye className="w-4 h-4 text-amber-600" />
+              <span className="text-xs font-bold text-amber-900">Outils visibilité:</span>
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                onClick={() => visibilityContext.toggleComponent("home.hero")}
+                className="text-xs px-2 py-1 rounded bg-white border border-amber-300 hover:bg-amber-100 transition-all"
+              >
+                {visibilityContext.visibility["home.hero"] ? "✓" : "✕"} Hero
+              </button>
+              <button
+                onClick={() => visibilityContext.toggleComponent("home.countdown")}
+                className="text-xs px-2 py-1 rounded bg-white border border-amber-300 hover:bg-amber-100 transition-all"
+              >
+                {visibilityContext.visibility["home.countdown"] ? "✓" : "✕"} Countdown
+              </button>
+              <button
+                onClick={() => visibilityContext.toggleComponent("home.features")}
+                className="text-xs px-2 py-1 rounded bg-white border border-amber-300 hover:bg-amber-100 transition-all"
+              >
+                {visibilityContext.visibility["home.features"] ? "✓" : "✕"} Features
+              </button>
+              <button
+                onClick={() => setShowVisibilityTools(false)}
+                className="text-xs px-3 py-1 rounded bg-amber-600 text-white hover:bg-amber-700 transition-all ml-2"
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Bouton Hamburger Flottant sur Mobile */}
       <div className="md:hidden fixed bottom-5 right-5 z-50">

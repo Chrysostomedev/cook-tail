@@ -12,7 +12,8 @@
 
 # testing
 /coverage
-
+SEEDER_SCRIPT.js
+firebase-service-account.json
 # next.js
 /.next/
 /out/

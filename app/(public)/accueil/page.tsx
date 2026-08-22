@@ -1,5 +1,7 @@
-// app/(public)/page.tsx
+// app/(public)/accueil/page.tsx
 "use client";
+
+export const dynamic = "force-dynamic";
 
 import React from "react";
 import Link from "next/link";
@@ -8,17 +10,23 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { ProgramSlider } from "@/components/home/ProgramSlider";
 import { TestimonialsSlider } from "@/components/home/TestimonialsSlider";
 import { CountdownSection } from "@/components/home/CountdownSection";
+import { VisibilityWrapper } from "@/components/VisibilityWrapper";
 
 export default function HomePage() {
   return (
     <div className="space-y-10">
       {/* 1. Hero Section Complète */}
-      <HeroSection />
+      <VisibilityWrapper componentId="home.hero">
+        <HeroSection />
+      </VisibilityWrapper>
 
       {/* 2. Compte à Rebours */}
-      <CountdownSection />
+      <VisibilityWrapper componentId="home.countdown">
+        <CountdownSection />
+      </VisibilityWrapper>
 
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <VisibilityWrapper componentId="home.features">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {[
           {
             title: "Cocktails à Volonté",
@@ -76,43 +84,50 @@ export default function HomePage() {
             </div>
           </div>
         ))}
-      </section>
+        </section>
+      </VisibilityWrapper>
 
       {/* 4. Carousel Programme & Témoignages */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2">
-          <ProgramSlider />
-        </div>
-        <div>
-          <TestimonialsSlider />
-        </div>
-      </section>
+      <VisibilityWrapper componentId="home.program">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2">
+            <ProgramSlider />
+          </div>
+          <VisibilityWrapper componentId="home.testimonials">
+            <div>
+              <TestimonialsSlider />
+            </div>
+          </VisibilityWrapper>
+        </section>
+      </VisibilityWrapper>
 
-      <section className="group relative border-3 p-5 sm:p-6 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden transition-all duration-300" style={{ backgroundColor: 'var(--theme-accent)', borderColor: 'var(--theme-primary)', boxShadow: `6px 6px 0px 0px var(--theme-primary)` }}>
-        {/* Motif rétro/pop en tâche d'arrière-plan */}
-        <div className="absolute -right-8 -bottom-8 w-32 h-32 rounded-full blur-xl pointer-events-none opacity-20" style={{ backgroundColor: 'var(--theme-accent)' }} />
+      <VisibilityWrapper componentId="home.cta">
+        <section className="group relative border-3 p-5 sm:p-6 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden transition-all duration-300" style={{ backgroundColor: 'var(--theme-accent)', borderColor: 'var(--theme-primary)', boxShadow: `6px 6px 0px 0px var(--theme-primary)` }}>
+          {/* Motif rétro/pop en tâche d'arrière-plan */}
+          <div className="absolute -right-8 -bottom-8 w-32 h-32 rounded-full blur-xl pointer-events-none opacity-20" style={{ backgroundColor: 'var(--theme-accent)' }} />
 
-        {/* Bloc d'informations */}
-        <div className="space-y-2 relative z-10 max-w-2xl">
+          {/* Bloc d'informations */}
+          <div className="space-y-2 relative z-10 max-w-2xl">
 
-          <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-snug" style={{ color: 'var(--theme-primary)' }}>
-            Tenue Uniforme Obligatoire : <span className="underline decoration-4 underline-offset-4" style={{ textDecorationColor: 'var(--theme-danger)' }}>Pas de Blâme !</span>
-          </h2>
+            <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-snug" style={{ color: 'var(--theme-primary)' }}>
+              Tenue Uniforme Obligatoire : <span className="underline decoration-4 underline-offset-4" style={{ textDecorationColor: 'var(--theme-danger)' }}>Pas de Blâme !</span>
+            </h2>
 
-          <p className="text-xs sm:text-sm font-medium leading-relaxed" style={{ color: `var(--theme-primary)90` }}>
-            <strong className="font-black" style={{ color: 'var(--theme-primary)' }}>Rappel :</strong> Bleu & Blanc pour les filles, Khaki pour les garçons. Tout contrevenant se verra attribuer 2 heures de colle... directement au Bar à Cocktails ! 🍹
-          </p>
-        </div>
+            <p className="text-xs sm:text-sm font-medium leading-relaxed" style={{ color: `var(--theme-primary)90` }}>
+              <strong className="font-black" style={{ color: 'var(--theme-primary)' }}>Rappel :</strong> Bleu & Blanc pour les filles, Khaki pour les garçons. Tout contrevenant se verra attribuer 2 heures de colle... directement au Bar à Cocktails ! 🍹
+            </p>
+          </div>
 
-        {/* Bouton d'action interactif */}
-        <Link
-          href="/reglement"
-          className="shrink-0 w-full md:w-auto inline-flex items-center justify-center gap-2 text-white font-black text-xs uppercase px-6 py-3.5 rounded-xl border-2 transition-all duration-200 active:translate-x-0.5 active:translate-y-0.5 group/btn" style={{ backgroundColor: 'var(--theme-primary)', borderColor: 'var(--theme-primary)', boxShadow: `4px 4px 0px 0px var(--theme-secondary)` }}
-        >
-          <span>Consulter le Règlement Intérieur</span>
-          <ArrowUpRight className="w-4 h-4" style={{ color: 'var(--theme-accent)' }} />
-        </Link>
-      </section>
+          {/* Bouton d'action interactif */}
+          <Link
+            href="/reglement"
+            className="shrink-0 w-full md:w-auto inline-flex items-center justify-center gap-2 text-white font-black text-xs uppercase px-6 py-3.5 rounded-xl border-2 transition-all duration-200 active:translate-x-0.5 active:translate-y-0.5 group/btn" style={{ backgroundColor: 'var(--theme-primary)', borderColor: 'var(--theme-primary)', boxShadow: `4px 4px 0px 0px var(--theme-secondary)` }}
+          >
+            <span>Consulter le Règlement Intérieur</span>
+            <ArrowUpRight className="w-4 h-4" style={{ color: 'var(--theme-accent)' }} />
+          </Link>
+        </section>
+      </VisibilityWrapper>
     </div>
   );
 }

@@ -1,9 +1,9 @@
 // app/admin/dashboard/page.tsx
 "use client";
 
-import React, { useState } from "react";
-import { MOCK_STATS, MOCK_PARTICIPANTS } from "@/data";
+import React, { useState, useEffect } from "react";
 import { ParticipantCard } from "@/components/cards/ParticipantCard";
+import { EnhancedDashboard } from "./enhanced";
 import Link from "next/link";
 import {
   Users,
@@ -13,27 +13,73 @@ import {
   Search,
   Wallet,
   Sparkles,
-  ArrowUpRight
+  ArrowUpRight,
+  Loader
 } from "lucide-react";
 import { formatCFA } from "@/lib/utils";
 import { useToast } from "@/context/ToastContext";
+import { getAllReservations, updateReservation } from "@/lib/services/reservationService";
+
+interface Reservation {
+  id: string;
+  fullName: string;
+  phone: string;
+  groupSize: number;
+  amountPaid: number;
+  status: "pending" | "confirmed" | "cancelled";
+  createdAt?: any;
+  qrCode?: string;
+}
 
 export default function AdminDashboardPage() {
   const { showToast } = useToast();
-  const [participants, setParticipants] = useState(MOCK_PARTICIPANTS);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  const handleCheckIn = (id: string) => {
-    setParticipants((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, status: "checked_in" as const } : p))
-    );
-    showToast("Participant validé avec succès !", "success");
+  // Load reservations on mount
+  useEffect(() => {
+    loadReservations();
+  }, []);
+
+  const loadReservations = async () => {
+    try {
+      setLoading(true);
+      const data = await getAllReservations();
+      setReservations(data);
+    } catch (error) {
+      console.error("Error loading reservations:", error);
+      showToast("Erreur lors du chargement des réservations", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const filtered = participants.filter(
-    (p) =>
-      p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.ref.toLowerCase().includes(search.toLowerCase())
+  const handleCheckIn = async (id: string) => {
+    try {
+      await updateReservation(id, { status: "confirmed" });
+      setReservations((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, status: "confirmed" } : r))
+      );
+      showToast("Participant validé avec succès !", "success");
+    } catch (error) {
+      console.error("Error checking in:", error);
+      showToast("Erreur lors de la validation", "error");
+    }
+  };
+
+  // Calculate stats from real data
+  const stats = {
+    totalRevenue: reservations.reduce((sum, r) => sum + r.amountPaid, 0),
+    reservedSpots: reservations.filter(r => r.status !== "pending").length,
+    checkedInCount: reservations.filter(r => r.status === "confirmed").length,
+    remainingSpots: Math.max(0, 30 - reservations.length),
+  };
+
+  const filtered = reservations.filter(
+    (r) =>
+      r.fullName.toLowerCase().includes(search.toLowerCase()) ||
+      (r.qrCode && r.qrCode.toLowerCase().includes(search.toLowerCase()))
   );
 
   return (
@@ -41,11 +87,11 @@ export default function AdminDashboardPage() {
 
       {/* Banner En-tête de Contrôle */}
       <div className="bg-[var(--theme-primary)] text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-800 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="absolute -top-16 -right-16 w-52 h-52 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-16 -right-16 w-52 h-52 bg-[var(--theme-secondary)]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="space-y-2 relative z-10">
-          <div className="inline-flex items-center gap-1.5 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full text-amber-300 text-[10px] font-mono font-bold uppercase tracking-wider">
-            <Sparkles className="w-3 h-3 text-amber-400" />
+          <div className="inline-flex items-center gap-1.5 bg-[var(--theme-secondary)]/10 border border-[var(--theme-secondary)]/20 px-3 py-1 rounded-full text-[var(--theme-secondary)] text-[10px] font-mono font-bold uppercase tracking-wider">
+            <Sparkles className="w-3 h-3" />
             <span>Panneau d'Administration</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -58,12 +104,15 @@ export default function AdminDashboardPage() {
 
         <Link
           href="/admin/scanner"
-          className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-5 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 shrink-0 relative z-10"
+          className="bg-[var(--theme-secondary)] hover:bg-[var(--theme-secondary)]/90 text-white font-bold px-5 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 shrink-0 relative z-10"
         >
-          <QrCode className="w-4 h-4 text-slate-950" />
+          <QrCode className="w-4 h-4" />
           <span>Ouvrir Scanner QR</span>
         </Link>
       </div>
+
+      {/* Enhanced Analytics */}
+      <EnhancedDashboard />
 
       {/* Cartes Métriques Repensées */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -79,7 +128,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-            {formatCFA(MOCK_STATS.totalRevenue)}
+            {formatCFA(stats.totalRevenue)}
           </p>
         </div>
 
@@ -94,7 +143,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-            {MOCK_STATS.reservedSpots} <span className="text-xs text-slate-400 font-normal">/ 30</span>
+            {stats.reservedSpots} <span className="text-xs text-slate-400 font-normal">/ 30</span>
           </p>
         </div>
 
@@ -109,7 +158,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-            {MOCK_STATS.checkedInCount} <span className="text-xs text-slate-400 font-normal">inscrits</span>
+            {stats.checkedInCount} <span className="text-xs text-slate-400 font-normal">inscrits</span>
           </p>
         </div>
 
@@ -124,7 +173,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-lg sm:text-2xl font-extrabold text-amber-950 tracking-tight">
-            {MOCK_STATS.remainingSpots} <span className="text-xs text-amber-800 font-normal">places</span>
+            {stats.remainingSpots} <span className="text-xs text-amber-800 font-normal">places</span>
           </p>
         </div>
 
@@ -135,10 +184,10 @@ export default function AdminDashboardPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
           <div>
             <h2 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-              Liste des Inscrits
+              Liste des Réservations
             </h2>
             <p className="text-xs text-slate-400">
-              {filtered.length} inscription(s) trouvée(s)
+              {filtered.length} réservation(s) trouvée(s)
             </p>
           </div>
 
@@ -154,27 +203,34 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Liste des cartes participants */}
-        <div className="space-y-3">
-          {filtered.length > 0 ? (
-            filtered.map((p) => (
-              <ParticipantCard
-                key={p.id}
-                name={p.name}
-                reference={p.ref}
-                phone="07 00 00 00 00"
-                guestsCount={p.guests}
-                status={(p.status as "pending" | "confirmed" | "checked_in") || "pending"}
-                onCheckIn={() => handleCheckIn(p.id)}
-              />
-            ))
-          ) : (
-            <div className="text-center py-10 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 space-y-1">
-              <p className="text-xs font-bold text-slate-600">Aucun élève trouvé</p>
-              <p className="text-[11px] text-slate-400">Essayez de modifier votre recherche.</p>
-            </div>
-          )}
-        </div>
+        {/* Loading State */}
+        {loading ? (
+          <div className="text-center py-10">
+            <Loader className="w-6 h-6 text-slate-400 animate-spin mx-auto" />
+            <p className="text-xs text-slate-400 mt-2">Chargement des réservations...</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {filtered.length > 0 ? (
+              filtered.map((r) => (
+                <ParticipantCard
+                  key={r.id}
+                  name={r.fullName}
+                  reference={r.qrCode || r.id.slice(0, 8)}
+                  phone={r.phone}
+                  guestsCount={r.groupSize}
+                  status={(r.status === "confirmed" ? "confirmed" : "pending") as "pending" | "confirmed" | "checked_in"}
+                  onCheckIn={() => handleCheckIn(r.id)}
+                />
+              ))
+            ) : (
+              <div className="text-center py-10 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 space-y-1">
+                <p className="text-xs font-bold text-slate-600">Aucune réservation trouvée</p>
+                <p className="text-[11px] text-slate-400">Essayez de modifier votre recherche.</p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
     </div>

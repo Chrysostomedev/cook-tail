@@ -1,7 +1,7 @@
 // context/ThemeContext.tsx
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from "react";
 
 /**
  * Theme Configuration
@@ -198,22 +198,26 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     localStorage.removeItem("cooktail-theme-custom");
   };
 
-  // Éviter hydration mismatch
+  // Mémoïser la valeur du Provider — DOIT être appelé à chaque render, avant tout return
+  const value = useMemo(
+    () => ({
+      theme,
+      presetThemes,
+      currentPreset,
+      setTheme,
+      switchPreset,
+      resetToDefault,
+    }),
+    [theme, currentPreset]
+  );
+
+  // Éviter hydration mismatch — le return conditionnel vient APRÈS tous les hooks
   if (!mounted) {
     return <>{children}</>;
   }
 
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        presetThemes,
-        currentPreset,
-        setTheme,
-        switchPreset,
-        resetToDefault,
-      }}
-    >
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );
