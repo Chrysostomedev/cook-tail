@@ -26,7 +26,7 @@ export interface MenuItem {
     url: string;
     cloudinaryId: string;
   };
-  isAvailable: boolean;
+  isAvailable: boolean; 
   createdAt: Date;
   updatedAt: Date;
 }
@@ -37,17 +37,17 @@ export interface CreateMenuItemDTO {
   price: number;
   description: string;
   imageUrl?: string;
+  cloudinaryId?: string; // <-- ajouté
 }
-
 const COLLECTION = "menuItems";
 
-/**
- * Create menu item
- */
 export const createMenuItem = async (data: CreateMenuItemDTO): Promise<MenuItem> => {
   try {
+    const { imageUrl, cloudinaryId, ...rest } = data;
+
     const docRef = await addDoc(collection(db, COLLECTION), {
-      ...data,
+      ...rest,
+      image: imageUrl ? { url: imageUrl, cloudinaryId: cloudinaryId || "" } : null,
       isAvailable: true,
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),
@@ -61,6 +61,24 @@ export const createMenuItem = async (data: CreateMenuItemDTO): Promise<MenuItem>
   }
 };
 
+export const updateMenuItem = async (
+  itemId: string,
+  updates: Partial<CreateMenuItemDTO>
+): Promise<void> => {
+  try {
+    const { imageUrl, cloudinaryId, ...rest } = updates;
+    const payload: Record<string, any> = { ...rest, updatedAt: Timestamp.now() };
+
+    if (imageUrl !== undefined) {
+      payload.image = imageUrl ? { url: imageUrl, cloudinaryId: cloudinaryId || "" } : null;
+    }
+
+    await updateDoc(doc(db, COLLECTION, itemId), payload);
+  } catch (error) {
+    console.error("Error updating menu item:", error);
+    throw error;
+  }
+};
 /**
  * Get all menu items
  */
@@ -107,23 +125,6 @@ export const getMenuItemsByCategory = async (
   }
 };
 
-/**
- * Update menu item
- */
-export const updateMenuItem = async (
-  itemId: string,
-  updates: Partial<CreateMenuItemDTO>
-): Promise<void> => {
-  try {
-    await updateDoc(doc(db, COLLECTION, itemId), {
-      ...updates,
-      updatedAt: Timestamp.now(),
-    });
-  } catch (error) {
-    console.error("Error updating menu item:", error);
-    throw error;
-  }
-};
 
 /**
  * Delete menu item

@@ -61,13 +61,14 @@ export default function AdminMenuPage() {
   const [uploading, setUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    category: "main" as "main" | "appetizer" | "dessert" | "beverage",
-    price: 0,
-    description: "",
-    imageUrl: "",
-  });
+const [formData, setFormData] = useState({
+  name: "",
+  category: "main" as "main" | "appetizer" | "dessert" | "beverage",
+  price: 0,
+  description: "",
+  imageUrl: "",
+  cloudinaryId: "", // <-- ajouté
+});
 
   // Load items on mount
   useEffect(() => {
@@ -92,59 +93,61 @@ export default function AdminMenuPage() {
     }
   };
 
-  // Handle image upload
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    try {
-      setUploading(true);
-      const preview = URL.createObjectURL(file);
-      setImagePreview(preview);
+  try {
+    setUploading(true);
+    const preview = URL.createObjectURL(file);
+    setImagePreview(preview);
 
-      const result = await uploadImageToCloudinary(file, "menu");
-      setFormData((prev) => ({
-        ...prev,
-        imageUrl: result.secure_url,
-      }));
+    const result = await uploadImageToCloudinary(file, "menu");
+    setFormData((prev) => ({
+      ...prev,
+      imageUrl: result.secure_url,
+      cloudinaryId: result.public_id, // <-- ajouté
+    }));
 
-      showToast("Image téléchargée", "success");
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      showToast("Erreur lors du téléchargement", "error");
-      setImagePreview(null);
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  // Open modal for new item
-  const handleNewItem = () => {
-    setSelectedItem(null);
-    setFormData({
-      name: "",
-      category: "main",
-      price: 0,
-      description: "",
-      imageUrl: "",
-    });
+    showToast("Image téléchargée", "success");
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    showToast("Erreur lors du téléchargement", "error");
     setImagePreview(null);
-    setIsModalOpen(true);
-  };
+  } finally {
+    setUploading(false);
+  }
+};
 
-  // Open modal for editing
-  const handleEditItem = (item: MenuItem) => {
-    setSelectedItem(item);
-    setFormData({
-      name: item.name,
-      category: item.category,
-      price: item.price,
-      description: item.description,
-      imageUrl: item.image?.url || "",
-    });
-    setImagePreview(item.image?.url || null);
-    setIsModalOpen(true);
-  };
+// Open modal for new item
+const handleNewItem = () => {
+  setSelectedItem(null);
+  setFormData({
+    name: "",
+    category: "main",
+    price: 0,
+    description: "",
+    imageUrl: "",
+    cloudinaryId: "", // <-- ajouté
+  });
+  setImagePreview(null);
+  setIsModalOpen(true);
+};
+
+// Open modal for editing
+const handleEditItem = (item: MenuItem) => {
+  setSelectedItem(item);
+  setFormData({
+    name: item.name,
+    category: item.category,
+    price: item.price,
+    description: item.description,
+    imageUrl: item.image?.url || "",
+    cloudinaryId: item.image?.cloudinaryId || "", // <-- ajouté
+  });
+  setImagePreview(item.image?.url || null);
+  setIsModalOpen(true);
+};
 
   // Save item
   const handleSaveItem = async (e: React.FormEvent) => {

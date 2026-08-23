@@ -1,4 +1,4 @@
-sx// Service Worker for Push Notifications
+// Service Worker for Push Notifications
 const CACHE_NAME = "cooktail-v1";
 
 self.addEventListener("install", (event) => {
