@@ -2,7 +2,7 @@
 
 // Reservations
 export * from "./reservation";
-export type { Reservation, ReservationStatus, PaymentStatus, DietaryRestriction, CreateReservationDTO, UpdateReservationDTO } from "./reservation";
+export type { Reservation, CreateReservationDTO } from "./reservation";
 
 // Events
 export * from "./event";
@@ -19,3 +19,4 @@ export type { Admin, AdminRole, AdminPermissions, CreateAdminDTO, UpdateAdminDTO
 // Statistics
 export * from "./statistics";
 export type { Statistics, DailyStats, WeeklyStats, MonthlyStats, StatisticsFilters, RevenueStats } from "./statistics";
+

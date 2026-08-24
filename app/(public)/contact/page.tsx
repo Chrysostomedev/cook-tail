@@ -1,4 +1,3 @@
-// app/(public)/contact/page.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -12,65 +11,104 @@ import {
   Sparkles,
   ExternalLink,
   CheckCircle2,
-  FaceAngry,
-  InspectIcon
+  Share2,
+  Loader2,
 } from "lucide-react";
 import { EVENT_INFO } from "@/lib/constants";
 import { useToast } from "@/context/ToastContext";
+import { useContactForm } from "@/lib/hooks/useContactForm";
+import type { ContactService } from "@/lib/services/contactService";
 
 export default function ContactPage() {
   const { showToast } = useToast();
-  const [form, setForm] = useState({ name: "", email: "", phone: "", service: "traiteur", message: "" });
+  const { submit, loading } = useContactForm();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    service: "traiteur" as ContactService,
+    message: "",
+  });
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    showToast("Votre mot d'excuse / demande a bien été envoyé à la direction !", "success");
-    setForm({ name: "", email: "", phone: "", service: "traiteur", message: "" });
+    const ok = await submit(form);
+    if (ok) {
+      showToast("Votre message a bien été transmis à la direction !", "success");
+      setForm({ name: "", email: "", phone: "", service: "traiteur", message: "" });
+      setSent(true);
+      setTimeout(() => setSent(false), 4000);
+    } else {
+      showToast("Erreur lors de l'envoi, réessayez.", "error");
+    }
   };
 
-  // Formattage du numéro WhatsApp pour le lien direct
   const cleanPhone = EVENT_INFO.whatsapp.replace(/[^0-9+]/g, "");
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 md:space-y-10 px-3 sm:px-6 py-4 md:py-8">
+    <div className="max-w-6xl mx-auto space-y-8 md:space-y-12">
+      {/* En-tête */}
+      <div
+        className="relative text-white p-8 md:p-12 rounded-[2rem] shadow-2xl overflow-hidden"
+        style={{ backgroundColor: "var(--theme-primary)" }}
+      >
+        <div
+          className="absolute -right-16 -top-16 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-25"
+          style={{ backgroundColor: "var(--theme-secondary)" }}
+        />
+        <div
+          className="absolute bottom-0 left-1/4 w-56 h-56 rounded-full blur-3xl pointer-events-none opacity-10"
+          style={{ backgroundColor: "var(--theme-accent)" }}
+        />
 
-      {/* En-tête Neo-Brutalist Pop */}
-      <div className="relative text-white p-6 sm:p-8 md:p-10 rounded-2xl md:rounded-3xl border-3 border-black overflow-hidden" style={{ backgroundColor: 'var(--theme-primary)', boxShadow: `6px 6px 0px 0px var(--theme-bgSecondary)` }}>
-        <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full blur-2xl pointer-events-none opacity-20" style={{ backgroundColor: 'var(--theme-accent)' }} />
+        <div className="relative z-10 space-y-4">
+          <span
+            className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full border"
+            style={{
+              backgroundColor: "rgba(255,255,255,0.1)",
+              color: "var(--theme-accent)",
+              borderColor: "rgba(255,255,255,0.15)",
+            }}
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Secrétariat &amp; Bureau des Surveillants
+          </span>
 
-        <div className="relative z-10 space-y-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-mono font-black uppercase px-3 py-1 rounded-lg border border-black" style={{ backgroundColor: 'var(--theme-bgSecondary)', color: 'var(--theme-primary)' }}>
-              <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--theme-secondary)' }} />
-              Secrétariat & Bureau des Surveillants
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+            Contactez{" "}
+            <span className="font-serif italic" style={{ color: "var(--theme-accent)" }}>
+              Cook'Tail
             </span>
-          </div>
-
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight" style={{ color: 'var(--theme-bgSecondary)' }}>
-            Besoin d'un Mot d'Excuse ?
           </h1>
-          <p className="text-xs sm:text-base font-medium max-w-2xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.8)' }}>
-            Une question sur le <strong className="text-yellow-300">Brunch Récréation</strong>, une réservation de groupe ou une envie de privatiser notre service traiteur ? Contactez-nous directement !
+          <p className="text-xs md:text-sm text-white/80 max-w-2xl leading-relaxed">
+            Une question sur le Brunch Récréation, une réservation de groupe ou une envie de
+            privatiser notre service traiteur ? Contactez-nous directement !
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
-
-        {/* Colonne Gauche : Formulaire Cahier de Texte */}
-        <div className="border-3 p-5 sm:p-8 rounded-2xl md:rounded-3xl space-y-6" style={{ backgroundColor: 'var(--theme-bgPrimary)', borderColor: 'var(--theme-primary)', boxShadow: `6px 6px 0px 0px var(--theme-primary)` }}>
-          <div className="pb-4" style={{ borderBottom: `2px dashed var(--theme-primary)` }}>
-            <h2 className="text-lg sm:text-xl font-black uppercase flex items-center gap-2" style={{ color: 'var(--theme-primary)' }}>
-              <MessageSquare className="w-5 h-5" style={{ color: 'var(--theme-secondary)' }} />
-              Rédiger un Mot à la Direction
+        {/* Formulaire */}
+        <div className="lg:col-span-7 bg-white rounded-[2rem] shadow-xl shadow-slate-900/5 border border-slate-100 p-6 sm:p-8 space-y-6">
+          <div className="pb-4 border-b border-slate-100">
+            <h2
+              className="text-lg sm:text-xl font-extrabold flex items-center gap-2"
+              style={{ color: "var(--theme-primary)" }}
+            >
+              <MessageSquare className="w-5 h-5" style={{ color: "var(--theme-secondary)" }} />
+              Envoyer un Message
             </h2>
-            <p className="text-xs font-mono text-slate-600 mt-1">Remplissez la feuille de correspondance ci-dessous.</p>
+            <p className="text-xs text-slate-500 mt-1">
+              Remplissez le formulaire ci-dessous, nous répondons rapidement.
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-mono font-bold uppercase mb-1.5" style={{ color: 'var(--theme-primary)' }}>
-                Nom & Prénom de l'Élève / Client *
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">
+                Nom &amp; Prénom *
               </label>
               <input
                 type="text"
@@ -78,27 +116,27 @@ export default function ContactPage() {
                 placeholder="Ex: Koffi Kouadio"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full px-4 py-3 bg-white border-2 rounded-xl font-medium text-sm focus:outline-none focus:ring-2 shadow-sm" style={{ borderColor: 'var(--theme-primary)', color: 'var(--theme-primary)', '--focus-ring': `var(--theme-accent)` } as any}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[var(--theme-secondary)]/20 focus:border-[var(--theme-secondary)] transition-all"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-mono font-bold uppercase mb-1.5" style={{ color: 'var(--theme-primary)' }}>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">
                   Adresse Email *
                 </label>
                 <input
                   type="email"
                   required
-                  placeholder="eleve@ecole.ci"
+                  placeholder="vous@email.com"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full px-4 py-3 bg-white border-2 rounded-xl font-medium text-sm focus:outline-none focus:ring-2 shadow-sm" style={{ borderColor: 'var(--theme-primary)', color: 'var(--theme-primary)', '--focus-ring': `var(--theme-accent)` } as any}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[var(--theme-secondary)]/20 focus:border-[var(--theme-secondary)] transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-mono font-bold uppercase mb-1.5" style={{ color: 'var(--theme-primary)' }}>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">
                   Téléphone WhatsApp
                 </label>
                 <input
@@ -106,29 +144,29 @@ export default function ContactPage() {
                   placeholder="+225 07 00 00 00 00"
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  className="w-full px-4 py-3 bg-white border-2 rounded-xl font-medium text-sm focus:outline-none focus:ring-2 shadow-sm" style={{ borderColor: 'var(--theme-primary)', color: 'var(--theme-primary)', '--focus-ring': `var(--theme-accent)` } as any}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[var(--theme-secondary)]/20 focus:border-[var(--theme-secondary)] transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-mono font-bold uppercase mb-1.5" style={{ color: 'var(--theme-primary)' }}>
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">
                 Objet de la Demande
               </label>
               <select
                 value={form.service}
-                onChange={(e) => setForm({ ...form, service: e.target.value })}
-                className="w-full px-4 py-3 bg-white border-2 rounded-xl font-bold text-xs focus:outline-none focus:ring-2 shadow-sm" style={{ borderColor: 'var(--theme-primary)', color: 'var(--theme-primary)', '--focus-ring': `var(--theme-accent)` } as any}
+                onChange={(e) => setForm({ ...form, service: e.target.value as ContactService })}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[var(--theme-secondary)]/20 focus:border-[var(--theme-secondary)] transition-all"
               >
                 <option value="brunch">Pass Brunch Récréation (Groupes / Pass)</option>
                 <option value="traiteur">Service Traiteur sur-mesure</option>
-                <option value="bar">Bar Mobile & Cocktails Sur-Mesure</option>
+                <option value="bar">Bar Mobile &amp; Cocktails Sur-Mesure</option>
                 <option value="autre">Autre Demande Spéciale</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-xs font-mono font-bold uppercase mb-1.5" style={{ color: 'var(--theme-primary)' }}>
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1.5">
                 Votre Message *
               </label>
               <textarea
@@ -137,130 +175,158 @@ export default function ContactPage() {
                 placeholder="Ex: Bonjour, nous aimerions réserver une table de 6 personnes..."
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
-                className="w-full p-4 bg-white border-2 rounded-xl font-medium text-sm focus:outline-none focus:ring-2 shadow-sm" style={{ borderColor: 'var(--theme-primary)', color: 'var(--theme-primary)', '--focus-ring': `var(--theme-accent)` } as any}
+                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[var(--theme-secondary)]/20 focus:border-[var(--theme-secondary)] transition-all resize-none"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full hover:text-slate-950 font-black py-4 rounded-xl border-2 uppercase text-xs sm:text-sm flex items-center justify-center gap-2 transition-all active:translate-x-0.5 active:translate-y-0.5" style={{ backgroundColor: 'var(--theme-bgSecondary)', color: 'var(--theme-primary)', borderColor: 'var(--theme-primary)', boxShadow: `4px 4px 0px 0px var(--theme-primary)` }}
+              disabled={loading}
+              className="w-full text-white font-bold py-4 rounded-2xl uppercase text-xs flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:hover:translate-y-0"
+              style={{ backgroundColor: "var(--theme-primary)" }}
             >
-              <Send className="w-4 h-4" /> Transmettre à la Direction
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" /> Envoi en cours...
+                </>
+              ) : sent ? (
+                <>
+                  <CheckCircle2 className="w-4 h-4" /> Message envoyé
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" /> Envoyer le Message
+                </>
+              )}
             </button>
           </form>
         </div>
 
-        {/* Colonne Droite : Cartes d'Action Directes (Appel, WhatsApp, Mail, Réseaux) */}
-        <div className="lg:col-span-5 space-y-4">
-
-          {/* Bloc Contact Direct */}
-          <div className="text-white p-5 sm:p-6 rounded-2xl md:rounded-3xl border-3 border-black space-y-4" style={{ backgroundColor: 'var(--theme-primary)', boxShadow: `6px 6px 0px 0px var(--theme-primary)` }}>
-            <h3 className="text-lg font-black uppercase pb-3 flex items-center justify-between" style={{ borderColor: 'rgba(255,255,255,0.1)', borderBottom: `2px solid rgba(255,255,255,0.1)`, color: 'var(--theme-bgSecondary)' }}>
+        {/* Colonne contacts directs */}
+        <div className="lg:col-span-5 space-y-5">
+          <div
+            className="text-white p-6 rounded-[2rem] shadow-xl space-y-4"
+            style={{ backgroundColor: "var(--theme-primary)" }}
+          >
+            <h3 className="text-lg font-extrabold pb-3 flex items-center justify-between border-b border-white/10">
               <span>Lignes Directes</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full border" style={{ backgroundColor: 'var(--theme-secondary)', color: 'var(--theme-primary)', borderColor: 'var(--theme-secondary)' }}>
+              <span
+                className="text-[10px] font-mono px-2.5 py-1 rounded-full"
+                style={{ backgroundColor: "var(--theme-secondary)" }}
+              >
                 En Ligne
               </span>
             </h3>
 
             <div className="space-y-2.5">
-              {/* WhatsApp & Téléphone Cliquable */}
               <a
                 href={`https://wa.me/${cleanPhone}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between bg-white/5 hover:bg-white/15 p-3.5 rounded-xl border border-white/10 transition-all group"
+                className="flex items-center justify-between bg-white/5 hover:bg-white/15 p-4 rounded-2xl transition-all group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-lg group-hover:scale-110 transition-transform" style={{ backgroundColor: 'var(--theme-secondary)', color: 'var(--theme-primary)' }}>
+                  <div
+                    className="p-2.5 rounded-xl group-hover:scale-110 transition-transform"
+                    style={{ backgroundColor: "var(--theme-secondary)" }}
+                  >
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-mono uppercase text-slate-400 block">WhatsApp & Infoline</span>
-                    <strong className="text-sm font-bold text-white group-hover:transition-colors" style={{ '--hover-color': 'var(--theme-bgSecondary)' } as any}>
-                      {EVENT_INFO.whatsapp}
-                    </strong>
+                    <span className="text-[10px] font-mono uppercase text-white/50 block">
+                      WhatsApp &amp; Infoline
+                    </span>
+                    <strong className="text-sm font-bold">{EVENT_INFO.whatsapp}</strong>
                   </div>
                 </div>
-                <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-white" />
+                <ExternalLink className="w-4 h-4 text-white/50 group-hover:text-white" />
               </a>
 
-              {/* Email Cliquable */}
               <a
                 href="mailto:contact@cooktail.ci"
-                className="flex items-center justify-between bg-white/5 hover:bg-white/15 p-3.5 rounded-xl border border-white/10 transition-all group"
+                className="flex items-center justify-between bg-white/5 hover:bg-white/15 p-4 rounded-2xl transition-all group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-lg group-hover:scale-110 transition-transform" style={{ backgroundColor: 'var(--theme-accent)', color: 'var(--theme-primary)' }}>
+                  <div
+                    className="p-2.5 rounded-xl group-hover:scale-110 transition-transform"
+                    style={{ backgroundColor: "var(--theme-accent)", color: "var(--theme-primary)" }}
+                  >
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-mono uppercase text-slate-400 block">Courrier Électronique</span>
-                    <strong className="text-sm font-bold text-white group-hover:transition-colors" style={{ '--hover-color': 'var(--theme-bgSecondary)' } as any}>
-                      contact@cooktail.ci
-                    </strong>
+                    <span className="text-[10px] font-mono uppercase text-white/50 block">
+                      Courrier Électronique
+                    </span>
+                    <strong className="text-sm font-bold">contact@cooktail.ci</strong>
                   </div>
                 </div>
-                <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-white" />
+                <ExternalLink className="w-4 h-4 text-white/50 group-hover:text-white" />
               </a>
 
-              {/* Localisation Cliquable */}
               <a
                 href={`https://maps.google.com/?q=${encodeURIComponent(EVENT_INFO.location)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between bg-white/5 hover:bg-white/15 p-3.5 rounded-xl border border-white/10 transition-all group"
+                className="flex items-center justify-between bg-white/5 hover:bg-white/15 p-4 rounded-2xl transition-all group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-lg group-hover:scale-110 transition-transform" style={{ backgroundColor: 'var(--theme-danger)', color: 'white' }}>
+                  <div
+                    className="p-2.5 rounded-xl group-hover:scale-110 transition-transform"
+                    style={{ backgroundColor: "var(--theme-danger)" }}
+                  >
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-mono uppercase text-slate-400 block">Lieu du Rassemblement</span>
-                    <strong className="text-sm font-bold text-white group-hover:transition-colors" style={{ '--hover-color': 'var(--theme-bgSecondary)' } as any}>
-                      {EVENT_INFO.location}
-                    </strong>
+                    <span className="text-[10px] font-mono uppercase text-white/50 block">
+                      Lieu du Rassemblement
+                    </span>
+                    <strong className="text-sm font-bold">{EVENT_INFO.location}</strong>
                   </div>
                 </div>
-                <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-white" />
+                <ExternalLink className="w-4 h-4 text-white/50 group-hover:text-white" />
               </a>
             </div>
 
-            {/* Horaires */}
-            <div className="p-3.5 rounded-xl text-xs font-mono flex items-center gap-3 border" style={{ backgroundColor: 'var(--theme-accent)', color: 'var(--theme-primary)', borderColor: 'var(--theme-accent)' }}>
+            <div
+              className="p-4 rounded-2xl text-xs font-semibold flex items-center gap-3"
+              style={{ backgroundColor: "var(--theme-accent)", color: "var(--theme-primary)" }}
+            >
               <Clock className="w-4 h-4 shrink-0" />
               <span>Réponse garantie du Lundi au Samedi (08h00 - 18h00 GMT)</span>
             </div>
           </div>
 
-          {/* Bloc Réseaux Sociaux Directs */}
-          <div className="border-3 p-5 rounded-2xl space-y-3" style={{ backgroundColor: 'var(--theme-accent)', borderColor: 'var(--theme-primary)', boxShadow: `6px 6px 0px 0px var(--theme-primary)` }}>
-            <h4 className="text-xs font-mono font-black uppercase tracking-wider" style={{ color: 'var(--theme-primary)' }}>
-              Suivre l'Actualité de l'Établissement
+          <div
+            className="p-6 rounded-[2rem] space-y-3 shadow-lg"
+            style={{ backgroundColor: "var(--theme-accent)" }}
+          >
+            <h4 className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--theme-primary)" }}>
+              Suivre l'Actualité
             </h4>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2.5">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 text-white py-2.5 px-4 rounded-xl text-xs font-bold uppercase transition-colors" style={{ backgroundColor: 'var(--theme-primary)' }}
+                className="flex items-center justify-center gap-2 text-white py-3 px-4 rounded-xl text-xs font-bold uppercase transition-all hover:-translate-y-0.5"
+                style={{ backgroundColor: "var(--theme-primary)" }}
               >
-                <InspectIcon className="w-4 h-4" />
+                <Share2 className="w-4 h-4" />
                 Instagram
               </a>
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-[#0B1B33] text-white py-2.5 px-4 rounded-xl text-xs font-bold uppercase hover:bg-blue-600 transition-colors"
+                className="flex items-center justify-center gap-2 text-white py-3 px-4 rounded-xl text-xs font-bold uppercase transition-all hover:-translate-y-0.5"
+                style={{ backgroundColor: "#1877F2" }}
               >
-                <FaceAngry className="w-4 h-4" />
+                <Share2 className="w-4 h-4" />
                 Facebook
               </a>
             </div>
           </div>
-
         </div>
-
       </div>
     </div>
   );

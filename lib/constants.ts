@@ -10,6 +10,10 @@ export const EVENT_INFO = {
   whatsapp: "0779324187",
   instagram: "@cooktail_service",
   dressCode: "Tenue d'écolier (Mille carreaux Bleu & Blanc filles / Kaki pour les hommes)",
+
+  wavePhoneNumber: "07 79 32 41 87", // <-- TON vrai numéro Wave marchand
+  waveDisplayName: "Cook'Tail Service", // nom affiché sur Wave si tu as un compte Business
+
 } as const;
 
 export const ADMIN_ROLES = {

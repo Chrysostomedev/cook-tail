@@ -7,6 +7,7 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   query,
   orderBy,
@@ -40,28 +41,52 @@ export interface CreateServiceDTO {
 
 const COLLECTION = "services";
 
-/**
- * Create service
- */
+export interface CreateServiceDTO {
+  name: string;
+  description: string;
+  price: number;
+  features: string[];
+  isPopular?: boolean;
+  imageUrl?: string;
+  cloudinaryId?: string; // <-- ajouté
+}
+
 export const createService = async (data: CreateServiceDTO): Promise<Service> => {
   try {
+    const { imageUrl, cloudinaryId, ...rest } = data;
+
     const docRef = await addDoc(collection(db, COLLECTION), {
-      ...data,
+      ...rest,
+      image: imageUrl ? { url: imageUrl, cloudinaryId: cloudinaryId || "" } : null,
       isPopular: data.isPopular || false,
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),
     });
 
-    const docSnap = await getDocs(collection(db, COLLECTION)); // Reload to get new doc
-    const newDoc = docSnap.docs.find((d) => d.id === docRef.id);
-    
-    if (newDoc) {
-      return convertServiceDoc(newDoc);
-    }
-    
-    throw new Error("Failed to retrieve created service");
+    // Utilise getDoc (un seul doc) plutôt que getDocs (toute la collection) - plus efficace
+    const docSnap = await getDoc(docRef);
+    return convertServiceDoc(docSnap);
   } catch (error) {
     console.error("Error creating service:", error);
+    throw error;
+  }
+};
+
+export const updateService = async (
+  serviceId: string,
+  updates: Partial<CreateServiceDTO>
+): Promise<void> => {
+  try {
+    const { imageUrl, cloudinaryId, ...rest } = updates;
+    const payload: Record<string, any> = { ...rest, updatedAt: Timestamp.now() };
+
+    if (imageUrl !== undefined) {
+      payload.image = imageUrl ? { url: imageUrl, cloudinaryId: cloudinaryId || "" } : null;
+    }
+
+    await updateDoc(doc(db, COLLECTION, serviceId), payload);
+  } catch (error) {
+    console.error("Error updating service:", error);
     throw error;
   }
 };
@@ -86,23 +111,6 @@ export const getAllServices = async (): Promise<Service[]> => {
   }
 };
 
-/**
- * Update service
- */
-export const updateService = async (
-  serviceId: string,
-  updates: Partial<CreateServiceDTO>
-): Promise<void> => {
-  try {
-    await updateDoc(doc(db, COLLECTION, serviceId), {
-      ...updates,
-      updatedAt: Timestamp.now(),
-    });
-  } catch (error) {
-    console.error("Error updating service:", error);
-    throw error;
-  }
-};
 
 /**
  * Delete service

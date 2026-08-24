@@ -292,7 +292,7 @@ export default function StatisticsPage() {
                     {res.guests}
                   </td>
                   <td className="py-3 px-4 font-bold" style={{ color: "var(--theme-secondary)" }}>
-                    {res.amount.toLocaleString()} FCFA
+                    {(res.amountPaid ?? 0).toLocaleString("fr-FR")} FCFA
                   </td>
                   <td className="py-3 px-4">
                     <span

@@ -27,21 +27,23 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const allNavTabs = [
-    { label: "Accueil", href: "/", icon: Home },
+    // { label: "Accueil", href: "/", icon: Home },
     { label: "Programme", href: "/programme", icon: Calendar },
     { label: "Menu", href: "/menu", icon: Utensils },
-    { label: "Pass QR", href: "/reservation", icon: Ticket },
+    { label: "Mon pass", href: "/mon-pass", icon: Ticket },
     { label: "Services", href: "/services", icon: Briefcase },
     { label: "Contact", href: "/contact", icon: Info },
     { label: "Galerie", href: "/galerie", icon: GalleryIcon },
     { label: "Profil", href: "/profil", icon: User },
+    { label: "A propos de nous", href: "/a-propos", icon: User },
+
   ];
 
   const bottomBarTabs = [
     { label: "Accueil", href: "/", icon: Home },
     { label: "Programme", href: "/programme", icon: Calendar },
     { label: "Services", href: "/services", icon: Utensils },
-    { label: "Pass QR", href: "/reservation", icon: Ticket },
+    { label: "Menu", href: "/reservation", icon: Ticket },
   ];
 
   return (
@@ -113,7 +115,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
 
           {/* Navigation Desktop */}
           <div className="hidden md:flex items-center gap-1.5 text-xs font-semibold">
-            {allNavTabs.slice(0, 6).map((tab) => {
+            {allNavTabs.slice(0, 8).map((tab) => {
               const isActive = pathname === tab.href;
               return (
                 <Link

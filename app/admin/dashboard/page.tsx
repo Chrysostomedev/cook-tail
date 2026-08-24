@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { EVENT_INFO } from "@/lib/constants"
 import { ParticipantCard } from "@/components/cards/ParticipantCard";
 import { EnhancedDashboard } from "./enhanced";
 import Link from "next/link";
@@ -16,45 +17,53 @@ import {
   ArrowUpRight,
   Loader
 } from "lucide-react";
+import type { Reservation } from "@/types";
 import { formatCFA } from "@/lib/utils";
 import { useToast } from "@/context/ToastContext";
-import { getAllReservations, updateReservation } from "@/lib/services/reservationService";
+import { getAllReservations, updateReservation, getPendingPayments, confirmPayment } from "@/lib/services/reservationService";
 
-interface Reservation {
-  id: string;
-  fullName: string;
-  phone: string;
-  groupSize: number;
-  amountPaid: number;
-  status: "pending" | "confirmed" | "cancelled";
-  createdAt?: any;
-  qrCode?: string;
-}
+
+
 
 export default function AdminDashboardPage() {
   const { showToast } = useToast();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  // ... dans le composant, ajoute un state
+const [pendingPayments, setPendingPayments] = useState<Reservation[]>([]);
 
   // Load reservations on mount
   useEffect(() => {
     loadReservations();
   }, []);
 
-  const loadReservations = async () => {
-    try {
-      setLoading(true);
-      const data = await getAllReservations();
-      setReservations(data);
-    } catch (error) {
-      console.error("Error loading reservations:", error);
-      showToast("Erreur lors du chargement des réservations", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
+const loadReservations = async () => {
+  try {
+    setLoading(true);
+    const data = await getAllReservations();
+    setReservations(data);
 
+    const pending = await getPendingPayments();
+    setPendingPayments(pending);
+  } catch (error) {
+    console.error("Error loading reservations:", error);
+    showToast("Erreur lors du chargement des réservations", "error");
+  } finally {
+    setLoading(false);
+  }
+};
+
+const handleConfirmPayment = async (id: string) => {
+  try {
+    await confirmPayment(id);
+    setPendingPayments((prev) => prev.filter((r) => r.id !== id));
+    showToast("Paiement confirmé, le pass est maintenant actif", "success");
+  } catch (error) {
+    console.error("Error confirming payment:", error);
+    showToast("Erreur lors de la confirmation du paiement", "error");
+  }
+};
   const handleCheckIn = async (id: string) => {
     try {
       await updateReservation(id, { status: "confirmed" });
@@ -68,19 +77,18 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // Calculate stats from real data
-  const stats = {
-    totalRevenue: reservations.reduce((sum, r) => sum + r.amountPaid, 0),
-    reservedSpots: reservations.filter(r => r.status !== "pending").length,
-    checkedInCount: reservations.filter(r => r.status === "confirmed").length,
-    remainingSpots: Math.max(0, 30 - reservations.length),
-  };
+const stats = {
+  totalRevenue: reservations.reduce((sum, r) => sum + (r.amountPaid || 0), 0),
+  reservedSpots: reservations.filter(r => r.status !== "pending").length,
+  checkedInCount: reservations.filter(r => r.status === "confirmed").length,
+  remainingSpots: Math.max(0, 30 - reservations.length),
+};
 
-  const filtered = reservations.filter(
-    (r) =>
-      r.fullName.toLowerCase().includes(search.toLowerCase()) ||
-      (r.qrCode && r.qrCode.toLowerCase().includes(search.toLowerCase()))
-  );
+const filtered = reservations.filter(
+  (r) =>
+    (r.fullName || "").toLowerCase().includes(search.toLowerCase()) ||
+    (r.qrCode || "").toLowerCase().includes(search.toLowerCase())
+);
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-10">
@@ -202,7 +210,32 @@ export default function AdminDashboardPage() {
             />
           </div>
         </div>
-
+{/* Bloc à insérer dans le JSX */}
+{pendingPayments.length > 0 && (
+  <div className="bg-white border border-amber-200 rounded-3xl p-6 space-y-4">
+    <h2 className="text-lg font-extrabold text-amber-900">
+      ⚠️ Paiements Wave à vérifier ({pendingPayments.length})
+    </h2>
+    <div className="space-y-2">
+      {pendingPayments.map((r) => (
+        <div key={r.id} className="flex items-center justify-between p-3 bg-amber-50 rounded-xl border border-amber-200">
+          <div>
+            <p className="font-bold text-sm">{r.fullName} — {r.amountPaid.toLocaleString("fr-FR")} FCFA</p>
+            <p className="text-xs text-slate-500 font-mono">
+              Réf: {r.id} {r.waveReference && `• Wave TXN: ${r.waveReference}`}
+            </p>
+          </div>
+          <button
+            onClick={() => handleConfirmPayment(r.id)}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg"
+          >
+            Confirmer paiement
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
         {/* Loading State */}
         {loading ? (
           <div className="text-center py-10">
@@ -213,15 +246,15 @@ export default function AdminDashboardPage() {
           <div className="space-y-3">
             {filtered.length > 0 ? (
               filtered.map((r) => (
-                <ParticipantCard
-                  key={r.id}
-                  name={r.fullName}
-                  reference={r.qrCode || r.id.slice(0, 8)}
-                  phone={r.phone}
-                  guestsCount={r.groupSize}
-                  status={(r.status === "confirmed" ? "confirmed" : "pending") as "pending" | "confirmed" | "checked_in"}
-                  onCheckIn={() => handleCheckIn(r.id)}
-                />
+  <ParticipantCard
+  key={r.id}
+  name={r.fullName || "—"}
+  reference={r.qrCode || r.id.slice(0, 8)}
+  phone={r.phone || "—"}
+  guestsCount={r.groupSize || 0}
+  status={(r.status === "confirmed" ? "confirmed" : "pending") as "pending" | "confirmed" | "checked_in"}
+  onCheckIn={() => handleCheckIn(r.id)}
+/>
               ))
             ) : (
               <div className="text-center py-10 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 space-y-1">

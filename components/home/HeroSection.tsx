@@ -143,6 +143,16 @@ export const HeroSection = () => {
           >
             Programme
           </Link>
+           <Link
+            href="/jeux"
+            className="w-full sm:w-auto font-semibold text-xs sm:text-sm px-6 py-3 sm:py-4 rounded-lg transition-all flex items-center justify-center border-2 backdrop-blur-md text-white"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              borderColor: "rgba(255, 255, 255, 0.2)"
+            }}
+          >
+            Jeux
+          </Link>
         </div>
 
         {/* Indicateurs de Slide */}

@@ -3,6 +3,7 @@ import { ToastProvider } from "@/context/ToastContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { VisibilityProvider } from "@/context/VisibilityContext";
 import { NotificationInitializer } from "@/components/NotificationInitializer";
+import { AnalyticsTracker } from "@/components/specials/AnalyticsTracker";
 import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
@@ -25,6 +26,7 @@ export default function RootLayout({
           <VisibilityProvider>
             <ToastProvider>
               <NotificationInitializer />
+               <AnalyticsTracker />
               {children}
             </ToastProvider>
           </VisibilityProvider>
