@@ -191,7 +191,7 @@ export default function ProfilPage() {
       </div>
 
       {/* Historique des Billets & Pass Précédents */}
-      <div className="space-y-4 pt-4">
+      {/* <div className="space-y-4 pt-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
             <History className="w-4 h-4 text-amber-600" />
@@ -260,7 +260,7 @@ export default function ProfilPage() {
             );
           })}
         </div>
-      </div>
+      </div> */}
 
     </div>
   );

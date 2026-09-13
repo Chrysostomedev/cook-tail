@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { Html5QrcodeScanner, Html5QrcodeScannerState } from "html5-qrcode";
+import { Html5Qrcode } from "html5-qrcode";
 import { CheckCircle2, AlertCircle, RotateCcw, X, Sparkles } from "lucide-react";
 import { useToast } from "@/context/ToastContext";
 import { updateReservation, getAllReservations } from "@/lib/services/reservationService";
@@ -15,7 +15,7 @@ interface ScannedData {
 
 export default function AdminScannerPage() {
   const { showToast } = useToast();
-  const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+  const scannerRef = useRef<Html5Qrcode | null>(null);
   const [scannedData, setScannedData] = useState<ScannedData[]>([]);
   const [isScanning, setIsScanning] = useState(true);
   const [lastScannedId, setLastScannedId] = useState<string | null>(null);
@@ -24,37 +24,39 @@ export default function AdminScannerPage() {
   useEffect(() => {
     if (!isScanning) return;
 
-    const qrcodeRegion = document.getElementById("qr-reader");
-    if (!qrcodeRegion) return;
+    let cancelled = false;
+    const startCamera = async () => {
+      try {
+        const cameras = await Html5Qrcode.getCameras();
+        if (cancelled || cameras.length === 0) {
+          showToast("Aucune caméra disponible sur cet appareil", "error");
+          return;
+        }
 
-    scannerRef.current = new Html5QrcodeScanner(
-      "qr-reader",
-      {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-        disableFlip: false,
-      },
-      false
-    );
-
-    scannerRef.current.render(
-      (decodedText) => {
-        handleQrScan(decodedText);
-      },
-      (error) => {
-        // Silently handle errors
-      }
-    );
-
-    return () => {
-      if (
-        scannerRef.current &&
-        scannerRef.current.getState() === Html5QrcodeScannerState.SCANNING
-      ) {
-        scannerRef.current.pause();
+        const camera = cameras.find((item) => item.label.toLowerCase().includes("back")) || cameras[0];
+        const scanner = new Html5Qrcode("qr-reader");
+        scannerRef.current = scanner;
+        await scanner.start(
+          camera.id,
+          { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.333334 },
+          (decodedText) => { void handleQrScan(decodedText); },
+          () => undefined
+        );
+      } catch (error) {
+        console.error("Unable to start camera scanner:", error);
+        showToast("Impossible d'accéder à la caméra", "error");
       }
     };
-  }, [isScanning]);
+
+    void startCamera();
+
+    return () => {
+      cancelled = true;
+      const scanner = scannerRef.current;
+      scannerRef.current = null;
+      if (scanner) void scanner.stop().catch(() => undefined).finally(() => scanner.clear());
+    };
+  }, [isScanning, showToast]);
 
   const handleQrScan = async (decodedText: string) => {
     if (lastScannedId === decodedText && Date.now() - (new Date(scannedData[scannedData.length - 1]?.timestamp || 0).getTime()) < 2000) {
@@ -118,7 +120,7 @@ export default function AdminScannerPage() {
 
   const stopScanner = () => {
     if (scannerRef.current) {
-      scannerRef.current.pause();
+      void scannerRef.current.stop().catch(() => undefined).finally(() => scannerRef.current?.clear());
     }
     setIsScanning(false);
   };

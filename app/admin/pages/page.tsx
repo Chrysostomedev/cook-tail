@@ -4,17 +4,18 @@ import { useState } from "react";
 import { Plus, Save, Trash2 } from "lucide-react";
 import { useContent } from "@/context/ContentContext";
 import { defaultContent, type ProgrammePageContent } from "@/lib/content";
+import { useToast } from "@/context/ToastContext";
 
 export default function AdminPagesPage() {
   const { content, updateSection } = useContent();
   const [page, setPage] = useState<"programme" | "about" | "contact">("programme");
   const [saved, setSaved] = useState(false);
-  const programme = content?.programmePage ?? defaultContent.programmePage;
+  const [programmeDraft, setProgrammeDraft] = useState<ProgrammePageContent | null>(null);
+  const { showToast } = useToast();
+  const programme = programmeDraft ?? content?.programmePage ?? defaultContent.programmePage;
 
   const updateProgramme = (patch: Partial<ProgrammePageContent>) => {
-    updateSection("programmePage", { ...programme, ...patch });
-    setSaved(true);
-    window.setTimeout(() => setSaved(false), 1800);
+    setProgrammeDraft({ ...programme, ...patch });
   };
 
   const updateItem = (index: number, patch: Partial<ProgrammePageContent["items"][number]>) => {
@@ -23,6 +24,19 @@ export default function AdminPagesPage() {
 
   const addItem = () => updateProgramme({ items: [...programme.items, { id: `p${Date.now()}`, time: "20H00", title: "Nouvelle activité", category: "Animation", description: "Description de l'activité", iconName: "Clock" }] });
   const removeItem = (index: number) => updateProgramme({ items: programme.items.filter((_, itemIndex) => itemIndex !== index) });
+
+  const saveProgramme = async () => {
+    try {
+      await updateSection("programmePage", programme);
+      setProgrammeDraft(programme);
+      setSaved(true);
+      showToast("Slider Programme enregistré", "success");
+      window.setTimeout(() => setSaved(false), 1800);
+    } catch (error) {
+      console.error("Error saving programme page:", error);
+      showToast("Erreur lors de l'enregistrement du Programme", "error");
+    }
+  };
 
   return (
     <div className="mx-auto max-w-7xl space-y-8">
@@ -45,7 +59,7 @@ export default function AdminPagesPage() {
       ) : (
         <div className="space-y-6">
           <section className="rounded-2xl border-2 p-5 sm:p-7" style={{ borderColor: "var(--theme-borderColor)", backgroundColor: "var(--theme-bgPrimary)" }}>
-            <div className="mb-5 flex items-center justify-between"><div><h2 className="text-xl font-black" style={{ color: "var(--theme-textPrimary)" }}>En-tête du Programme</h2><p className="text-xs" style={{ color: "var(--theme-textSecondary)" }}>Ces champs remplacent les textes codés en dur.</p></div>{saved && <span className="text-xs font-bold" style={{ color: "var(--theme-secondary)" }}>Enregistré</span>}</div>
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><h2 className="text-xl font-black" style={{ color: "var(--theme-textPrimary)" }}>En-tête du Programme</h2><p className="text-xs" style={{ color: "var(--theme-textSecondary)" }}>Ces champs remplacent les textes codés en dur.</p></div><div className="flex items-center gap-3">{saved && <span className="text-xs font-bold" style={{ color: "var(--theme-secondary)" }}>Enregistré</span>}<button type="button" onClick={() => void saveProgramme()} className="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold uppercase text-white" style={{ backgroundColor: "var(--theme-primary)" }}><Save className="h-4 w-4" /> Enregistrer les modifications</button></div></div>
             <div className="grid gap-4 md:grid-cols-2">
               <Field label="Badge" value={programme.eyebrow} onChange={(value) => updateProgramme({ eyebrow: value })} />
               <Field label="Titre" value={programme.title} onChange={(value) => updateProgramme({ title: value })} />

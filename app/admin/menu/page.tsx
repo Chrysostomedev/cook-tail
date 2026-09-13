@@ -31,7 +31,7 @@ interface MenuItem {
   id: string;
   name: string;
   category: "appetizer" | "main" | "dessert" | "beverage";
-  price: number;
+  price?: number;
   description: string;
   image?: {
     url: string;
@@ -49,6 +49,15 @@ const CATEGORIES = [
   { value: "beverage", label: "Boisson" },
 ];
 
+interface MenuFormData {
+  name: string;
+  category: "main" | "appetizer" | "dessert" | "beverage";
+  price?: number;
+  description: string;
+  imageUrl: string;
+  cloudinaryId: string;
+}
+
 export default function AdminMenuPage() {
   const { showToast } = useToast();
   const [items, setItems] = useState<MenuItem[]>([]);
@@ -61,10 +70,10 @@ export default function AdminMenuPage() {
   const [uploading, setUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-const [formData, setFormData] = useState({
+const [formData, setFormData] = useState<MenuFormData>({
   name: "",
   category: "main" as "main" | "appetizer" | "dessert" | "beverage",
-  price: 0,
+  price: undefined,
   description: "",
   imageUrl: "",
   cloudinaryId: "", // <-- ajouté
@@ -125,7 +134,7 @@ const handleNewItem = () => {
   setFormData({
     name: "",
     category: "main",
-    price: 0,
+    price: undefined,
     description: "",
     imageUrl: "",
     cloudinaryId: "", // <-- ajouté
@@ -153,8 +162,8 @@ const handleEditItem = (item: MenuItem) => {
   const handleSaveItem = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || formData.price <= 0) {
-      showToast("Remplissez tous les champs", "error");
+    if (!formData.name) {
+      showToast("Le nom du plat est obligatoire", "error");
       return;
     }
 
@@ -323,7 +332,7 @@ const handleEditItem = (item: MenuItem) => {
 
               <div className="flex justify-between items-center">
                 <span className="font-extrabold text-lg text-[var(--theme-primary)]">
-                  {item.price.toLocaleString("fr-FR")} FCFA
+                  {item.price ? `${item.price.toLocaleString("fr-FR")} FCFA` : "Prix sur demande"}
                 </span>
               </div>
 
@@ -460,15 +469,15 @@ const handleEditItem = (item: MenuItem) => {
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                      Prix (FCFA) *
+                      Prix (FCFA) (facultatif)
                     </label>
                     <input
                       type="number"
                       min="0"
                       step="500"
-                      value={formData.price}
+                      value={formData.price ?? ""}
                       onChange={(e) =>
-                        setFormData({ ...formData, price: Number(e.target.value) })
+                        setFormData({ ...formData, price: e.target.value ? Number(e.target.value) : undefined })
                       }
                       className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[var(--theme-secondary)]/20"
                     />

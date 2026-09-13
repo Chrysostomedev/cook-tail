@@ -20,7 +20,7 @@ export interface MenuItem {
   id: string;
   name: string;
   category: "appetizer" | "main" | "dessert" | "beverage";
-  price: number;
+  price?: number;
   description: string;
   image?: {
     url: string;
@@ -34,7 +34,7 @@ export interface MenuItem {
 export interface CreateMenuItemDTO {
   name: string;
   category: "appetizer" | "main" | "dessert" | "beverage";
-  price: number;
+  price?: number;
   description: string;
   imageUrl?: string;
   cloudinaryId?: string; // <-- ajouté

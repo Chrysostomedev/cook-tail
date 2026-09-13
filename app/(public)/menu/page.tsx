@@ -124,7 +124,7 @@ export default function MenuPage() {
                               <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" /> Inclus au buffet
                             </span>
                             <span className="font-mono text-slate-400">
-                              {item.price.toLocaleString("fr-FR")} FCFA
+                              {item.price ? `${item.price.toLocaleString("fr-FR")} FCFA` : "Prix sur demande"}
                             </span>
                           </div>
                         </div>
