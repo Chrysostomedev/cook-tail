@@ -88,7 +88,7 @@ export default function AdminScannerPage() {
       }
 
       if (reservation.status === "confirmed") {
-        showToast("✓ Déjà validé", "info");
+        showToast("✓ Pass valide", "info");
         return;
       }
 

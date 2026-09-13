@@ -119,14 +119,14 @@ export default function MenuPage() {
                             </p>
                           </div>
 
-                          <div className="pt-3 flex items-center justify-between border-t border-slate-100 text-[11px] text-amber-800 font-semibold">
+                          {/* <div className="pt-3 flex items-center justify-between border-t border-slate-100 text-[11px] text-amber-800 font-semibold">
                             <span className="flex items-center gap-1">
                               <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" /> Inclus au buffet
                             </span>
                             <span className="font-mono text-slate-400">
                               {item.price ? `${item.price.toLocaleString("fr-FR")} FCFA` : "Prix sur demande"}
                             </span>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     ))}

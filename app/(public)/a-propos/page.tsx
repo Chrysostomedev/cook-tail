@@ -199,7 +199,7 @@ export default function AProposPage() {
             className="text-white font-bold px-7 py-3.5 rounded-2xl text-xs uppercase tracking-wider shadow-lg hover:-translate-y-0.5 transition-all"
             style={{ backgroundColor: 'var(--theme-primary)' }}
           >
-            Réserver mon Pass Élève
+            Réserver mon Pass
           </Link>
           <Link
             href="/contact"

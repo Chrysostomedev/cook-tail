@@ -45,7 +45,7 @@ interface MenuItem {
 const CATEGORIES = [
   { value: "appetizer", label: "Entrée" },
   { value: "main", label: "Plat Principal" },
-  { value: "dessert", label: "Dessert" },
+  { value: "dessert", label: "Gouter" },
   { value: "beverage", label: "Boisson" },
 ];
 
@@ -332,7 +332,7 @@ const handleEditItem = (item: MenuItem) => {
 
               <div className="flex justify-between items-center">
                 <span className="font-extrabold text-lg text-[var(--theme-primary)]">
-                  {item.price ? `${item.price.toLocaleString("fr-FR")} FCFA` : "Prix sur demande"}
+                  {item.price ? `${item.price.toLocaleString("fr-FR")} FCFA` : ""}
                 </span>
               </div>
 

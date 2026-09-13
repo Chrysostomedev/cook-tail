@@ -70,7 +70,7 @@ export default function ThemePage() {
             </div>
             <div className="flex-1">
               <h1 className="text-3xl font-bold" style={{ color: "var(--theme-textPrimary)" }}>
-                Gestionnaire de Thème
+                Gestionnaire de couleurs
               </h1>
               <p style={{ color: "var(--theme-textSecondary)" }}>
                 Personnalisez les couleurs globales de Cook'Tail Service

@@ -13,6 +13,7 @@ import {
   where,
   orderBy,
   Timestamp,
+  deleteField,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
@@ -26,7 +27,7 @@ export interface MenuItem {
     url: string;
     cloudinaryId: string;
   };
-  isAvailable: boolean; 
+  isAvailable: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -37,16 +38,24 @@ export interface CreateMenuItemDTO {
   price?: number;
   description: string;
   imageUrl?: string;
-  cloudinaryId?: string; // <-- ajouté
+  cloudinaryId?: string;
 }
+
 const COLLECTION = "menuItems";
+
+// Helper: retire les clés dont la valeur est undefined (Firestore les refuse)
+function removeUndefined<T extends Record<string, any>>(obj: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== undefined)
+  ) as Partial<T>;
+}
 
 export const createMenuItem = async (data: CreateMenuItemDTO): Promise<MenuItem> => {
   try {
     const { imageUrl, cloudinaryId, ...rest } = data;
 
     const docRef = await addDoc(collection(db, COLLECTION), {
-      ...rest,
+      ...removeUndefined(rest), // price undefined disparaît proprement
       image: imageUrl ? { url: imageUrl, cloudinaryId: cloudinaryId || "" } : null,
       isAvailable: true,
       createdAt: Timestamp.now(),
@@ -67,7 +76,16 @@ export const updateMenuItem = async (
 ): Promise<void> => {
   try {
     const { imageUrl, cloudinaryId, ...rest } = updates;
-    const payload: Record<string, any> = { ...rest, updatedAt: Timestamp.now() };
+    const payload: Record<string, any> = {
+      ...removeUndefined(rest),
+      updatedAt: Timestamp.now(),
+    };
+
+    // Si le prix a été explicitement vidé (undefined dans le form),
+    // on le supprime réellement du document au lieu de l'ignorer.
+    if ("price" in updates && updates.price === undefined) {
+      payload.price = deleteField();
+    }
 
     if (imageUrl !== undefined) {
       payload.image = imageUrl ? { url: imageUrl, cloudinaryId: cloudinaryId || "" } : null;
@@ -79,6 +97,7 @@ export const updateMenuItem = async (
     throw error;
   }
 };
+
 /**
  * Get all menu items
  */
@@ -124,7 +143,6 @@ export const getMenuItemsByCategory = async (
     return [];
   }
 };
-
 
 /**
  * Delete menu item

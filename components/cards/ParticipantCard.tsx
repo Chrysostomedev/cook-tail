@@ -9,7 +9,11 @@ interface ParticipantCardProps {
   reference: string;
   phone: string;
   guestsCount: number;
-  status: "pending" | "confirmed" | "checked_in";
+  // "pending"   = en attente de check-in (peut encore être validé ou refusé)
+  // "checked_in"= déjà validé à l'entrée (état final, aucun bouton)
+  // "cancelled" = refusé (état final, aucun bouton)
+  status: "pending" | "checked_in" | "cancelled";
+  paymentStatus?: "paid" | "unpaid";
   onCheckIn?: () => void;
   onReject?: () => void;
 }
@@ -20,16 +24,25 @@ export const ParticipantCard: React.FC<ParticipantCardProps> = ({
   phone,
   guestsCount,
   status,
+  paymentStatus = "paid",
   onCheckIn,
   onReject,
 }) => {
   const statusColors = {
     checked_in: { bg: "var(--theme-secondary)", text: "white" },
-    confirmed: { bg: "var(--theme-accent)", text: "black" },
-    pending: { bg: "var(--theme-borderColor)", text: "black" }
+    cancelled: { bg: "var(--theme-danger)", text: "white" },
+    pending: { bg: "var(--theme-borderColor)", text: "black" },
+  };
+
+  const statusLabels = {
+    checked_in: "Présent",
+    cancelled: "Refusé",
+    pending: "En attente",
   };
 
   const currentStatus = statusColors[status];
+  // Seul un statut "pending" peut encore recevoir une action.
+  const isActionable = status === "pending";
 
   return (
     <div style={{
@@ -44,10 +57,11 @@ export const ParticipantCard: React.FC<ParticipantCardProps> = ({
       alignItems: "flex-start",
       justifyContent: "space-between",
       gap: "1rem",
-      flexWrap: "wrap"
+      flexWrap: "wrap",
+      opacity: status === "cancelled" ? 0.6 : 1,
     }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
           <span style={{ fontWeight: 800, color: "var(--theme-textPrimary)", fontSize: "1rem" }}>
             {name}
           </span>
@@ -62,8 +76,24 @@ export const ParticipantCard: React.FC<ParticipantCardProps> = ({
             backgroundColor: currentStatus.bg,
             color: currentStatus.text
           }}>
-            {status === "checked_in" ? "Présent" : status === "confirmed" ? "Validé" : "En attente"}
+            {statusLabels[status]}
           </span>
+
+          {paymentStatus === "unpaid" && (
+            <span style={{
+              fontSize: "0.625rem",
+              fontFamily: "var(--ff-space-mono)",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              padding: "0.25rem 0.5rem",
+              borderRadius: "8px",
+              border: "1px solid #f59e0b",
+              backgroundColor: "#fef3c7",
+              color: "#92400e"
+            }}>
+              Paiement non vérifié
+            </span>
+          )}
         </div>
 
         <div style={{
@@ -93,45 +123,52 @@ export const ParticipantCard: React.FC<ParticipantCardProps> = ({
         </div>
       </div>
 
-      {status !== "checked_in" && (onCheckIn || onReject) && (
+      {isActionable && (onCheckIn || onReject) && (
         <div className="flex gap-2">
-        {onReject && <button
-          onClick={onReject}
-          style={{ backgroundColor: "var(--theme-danger)", color: "white", fontWeight: 900, fontSize: "0.75rem", padding: "0.5rem 1rem", borderRadius: "8px", border: "2px solid var(--theme-borderColor)", display: "flex", alignItems: "center", gap: "0.375rem", cursor: "pointer" }}
-        >
-          <XCircle className="w-4 h-4" /> Refuser
-        </button>}
-        {onCheckIn && <button
-          onClick={onCheckIn}
-          style={{
-            backgroundColor: "var(--theme-secondary)",
-            color: "white",
-            fontWeight: 900,
-            fontSize: "0.75rem",
-            padding: "0.5rem 1rem",
-            borderRadius: "8px",
-            border: "2px solid var(--theme-borderColor)",
-            boxShadow: "var(--shadow-retro-md)",
-            textTransform: "uppercase",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.375rem",
-            cursor: "pointer",
-            transition: "all 200ms ease-out"
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translate(2px, 2px)";
-            e.currentTarget.style.boxShadow = "var(--shadow-retro-sm)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translate(0, 0)";
-            e.currentTarget.style.boxShadow = "var(--shadow-retro-md)";
-          }}
-        >
-          <CheckCircle className="w-4 h-4" /> Valider
-        </button>
-        }
+          {onReject && (
+            <button
+              onClick={onReject}
+              style={{ backgroundColor: "var(--theme-danger)", color: "white", fontWeight: 900, fontSize: "0.75rem", padding: "0.5rem 1rem", borderRadius: "8px", border: "2px solid var(--theme-borderColor)", display: "flex", alignItems: "center", gap: "0.375rem", cursor: "pointer" }}
+            >
+              <XCircle className="w-4 h-4" /> Refuser
+            </button>
+          )}
+          {onCheckIn && (
+            <button
+              onClick={onCheckIn}
+              disabled={paymentStatus === "unpaid"}
+              title={paymentStatus === "unpaid" ? "Paiement non vérifié — confirmez le paiement Wave avant le check-in" : undefined}
+              style={{
+                backgroundColor: paymentStatus === "unpaid" ? "var(--theme-borderColor)" : "var(--theme-secondary)",
+                color: paymentStatus === "unpaid" ? "var(--theme-textSecondary)" : "white",
+                fontWeight: 900,
+                fontSize: "0.75rem",
+                padding: "0.5rem 1rem",
+                borderRadius: "8px",
+                border: "2px solid var(--theme-borderColor)",
+                boxShadow: paymentStatus === "unpaid" ? "none" : "var(--shadow-retro-md)",
+                textTransform: "uppercase",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.375rem",
+                cursor: paymentStatus === "unpaid" ? "not-allowed" : "pointer",
+                transition: "all 200ms ease-out"
+              }}
+              onMouseEnter={(e) => {
+                if (paymentStatus === "unpaid") return;
+                e.currentTarget.style.transform = "translate(2px, 2px)";
+                e.currentTarget.style.boxShadow = "var(--shadow-retro-sm)";
+              }}
+              onMouseLeave={(e) => {
+                if (paymentStatus === "unpaid") return;
+                e.currentTarget.style.transform = "translate(0, 0)";
+                e.currentTarget.style.boxShadow = "var(--shadow-retro-md)";
+              }}
+            >
+              <CheckCircle className="w-4 h-4" /> Valider
+            </button>
+          )}
         </div>
       )}
     </div>
