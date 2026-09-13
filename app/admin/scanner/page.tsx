@@ -79,6 +79,12 @@ export default function AdminScannerPage() {
         return;
       }
 
+      if (reservation.paymentStatus !== "paid") {
+        showToast("Paiement non confirmé : accès refusé", "error");
+        setScannedData((prev) => [...prev, { reservationId: reservation.id, timestamp: new Date(), success: false }]);
+        return;
+      }
+
       if (reservation.status === "confirmed") {
         showToast("✓ Déjà validé", "info");
         return;

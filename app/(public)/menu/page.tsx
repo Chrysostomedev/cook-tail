@@ -6,6 +6,7 @@ import React from "react";
 import Image from "next/image";
 import { Utensils, GlassWater, Cookie, Flame, Sparkles, CheckCircle2, Loader } from "lucide-react";
 import { VisibilityWrapper } from "@/components/VisibilityWrapper";
+import { useContent } from "@/context/ContentContext";
 import { useMenuItems } from "@/lib/hooks/useMenuItems";
 import type { MenuItem } from "@/lib/services/menuService";
 
@@ -26,6 +27,7 @@ const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80";
 
 export default function MenuPage() {
+  const { content } = useContent();
   const { items, loading, error } = useMenuItems();
 
   // Regroupe les items par catégorie, dans l'ordre défini par CATEGORY_CONFIG
@@ -46,13 +48,13 @@ export default function MenuPage() {
         <div className="backdrop-blur-md border border-amber-900/10 p-6 md:p-10 rounded-3xl shadow-xl shadow-amber-950/5 text-center space-y-3 relative overflow-hidden" style={{ backgroundColor: 'var(--theme-bgPrimary)' }}>
           <div className="absolute top-0 right-0 w-48 h-48 rounded-full blur-3xl pointer-events-none opacity-20" style={{ backgroundColor: 'var(--theme-secondary)' }} />
           <span className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest px-3.5 py-1 rounded-full border" style={{ backgroundColor: 'var(--theme-accent)', color: 'var(--theme-primary)', borderColor: 'var(--theme-secondary)' }}>
-            <Flame className="w-3.5 h-3.5" style={{ color: 'var(--theme-secondary)' }} /> Buffet Récréation à Volonté
+            <Flame className="w-3.5 h-3.5" style={{ color: 'var(--theme-secondary)' }} /> {content.menuHeader.badge}
           </span>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight" style={{ color: 'var(--theme-textPrimary)' }}>
-            La Carte des <span className="font-serif italic" style={{ color: 'var(--theme-secondary)' }}>Gourmandises</span>
+            {content.menuHeader.title.replace(content.menuHeader.accent, "")} <span className="font-serif italic" style={{ color: 'var(--theme-secondary)' }}>{content.menuHeader.accent}</span>
           </h1>
           <p className="text-xs md:text-sm max-w-xl mx-auto" style={{ color: 'var(--theme-textSecondary)' }}>
-            Tous les plats, jus locaux, cocktails et friandises de notre enfance sont entièrement inclus dans votre Pass Droit d'Accès !
+            {content.menuHeader.description}
           </p>
         </div>
       </VisibilityWrapper>

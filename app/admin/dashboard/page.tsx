@@ -77,6 +77,18 @@ const handleConfirmPayment = async (id: string) => {
     }
   };
 
+  const handleReject = async (id: string) => {
+    if (!window.confirm("Refuser cette réservation ? Cette action peut annuler le pass.")) return;
+    try {
+      await updateReservation(id, { status: "cancelled" });
+      setReservations((prev) => prev.map((r) => r.id === id ? { ...r, status: "cancelled" } : r));
+      showToast("Réservation refusée", "info");
+    } catch (error) {
+      console.error("Error rejecting reservation:", error);
+      showToast("Erreur lors du refus", "error");
+    }
+  };
+
 const stats = {
   totalRevenue: reservations.reduce((sum, r) => sum + (r.amountPaid || 0), 0),
   reservedSpots: reservations.filter(r => r.status !== "pending").length,
@@ -254,6 +266,7 @@ const filtered = reservations.filter(
   guestsCount={r.groupSize || 0}
   status={(r.status === "confirmed" ? "confirmed" : "pending") as "pending" | "confirmed" | "checked_in"}
   onCheckIn={() => handleCheckIn(r.id)}
+  onReject={() => handleReject(r.id)}
 />
               ))
             ) : (

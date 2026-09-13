@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { User, Phone, Ticket, CheckCircle, Clock } from "lucide-react";
+import { User, Phone, Ticket, CheckCircle, XCircle } from "lucide-react";
 
 interface ParticipantCardProps {
   name: string;
@@ -11,6 +11,7 @@ interface ParticipantCardProps {
   guestsCount: number;
   status: "pending" | "confirmed" | "checked_in";
   onCheckIn?: () => void;
+  onReject?: () => void;
 }
 
 export const ParticipantCard: React.FC<ParticipantCardProps> = ({
@@ -20,6 +21,7 @@ export const ParticipantCard: React.FC<ParticipantCardProps> = ({
   guestsCount,
   status,
   onCheckIn,
+  onReject,
 }) => {
   const statusColors = {
     checked_in: { bg: "var(--theme-secondary)", text: "white" },
@@ -91,8 +93,15 @@ export const ParticipantCard: React.FC<ParticipantCardProps> = ({
         </div>
       </div>
 
-      {status !== "checked_in" && onCheckIn && (
-        <button
+      {status !== "checked_in" && (onCheckIn || onReject) && (
+        <div className="flex gap-2">
+        {onReject && <button
+          onClick={onReject}
+          style={{ backgroundColor: "var(--theme-danger)", color: "white", fontWeight: 900, fontSize: "0.75rem", padding: "0.5rem 1rem", borderRadius: "8px", border: "2px solid var(--theme-borderColor)", display: "flex", alignItems: "center", gap: "0.375rem", cursor: "pointer" }}
+        >
+          <XCircle className="w-4 h-4" /> Refuser
+        </button>}
+        {onCheckIn && <button
           onClick={onCheckIn}
           style={{
             backgroundColor: "var(--theme-secondary)",
@@ -122,6 +131,8 @@ export const ParticipantCard: React.FC<ParticipantCardProps> = ({
         >
           <CheckCircle className="w-4 h-4" /> Valider
         </button>
+        }
+        </div>
       )}
     </div>
   );

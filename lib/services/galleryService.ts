@@ -9,6 +9,10 @@ import {
   query,
   orderBy,
   Timestamp,
+  onSnapshot,
+  setDoc,
+  where,
+  type Unsubscribe,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
@@ -38,6 +42,43 @@ export interface CreateGalleryItemDTO {
 }
 
 const COLLECTION = "galleryItems";
+
+export const subscribeToHeroImages = (
+  onImages: (images: string[]) => void,
+  onError?: (error: Error) => void
+): Unsubscribe => onSnapshot(collection(db, COLLECTION), (snapshot) => {
+  const images = snapshot.docs
+    .filter((item) => item.data().isHero === true)
+    .sort((a, b) => (a.data().order ?? 0) - (b.data().order ?? 0))
+    .map((item) => item.data().image?.url)
+    .filter((url): url is string => typeof url === "string" && url.length > 0);
+  onImages(images);
+}, (error) => {
+  console.error("Error subscribing to Hero images:", error);
+  onError?.(error);
+});
+
+export const saveHeroImages = async (images: string[]): Promise<void> => {
+  const existing = await getDocs(collection(db, COLLECTION));
+  const heroDocs = existing.docs.filter((item) => item.data().isHero === true);
+  const activeIds = new Set(images.map((_, index) => `hero_${index}`));
+
+  await Promise.all(heroDocs
+    .filter((item) => !activeIds.has(item.id))
+    .map((item) => deleteDoc(doc(db, COLLECTION, item.id))));
+
+  await Promise.all(images.map((url, index) => setDoc(doc(db, COLLECTION, `hero_${index}`), {
+    title: `Hero ${index + 1}`,
+    category: "evenements",
+    tag: "hero",
+    description: "Image du Hero principal",
+    image: { url, cloudinaryId: "" },
+    isHero: true,
+    order: index,
+    updatedAt: Timestamp.now(),
+    createdAt: Timestamp.now(),
+  }, { merge: true })));
+};
 
 export const createGalleryItem = async (
   data: CreateGalleryItemDTO

@@ -2,6 +2,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from "react";
+import { saveThemeConfig, subscribeToTheme } from "@/lib/services/themeService";
 
 /**
  * Theme Configuration
@@ -134,31 +135,53 @@ const presetThemes: Record<string, ThemeConfig> = {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const getCachedPreset = (): string => {
+  if (typeof window === "undefined") return "default";
+  return localStorage.getItem("cooktail-theme-preset") || "default";
+};
+
+const getCachedTheme = (): ThemeConfig => {
+  if (typeof window === "undefined") return defaultTheme;
+
+  const savedTheme = localStorage.getItem("cooktail-theme-custom");
+  if (!savedTheme) return presetThemes[getCachedPreset()] || defaultTheme;
+
+  try {
+    return { ...defaultTheme, ...JSON.parse(savedTheme) };
+  } catch {
+    return presetThemes[getCachedPreset()] || defaultTheme;
+  }
+};
+
 /**
  * ThemeProvider — Enveloppe l'app pour fournir le thème global
  */
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<ThemeConfig>(defaultTheme);
-  const [currentPreset, setCurrentPreset] = useState<string>("default");
+  const [theme, setThemeState] = useState<ThemeConfig>(getCachedTheme);
+  const [currentPreset, setCurrentPreset] = useState<string>(getCachedPreset);
   const [mounted, setMounted] = useState(false);
 
-  // Charger le thème sauvegardé depuis localStorage (client-side seulement)
+  // Le cache local permet un affichage immédiat, puis Firestore devient la source de vérité.
   useEffect(() => {
-    const savedPreset = localStorage.getItem("cooktail-theme-preset") || "default";
-    const savedTheme = localStorage.getItem("cooktail-theme-custom");
-
-    if (savedTheme) {
-      try {
-        setThemeState(JSON.parse(savedTheme));
-      } catch {
-        setThemeState(presetThemes[savedPreset] || defaultTheme);
-      }
-    } else {
-      setThemeState(presetThemes[savedPreset] || defaultTheme);
-    }
-
-    setCurrentPreset(savedPreset);
     setMounted(true);
+
+    const unsubscribe = subscribeToTheme(
+      (remoteConfig) => {
+        if (!remoteConfig?.theme) return;
+
+        const remoteTheme = {
+          ...defaultTheme,
+          ...remoteConfig.theme,
+        };
+        setThemeState(remoteTheme);
+        setCurrentPreset(remoteConfig.preset || "custom");
+      },
+      () => {
+        // Le cache local reste utilisable si Firestore est indisponible.
+      }
+    );
+
+    return unsubscribe;
   }, []);
 
   // Appliquer le thème aux variables CSS
@@ -179,6 +202,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setThemeState(newTheme);
     setCurrentPreset("custom");
     localStorage.setItem("cooktail-theme-preset", "custom");
+    void saveThemeConfig(newTheme, "custom").catch((error) => {
+      console.error("Unable to save theme remotely:", error);
+    });
   };
 
   const switchPreset = (presetName: string) => {
@@ -188,6 +214,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       setCurrentPreset(presetName);
       localStorage.setItem("cooktail-theme-preset", presetName);
       localStorage.removeItem("cooktail-theme-custom");
+      void saveThemeConfig(preset, presetName).catch((error) => {
+        console.error("Unable to save theme remotely:", error);
+      });
     }
   };
 
@@ -196,6 +225,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setCurrentPreset("default");
     localStorage.setItem("cooktail-theme-preset", "default");
     localStorage.removeItem("cooktail-theme-custom");
+    void saveThemeConfig(defaultTheme, "default").catch((error) => {
+      console.error("Unable to save theme remotely:", error);
+    });
   };
 
   // Mémoïser la valeur du Provider — DOIT être appelé à chaque render, avant tout return

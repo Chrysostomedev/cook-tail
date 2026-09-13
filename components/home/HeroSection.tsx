@@ -7,26 +7,33 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { EVENT_INFO } from "@/lib/constants";
 import { formatCFA } from "@/lib/utils";
-
-// Images d'ambiance chaleureuse
-const HERO_IMAGES = [
-  "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1600&q=80",
-];
+import { useContent } from "@/context/ContentContext";
 
 export const HeroSection = () => {
+  const { content } = useContent();
+  const hero = content?.hero ?? {
+    images: [],
+    badge: "",
+    capacity: "",
+    title: EVENT_INFO.title,
+    subtitle: EVENT_INFO.subtitle,
+    primaryCta: "Réserver Mon Pass",
+    secondaryCta: "Programme",
+    gamesCta: "Jeux",
+  };
+  const images = Array.isArray(hero.images) ? hero.images.filter(Boolean) : [];
   const [currentImg, setCurrentImg] = useState(0);
 
   useEffect(() => {
+    setCurrentImg((current) => Math.min(current, Math.max(images.length - 1, 0)));
     const timer = setInterval(() => {
-      setCurrentImg((prev) => (prev + 1) % HERO_IMAGES.length);
+      if (images.length > 1) setCurrentImg((prev) => (prev + 1) % images.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [images.length]);
 
-  const nextSlide = () => setCurrentImg((prev) => (prev + 1) % HERO_IMAGES.length);
-  const prevSlide = () => setCurrentImg((prev) => (prev === 0 ? HERO_IMAGES.length - 1 : prev - 1));
+  const nextSlide = () => images.length && setCurrentImg((prev) => (prev + 1) % images.length);
+  const prevSlide = () => images.length && setCurrentImg((prev) => (prev === 0 ? images.length - 1 : prev - 1));
 
   return (
     <section className="relative w-full overflow-hidden my-2 md:my-4 rounded-lg md:rounded-2xl shadow-lg border"
@@ -44,7 +51,7 @@ export const HeroSection = () => {
           exit={{ opacity: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('${HERO_IMAGES[currentImg]}')` }}
+          style={{ backgroundImage: images[currentImg] ? `url('${images[currentImg]}')` : undefined }}
         />
       </AnimatePresence>
 
@@ -95,7 +102,7 @@ export const HeroSection = () => {
               borderColor: "rgba(255, 255, 255, 0.2)"
             }}
           >
-            Événement Exclusif Abidjan
+            {hero.badge}
           </span>
           <span 
             className="px-3 py-1.5 rounded-full text-xs sm:text-sm font-extrabold tracking-wider text-white border-2"
@@ -104,17 +111,17 @@ export const HeroSection = () => {
               borderColor: "var(--theme-primary)"
             }}
           >
-            30 Places Uniquement
+            {hero.capacity}
           </span>
         </div>
 
         {/* Titre & Sous-titre */}
         <div className="space-y-3 md:space-y-4">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight uppercase leading-tight font-serif">
-            {EVENT_INFO.title}
+            {hero.title}
           </h1>
           <p className="text-base sm:text-lg text-white/90 font-serif italic max-w-2xl mx-auto leading-relaxed">
-            "{EVENT_INFO.subtitle}"
+            "{hero.subtitle}"
           </p>
         </div>
 
@@ -129,7 +136,7 @@ export const HeroSection = () => {
               boxShadow: "4px 4px 0px 0px rgba(0, 0, 0, 0.3)"
             }}
           >
-            Réserver Mon Pass ({formatCFA(EVENT_INFO.price)})
+            {hero.primaryCta} ({formatCFA(EVENT_INFO.price)})
             <span>→</span>
           </Link>
 
@@ -141,7 +148,7 @@ export const HeroSection = () => {
               borderColor: "rgba(255, 255, 255, 0.2)"
             }}
           >
-            Programme
+            {hero.secondaryCta}
           </Link>
            <Link
             href="/jeux"
@@ -151,13 +158,13 @@ export const HeroSection = () => {
               borderColor: "rgba(255, 255, 255, 0.2)"
             }}
           >
-            Jeux
+            {hero.gamesCta}
           </Link>
         </div>
 
         {/* Indicateurs de Slide */}
         <div className="flex justify-center gap-2 pt-3">
-          {HERO_IMAGES.map((_, idx) => (
+          {images.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentImg(idx)}

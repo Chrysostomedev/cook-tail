@@ -1,7 +1,7 @@
 // app/(public)/layout.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect,  useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -16,35 +16,48 @@ import {
   ChevronDown,
   Image as GalleryIcon,
   Briefcase,
-  User
+  User,
+  Gamepad2
 } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Footer } from "@/components/layout/Footer";
+import { useVisibility } from "@/context/VisibilityContext";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [hasReservation, setHasReservation] = useState(false);
+  const { visibility } = useVisibility();
+
+  useEffect(() => {
+    setMounted(true);
+    setHasReservation(Boolean(localStorage.getItem("cooktail-reservation-id")));
+  }, []);
 
   const allNavTabs = [
     // { label: "Accueil", href: "/", icon: Home },
-    { label: "Programme", href: "/programme", icon: Calendar },
-    { label: "Menu", href: "/menu", icon: Utensils },
-    { label: "Mon pass", href: "/mon-pass", icon: Ticket },
-    { label: "Services", href: "/services", icon: Briefcase },
-    { label: "Contact", href: "/contact", icon: Info },
-    { label: "Galerie", href: "/galerie", icon: GalleryIcon },
-    { label: "Profil", href: "/profil", icon: User },
-    { label: "A propos de nous", href: "/a-propos", icon: User },
-
+    { label: "Programme", href: "/programme", icon: Calendar, visibilityId: "nav.programme" },
+    { label: "Menu", href: "/menu", icon: Utensils, visibilityId: "nav.menu" },
+    { label: "Mon pass", href: "/mon-pass", icon: Ticket, visibilityId: "nav.mon-pass" },
+    { label: "Services", href: "/services", icon: Briefcase, visibilityId: "nav.services" },
+    { label: "Contact", href: "/contact", icon: Info, visibilityId: "nav.contact" },
+    { label: "Galerie", href: "/galerie", icon: GalleryIcon, visibilityId: "nav.galerie" },
+    { label: "Jeux", href: "/jeux", icon: Gamepad2, visibilityId: "nav.jeux" },
+    ...(hasReservation ? [{ label: "Profil", href: "/profil", icon: User, visibilityId: "nav.profil" }] : []),
+    { label: "A propos de nous", href: "/a-propos", icon: User, visibilityId: "nav.about" },
   ];
 
   const bottomBarTabs = [
-    { label: "Accueil", href: "/", icon: Home },
-    { label: "Programme", href: "/programme", icon: Calendar },
-    { label: "Services", href: "/services", icon: Utensils },
-    { label: "Menu", href: "/reservation", icon: Ticket },
+    { label: "Accueil", href: "/", icon: Home, visibilityId: "nav.accueil" },
+    { label: "Programme", href: "/programme", icon: Calendar, visibilityId: "nav.programme" },
+    { label: "Services", href: "/services", icon: Utensils, visibilityId: "nav.services" },
+    { label: "Menu", href: "/reservation", icon: Ticket, visibilityId: "nav.mon-pass" },
   ];
+
+  const visibleNavTabs = allNavTabs.filter((tab) => visibility[tab.visibilityId] !== false);
+  const visibleBottomBarTabs = bottomBarTabs.filter((tab) => visibility[tab.visibilityId] !== false);
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "var(--theme-bgPrimary)", color: "var(--theme-textPrimary)", display: "flex", flexDirection: "column", fontFamily: "var(--ff-manrope)", paddingBottom: "6rem" }} className="md:pb-0">
@@ -115,8 +128,8 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
 
           {/* Navigation Desktop */}
           <div className="hidden md:flex items-center gap-1.5 text-xs font-semibold">
-            {allNavTabs.slice(0, 8).map((tab) => {
-              const isActive = pathname === tab.href;
+            {visibleNavTabs.slice(0, 9).map((tab) => {
+              const isActive = mounted && pathname === tab.href;
               return (
                 <Link
                   key={tab.href}
@@ -204,7 +217,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           justifyContent: "space-around",
           alignItems: "center"
         }}>
-          {bottomBarTabs.map((tab) => {
+          {visibleBottomBarTabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = pathname === tab.href;
             return (
@@ -296,9 +309,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
               </div>
 
               <div className="grid grid-cols-2 gap-2 pt-1">
-                {allNavTabs.map((tab) => {
+                {visibleNavTabs.map((tab) => {
                   const Icon = tab.icon;
-                  const isActive = pathname === tab.href;
+const isActive = pathname === tab.href;
                   return (
                     <Link
                       key={tab.href}

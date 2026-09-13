@@ -2,6 +2,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from "react";
+import { saveVisibility, subscribeToVisibility } from "@/lib/services/visibilityService";
 
 export interface ComponentVisibility {
   [key: string]: boolean;
@@ -62,6 +63,18 @@ const defaultVisibility: ComponentVisibility = {
 
   // Pages Réservation
   "reservation.form": true,
+
+  // Onglets de navigation publics
+  "nav.programme": true,
+  "nav.menu": true,
+  "nav.mon-pass": true,
+  "nav.services": true,
+  "nav.contact": true,
+  "nav.galerie": true,
+  "nav.jeux": true,
+  "nav.profil": true,
+  "nav.about": true,
+  "nav.accueil": true,
 };
 
 const VisibilityContext = createContext<VisibilityContextType | undefined>(undefined);
@@ -81,6 +94,11 @@ export const VisibilityProvider: React.FC<{ children: ReactNode }> = ({ children
       }
     }
     setMounted(true);
+    return subscribeToVisibility((remoteVisibility) => {
+      if (remoteVisibility) {
+        setVisibilityState((current) => ({ ...current, ...remoteVisibility }));
+      }
+    });
   }, []);
 
   // Sauvegarder dans localStorage
@@ -91,18 +109,24 @@ export const VisibilityProvider: React.FC<{ children: ReactNode }> = ({ children
   }, [visibility, mounted]);
 
   const toggleComponent = (componentName: string) => {
-    setVisibilityState((prev) => ({
+    setVisibilityState((prev) => {
+      const next = {
       ...prev,
       [componentName]: !prev[componentName],
-    }));
+      };
+      void saveVisibility(next).catch((error) => console.error("Unable to save visibility:", error));
+      return next;
+    });
   };
 
   const setVisibility = (newVisibility: ComponentVisibility) => {
     setVisibilityState(newVisibility);
+    void saveVisibility(newVisibility).catch((error) => console.error("Unable to save visibility:", error));
   };
 
   const resetVisibility = () => {
     setVisibilityState(defaultVisibility);
+    void saveVisibility(defaultVisibility).catch((error) => console.error("Unable to save visibility:", error));
   };
 
    // Mémoïser la valeur du Provider — appelé à chaque render, avant tout return
@@ -115,10 +139,6 @@ export const VisibilityProvider: React.FC<{ children: ReactNode }> = ({ children
     }),
     [visibility]
   );
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return (
     <VisibilityContext.Provider value={value}>

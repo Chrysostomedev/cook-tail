@@ -4,56 +4,30 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Clock, Award, PartyPopper, Utensils } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
 
 export const ProgramSlider = () => {
-  const steps = [
-    {
-      time: "12H00 - 13H30",
-      title: "Rassemblement & Appel des Élèves",
-      desc: "Accueil au portail, remise des badges de classe, mocktail de bienvenue et photo de classe d'époque.",
-      icon: Clock,
-      badge: "Accent Ambré",
-    },
-    {
-      time: "13H30 - 15H30",
-      title: "Buffet Récréation & Service Cook'Tail",
-      desc: "Dégustation gastronomique rétro, grillades, amuse-bouches d'enfance et bar à cocktails signatures à volonté.",
-      icon: Utensils,
-      badge: "Gourmand",
-    },
-    {
-      time: "15H30 - 17H30",
-      title: "Jeux de Cour & Olympiades Rétro",
-      desc: "Concours de Marelle, Ludo, Baoulé, Quiz de culture générale 2000s et remise du Prix du Major de Promotion.",
-      icon: Award,
-      badge: "Compétition",
-    },
-    {
-      time: "17H30 - 20H00",
-      title: "La Grande Boum de Fin d'Année",
-      desc: "Piste de danse enflammée par DJ Mix Coupé-Décalé Rétro, Zoblazo & R&B old school. Ambiance garantie !",
-      icon: PartyPopper,
-      badge: "Soirée",
-    },
-  ];
+  const { content } = useContent();
+  const program = content.program;
+  const iconMap = { clock: Clock, utensils: Utensils, award: Award, party: PartyPopper };
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const prev = () => setCurrentIndex((idx) => (idx === 0 ? steps.length - 1 : idx - 1));
-  const next = () => setCurrentIndex((idx) => (idx === steps.length - 1 ? 0 : idx + 1));
+  const prev = () => setCurrentIndex((idx) => (idx === 0 ? program.steps.length - 1 : idx - 1));
+  const next = () => setCurrentIndex((idx) => (idx === program.steps.length - 1 ? 0 : idx + 1));
 
-  const current = steps[currentIndex];
-  const Icon = current.icon;
+  const current = program.steps[currentIndex] || program.steps[0];
+  const Icon = iconMap[current.icon];
 
   return (
     <div className="backdrop-blur-md border border-amber-900/10 p-6 md:p-8 rounded-3xl shadow-xl shadow-amber-950/5 space-y-6" style={{ backgroundColor: 'var(--theme-bgPrimary)' }}>
       <div className="flex items-center justify-between pb-4" style={{ borderBottom: `1px solid rgba(0,0,0,0.1)` }}>
         <div>
           <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-md border border-amber-800/10" style={{ backgroundColor: 'var(--theme-bgSecondary)', color: 'var(--theme-secondary)' }}>
-            Emploi du Temps
+            {program.eyebrow}
           </span>
           <h2 className="text-xl md:text-2xl font-extrabold tracking-tight mt-1.5" style={{ color: 'var(--theme-textPrimary)' }}>
-            Déroulement de la <span className="font-serif italic" style={{ color: 'var(--theme-secondary)' }}>Journée</span>
+            {program.title.replace(program.accent, "")}<span className="font-serif italic" style={{ color: 'var(--theme-secondary)' }}>{program.accent}</span>
           </h2>
         </div>
         <div className="flex gap-2">
@@ -99,7 +73,7 @@ export const ProgramSlider = () => {
       </div>
 
       <div className="flex justify-center gap-2 pt-1">
-        {steps.map((_, i) => (
+        {program.steps.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrentIndex(i)}

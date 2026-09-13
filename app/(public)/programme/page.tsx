@@ -7,8 +7,12 @@ import React from "react";
 import { PROGRAMME_DATA } from "@/data/programme";
 import { Clock, Camera, Utensils, Trophy, Music, Sparkles, Flame, Bell } from "lucide-react";
 import { VisibilityWrapper } from "@/components/VisibilityWrapper";
+import { useContent } from "@/context/ContentContext";
+import { defaultContent } from "@/lib/content";
 
 export default function ProgrammePage() {
+  const { content } = useContent();
+  const programme = content.programmePage || defaultContent.programmePage;
   const getIcon = (name: string) => {
     switch (name) {
       case "Camera": return <Camera className="w-5 h-5 text-amber-900" />;
@@ -27,14 +31,14 @@ export default function ProgrammePage() {
         <div className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full blur-3xl pointer-events-none opacity-20" style={{ backgroundColor: 'var(--theme-accent)' }} />
         <div className="flex items-center gap-2 mb-2">
           <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full border" style={{ backgroundColor: 'var(--theme-accent)', color: 'var(--theme-primary)', borderColor: 'var(--theme-accent)' }}>
-            <Bell className="w-3.5 h-3.5 animate-bounce" /> Emploi du Temps Officiel
+            <Bell className="w-3.5 h-3.5 animate-bounce" /> {programme.eyebrow}
           </span>
         </div>
         <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
-          Le Programme de la <span className="font-serif italic" style={{ color: 'var(--theme-accent)' }}>Récré</span>
+          {programme.title.replace(programme.accent, "")}<span className="font-serif italic" style={{ color: 'var(--theme-accent)' }}>{programme.accent}</span>
         </h1>
         <p className="text-xs md:text-sm text-slate-300 mt-2 max-w-xl leading-relaxed">
-          Quand la cloche sonne, c’est le moment de réjouissance ! Découvrez l'enchaînement exact des cours gourmands et des Olympiades d'enfance.
+          {programme.description}
         </p>
       </div>
       </VisibilityWrapper>
@@ -42,7 +46,7 @@ export default function ProgrammePage() {
       {/* Timeline Chronologique Immersive */}
       <VisibilityWrapper componentId="programme.timeline">
         <div className="relative border-l-2 ml-4 md:ml-36 space-y-8 pl-6 md:pl-10" style={{ borderColor: 'var(--theme-secondary)' }}>
-        {PROGRAMME_DATA.map((item, idx) => (
+        {(programme.items.length ? programme.items : PROGRAMME_DATA).map((item, idx) => (
           <div
             key={item.id || idx}
             className="relative group transition-all duration-300 hover:translate-x-1"

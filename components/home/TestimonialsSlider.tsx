@@ -4,34 +4,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, GraduationCap, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
 
 export const TestimonialsSlider = () => {
-  const reviews = [
-    {
-      id: 1,
-      name: "Marc-Antoine K.",
-      promo: "Promo Lycée Classique 2012",
-      text: "L'ambiance était tout simplement nostalgique ! Retrouver les jus locaux et les jeux de billes en uniforme kaki... Cook'Tail a fait un travail remarquable.",
-      rating: 5,
-      avatarBg: "bg-lime-500/20 text-lime-400 border-lime-500/30",
-    },
-    {
-      id: 2,
-      name: "Sonia Bley",
-      promo: "Ancienne Élève Sainte-Marie",
-      text: "Le bar à cocktails signature était au-dessus de mes attentes. Le dress code Bleu & Blanc a redonné une vraie magie au brunch.",
-      rating: 5,
-      avatarBg: "bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/30",
-    },
-    {
-      id: 3,
-      name: "Franck A.",
-      promo: "Promo 2008",
-      text: "Organisation au top, la musique Rétro Coupé Décalé nous a rappelés nos meilleures années au collège. À refaire absolument !",
-      rating: 5,
-      avatarBg: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-    },
-  ];
+  const { content } = useContent();
+  const reviews = content.testimonials || [];
 
   const [[currentIndex, direction], setPage] = useState([0, 1]);
   const [isPaused, setIsPaused] = useState(false);
@@ -73,7 +50,9 @@ export const TestimonialsSlider = () => {
     }),
   };
 
-  const current = reviews[currentIndex];
+  const current = reviews[currentIndex] || reviews[0];
+
+  if (!current) return null;
 
   return (
     <div
@@ -151,9 +130,9 @@ export const TestimonialsSlider = () => {
             {/* Auteur */}
             <div className="flex items-center gap-3 pt-2">
               <div
-                className={`w-10 h-10 rounded-full border flex items-center justify-center font-extrabold text-xs ${current.avatarBg}`}
+                className="w-10 h-10 rounded-full border flex items-center justify-center overflow-hidden bg-white/10 font-extrabold text-xs"
               >
-                {current.name.substring(0, 2).toUpperCase()}
+              {current.image ? <img src={current.image} alt={current.name} className="h-full w-full rounded-full object-cover" /> : current.name.substring(0, 2).toUpperCase()}
               </div>
               <div>
                 <strong className="block text-xs font-bold text-slate-100 tracking-wide">

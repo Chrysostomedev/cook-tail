@@ -2,23 +2,23 @@
 
 import React, { useState, useEffect } from "react";
 import { Clock, AlarmClock, Sparkles } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
 
 export const CountdownSection = () => {
-  // Temps statique pour l'exemple
-  const [timeLeft, setTimeLeft] = useState({ jours: 12, heures: 8, minutes: 45, secondes: 20 });
+  const { content } = useContent();
+  const countdown = content.countdown;
+  const [timeLeft, setTimeLeft] = useState({ jours: 0, heures: 0, minutes: 0, secondes: 0 });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.secondes > 0) return { ...prev, secondes: prev.secondes - 1 };
-        if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1, secondes: 59 };
-        if (prev.heures > 0) return { ...prev, heures: prev.heures - 1, minutes: 59, secondes: 59 };
-        if (prev.jours > 0) return { ...prev, jours: prev.jours - 1, heures: 23, minutes: 59, secondes: 59 };
-        return prev; // Compte à rebours terminé
-      });
-    }, 1000);
+    const update = () => {
+      const remaining = Math.max(0, new Date(countdown.targetDate).getTime() - Date.now());
+      const totalSeconds = Math.floor(remaining / 1000);
+      setTimeLeft({ jours: Math.floor(totalSeconds / 86400), heures: Math.floor(totalSeconds / 3600) % 24, minutes: Math.floor(totalSeconds / 60) % 60, secondes: totalSeconds % 60 });
+    };
+    update();
+    const timer = setInterval(update, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [countdown.targetDate]);
 
   const timeUnits = [
     { label: "Jours", val: timeLeft.jours },
@@ -38,15 +38,15 @@ export const CountdownSection = () => {
         <div className="flex items-center gap-2.5 justify-center lg:justify-start">
           <AlarmClock className="w-5 h-5 text-red-600 animate-pulse" style={{ color: 'var(--theme-danger)' }} />
           <span className="text-xs font-mono font-bold uppercase text-white px-3.5 py-1.5 rounded-full inline-block tracking-wider shadow-md" style={{ backgroundColor: 'var(--theme-primary)' }}>
-            INSCRIPTIONS • DERNIER APPEL
+            {countdown.badge}
           </span>
         </div>
         <h2 className="text-2xl md:text-3xl font-extrabold uppercase leading-tight tracking-tight" style={{ color: 'var(--theme-primary)' }}>
-          Le Portail Se <span style={{ color: 'var(--theme-danger)' }} className="font-extrabold">Ferme</span> Bientôt !
+          {countdown.title.replace(countdown.highlight, "")}<span style={{ color: 'var(--theme-danger)' }} className="font-extrabold">{countdown.highlight}</span>
         </h2>
         <p className="text-sm md:text-base font-medium italic flex items-center gap-2 lg:justify-start" style={{ color: 'var(--theme-textSecondary)' }}>
           <Sparkles className="w-4 h-4" style={{ color: 'var(--theme-secondary)' }} />
-          Ne manquez pas la rentrée récréative de l'année.
+          {countdown.description}
         </p>
       </div>
 

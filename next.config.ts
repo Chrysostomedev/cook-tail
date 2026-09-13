@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "res.cloudinary.com", // <-- ajouté
       },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+      },
     ],
   },
 };

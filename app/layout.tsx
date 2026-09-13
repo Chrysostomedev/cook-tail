@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ToastProvider } from "@/context/ToastContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { ContentProvider } from "@/context/ContentContext";
 import { VisibilityProvider } from "@/context/VisibilityContext";
 import { NotificationInitializer } from "@/components/NotificationInitializer";
 import { AnalyticsTracker } from "@/components/specials/AnalyticsTracker";
@@ -23,13 +24,15 @@ export default function RootLayout({
     <html lang="fr">
       <body className={fontVariables}>
         <ThemeProvider>
-          <VisibilityProvider>
-            <ToastProvider>
-              <NotificationInitializer />
-               <AnalyticsTracker />
-              {children}
-            </ToastProvider>
-          </VisibilityProvider>
+          <ContentProvider>
+            <VisibilityProvider>
+              <ToastProvider>
+                <NotificationInitializer />
+                <AnalyticsTracker />
+                {children}
+              </ToastProvider>
+            </VisibilityProvider>
+          </ContentProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -17,6 +17,8 @@ import {
   Utensils,
   BriefcaseBusiness,
   Image as ImageIcon,
+  FileText,
+  MessageSquare,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -37,7 +39,7 @@ const navigationGroups: NavGroup[] = [
     groupLabel: "Vue d'ensemble",
     items: [
       { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-      { label: "Statistiques", href: "/admin/statistics", icon: BarChart3 },
+      // { label: "Statistiques", href: "/admin/statistics", icon: BarChart3 },
       { label: "Menu", href: "/admin/menu", icon: Utensils },
       { label: "Services", href: "/admin/services", icon: BriefcaseBusiness },
       { label: "Galerie", href: "/admin/galerie", icon: ImageIcon },
@@ -46,7 +48,7 @@ const navigationGroups: NavGroup[] = [
   {
     groupLabel: "Gestion Billetterie",
     items: [
-      { label: "Scanner Pass", href: "/admin/scanner", icon: QrCode, badge: "Live" },
+      { label: "Scanner Pass", href: "/admin/scanner", icon: QrCode },
       { label: "Réservations", href: "/admin/reservations", icon: Ticket },
       { label: "Evenements", href: "/admin/evenement", icon: Ticket },
     ],
@@ -54,10 +56,12 @@ const navigationGroups: NavGroup[] = [
   {
     groupLabel: "Administration",
     items: [
-      { label: "Mon Profil", href: "/admin/profil", icon: User },
-      { label: "Thème", href: "/admin/theme", icon: Palette },
-      { label: "Composants", href: "/admin/components", icon: Eye },
       { label: "Jeux", href: "/admin/jeux", icon: Gamepad },
+      { label: "Thème", href: "/admin/theme", icon: Palette },
+      { label: "Modifier les Composants", href: "/admin/components", icon: Eye },
+      { label: "Modifier les Pages", href: "/admin/pages", icon: FileText },
+      { label: "Commandes", href: "/admin/commandes", icon: MessageSquare },
+      { label: "Mon Profil", href: "/admin/profil", icon: User },
     ],
   },
 ];

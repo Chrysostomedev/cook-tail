@@ -4,6 +4,12 @@
 import React, { useState, useEffect } from "react";
 import { useVisibility, type ComponentVisibility } from "@/context/VisibilityContext";
 import { Eye, EyeOff, RotateCcw, Search, Zap } from "lucide-react";
+import { Edit3 } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
+import { ContentEditorModal } from "@/components/admin/ContentEditorModal";
+import type { ContentConfig } from "@/lib/content";
+
+type EditableSection = keyof ContentConfig;
 
 interface ComponentGroup {
   name: string;
@@ -17,6 +23,7 @@ interface ComponentGroup {
 export default function ComponentsPage() {
   const [mounted, setMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [editingSection, setEditingSection] = useState<EditableSection | null>(null);
   
   let visibilityContext: any = null;
   try {
@@ -24,6 +31,7 @@ export default function ComponentsPage() {
   } catch (e) {
     // Context not available
   }
+  const { content, updateSection } = useContent();
 
   useEffect(() => {
     setMounted(true);
@@ -34,6 +42,17 @@ export default function ComponentsPage() {
   }
 
   const { visibility, toggleComponent, resetVisibility } = visibilityContext;
+
+  const contentSectionMap: Record<string, EditableSection> = {
+    "home.hero": "hero",
+    "home.countdown": "countdown",
+    "home.features": "features",
+    "home.program": "program",
+    "home.testimonials": "testimonials",
+    "home.cta": "regulation",
+    "programme.timeline": "programmePage",
+    "menu.header": "menuHeader",
+  };
 
   const componentGroups: ComponentGroup[] = [
     {
@@ -60,6 +79,21 @@ export default function ComponentsPage() {
         { id: "services.cards", label: "Cartes Services", description: "Grille des prestations disponibles" },
         { id: "galerie.header", label: "En-tête Galerie", description: "Titre et description de la galerie" },
         { id: "galerie.gallery", label: "Galerie Photos", description: "Grille des photos" },
+      ],
+    },
+    {
+      name: "Onglets de navigation",
+      components: [
+        { id: "nav.accueil", label: "Onglet Accueil", description: "Afficher ou masquer Accueil sur mobile" },
+        { id: "nav.programme", label: "Onglet Programme", description: "Afficher ou masquer Programme" },
+        { id: "nav.menu", label: "Onglet Menu", description: "Afficher ou masquer Menu" },
+        { id: "nav.mon-pass", label: "Onglet Mon pass", description: "Afficher ou masquer Mon pass" },
+        { id: "nav.services", label: "Onglet Services", description: "Afficher ou masquer Services" },
+        { id: "nav.contact", label: "Onglet Contact", description: "Afficher ou masquer Contact" },
+        { id: "nav.galerie", label: "Onglet Galerie", description: "Afficher ou masquer Galerie" },
+        { id: "nav.jeux", label: "Onglet Jeux", description: "Afficher ou masquer Jeux" },
+        { id: "nav.profil", label: "Onglet Profil", description: "Afficher ou masquer Profil" },
+        { id: "nav.about", label: "Onglet À propos", description: "Afficher ou masquer À propos" },
       ],
     },
     {
@@ -101,6 +135,19 @@ export default function ComponentsPage() {
   // Compter les composants visibles et masqués
   const visibleCount = Object.values(visibility).filter((v) => v).length;
   const hiddenCount = Object.values(visibility).filter((v) => !v).length;
+  const navigationTabs = [
+    ["nav.accueil", "Accueil"],
+    ["nav.programme", "Programme"],
+    ["nav.menu", "Menu"],
+    ["nav.mon-pass", "Mon pass"],
+    ["nav.services", "Services"],
+    ["nav.contact", "Contact"],
+    ["nav.galerie", "Galerie"],
+    ["nav.jeux", "Jeux"],
+    ["nav.profil", "Profil"],
+    ["nav.about", "À propos"],
+  ] as const;
+  const activeNavigationTabs = navigationTabs.filter(([id]) => visibility[id] !== false);
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
@@ -140,6 +187,27 @@ export default function ComponentsPage() {
             </p>
           </div>
           <EyeOff className="w-8 h-8 text-red-700 opacity-70" />
+        </div>
+
+        <div className="md:col-span-2 rounded-lg border-2 p-4" style={{ backgroundColor: "var(--theme-bgSecondary)", borderColor: "var(--theme-secondary)" }}>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-mono font-bold uppercase" style={{ color: "var(--theme-textSecondary)" }}>
+                Onglets actifs
+              </p>
+              <p className="mt-1 text-2xl font-black" style={{ color: "var(--theme-textPrimary)" }}>
+                {activeNavigationTabs.length}
+              </p>
+            </div>
+            <Eye className="h-8 w-8 opacity-60" style={{ color: "var(--theme-secondary)" }} />
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {activeNavigationTabs.map(([id, label]) => (
+              <span key={id} className="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase" style={{ backgroundColor: "var(--theme-secondary)", color: "white" }}>
+                {label}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -219,27 +287,24 @@ export default function ComponentsPage() {
                         </div>
                       </div>
 
-                      {/* Toggle Button */}
-                      <button
-                        onClick={() => toggleComponent(component.id)}
-                        className="w-full mt-3 py-2 px-3 rounded-lg font-bold text-sm uppercase flex items-center justify-center gap-2 transition-all border border-transparent"
-                        style={{
-                          backgroundColor: isVisible ? "var(--theme-secondary)" : "var(--theme-danger)",
-                          color: "white",
-                        }}
-                      >
-                        {isVisible ? (
-                          <>
-                            <Eye className="w-4 h-4" />
-                            Visible
-                          </>
-                        ) : (
-                          <>
-                            <EyeOff className="w-4 h-4" />
-                            Masqué
-                          </>
+                      <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                        <button
+                          onClick={() => toggleComponent(component.id)}
+                          className="py-2 px-3 rounded-lg font-bold text-sm uppercase flex items-center justify-center gap-2 transition-all border border-transparent"
+                          style={{ backgroundColor: isVisible ? "var(--theme-secondary)" : "var(--theme-danger)", color: "white" }}
+                        >
+                          {isVisible ? <><Eye className="w-4 h-4" /> Visible</> : <><EyeOff className="w-4 h-4" /> Masqué</>}
+                        </button>
+                        {contentSectionMap[component.id] && (
+                          <button
+                            onClick={() => setEditingSection(contentSectionMap[component.id])}
+                            className="flex items-center justify-center gap-2 rounded-lg border-2 px-3 py-2 text-sm font-bold uppercase"
+                            style={{ color: "var(--theme-primary)", borderColor: "var(--theme-primary)" }}
+                          >
+                            <Edit3 className="h-4 w-4" /> Modifier
+                          </button>
                         )}
-                      </button>
+                      </div>
 
                       {/* Status Indicator */}
                       <div className="mt-2 text-[10px] font-mono flex items-center gap-1" style={{ color: "var(--theme-textSecondary)" }}>
@@ -261,6 +326,15 @@ export default function ComponentsPage() {
           <strong>Les modifications s'appliquent en direct!</strong> Vous pouvez masquer/afficher des composants sans rechargement de page. Les changements sont sauvegardés dans votre navigateur.
         </p>
       </div>
+
+      {editingSection && (
+        <ContentEditorModal
+          section={editingSection}
+          value={content[editingSection]}
+          onClose={() => setEditingSection(null)}
+          onSave={(value) => updateSection(editingSection, value)}
+        />
+      )}
     </div>
   );
 }

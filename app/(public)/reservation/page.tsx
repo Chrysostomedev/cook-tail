@@ -33,6 +33,7 @@ export default function ReservationPage() {
 
     if (result) {
       setReservationId(result.id);
+      localStorage.setItem("cooktail-reservation-id", result.id);
       setStep("payment");
     } else {
       showToast("Erreur lors de la création de la réservation", "error");
