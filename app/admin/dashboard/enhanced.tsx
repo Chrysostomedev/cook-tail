@@ -26,7 +26,7 @@ export function EnhancedDashboard() {
   return (
     <div className="space-y-6">
       {/* Vue d'ensemble */}
-      <div className="bg-white border border-slate-200/80 rounded-3xl p-6 space-y-4">
+      {/* <div className="bg-white border border-slate-200/80 rounded-3xl p-6 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-extrabold text-slate-900">Statistiques du Site (7 derniers jours)</h2>
         </div>
@@ -48,10 +48,9 @@ export function EnhancedDashboard() {
             <p className="text-2xl font-extrabold text-slate-900">{analytics.totalPageViews}</p>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Pages les plus vues */}
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white border border-slate-200/80 rounded-3xl p-6 space-y-4">
           <h3 className="font-extrabold text-slate-900">Pages les Plus Consultées</h3>
           {analytics.topPages.length === 0 ? (
@@ -76,7 +75,6 @@ export function EnhancedDashboard() {
           )}
         </div>
 
-        {/* Appareils */}
         <div className="bg-white border border-slate-200/80 rounded-3xl p-6 space-y-4">
           <h3 className="font-extrabold text-slate-900">Appareils Utilisés</h3>
           {analytics.deviceBreakdown.length === 0 ? (
@@ -102,30 +100,9 @@ export function EnhancedDashboard() {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
 
-      {/* Tendance */}
-      <div className="bg-white border border-slate-200/80 rounded-3xl p-6 space-y-4">
-        <h3 className="font-extrabold text-slate-900 flex items-center gap-2">
-          <TrendingUp className="w-4 h-4" /> Tendance des Visites
-        </h3>
-        {analytics.dailyTrend.length === 0 ? (
-          <p className="text-xs text-slate-400">Pas encore assez de données</p>
-        ) : (
-          <div className="flex items-end justify-between gap-1 h-24">
-            {analytics.dailyTrend.map((item, idx) => (
-              <div key={idx} className="flex-1 flex flex-col items-center gap-2">
-                <div
-                  className="w-full bg-[var(--theme-secondary)]/80 rounded-t-lg hover:bg-[var(--theme-secondary)] transition-all"
-                  style={{ height: `${(item.count / maxDaily) * 100}%` }}
-                  title={`${item.count} visites`}
-                />
-                <span className="text-[10px] font-bold text-slate-600">{item.day}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      
     </div>
   );
 }

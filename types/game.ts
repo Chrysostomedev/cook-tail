@@ -23,6 +23,8 @@ export interface Game {
   isActive: boolean;
 }
 
+// types/game.ts
+
 export interface CreateGameDTO {
   name: string;
   description: string;
@@ -31,7 +33,7 @@ export interface CreateGameDTO {
   minPlayers: number;
   maxPlayers: number;
   difficulty: "easy" | "medium" | "hard";
-  imageUrl?: string; // Cloudinary URL
+  image: GameImage; // ← remplace imageUrl?: string
 }
 
 export interface UpdateGameDTO {
@@ -43,6 +45,7 @@ export interface UpdateGameDTO {
   maxPlayers?: number;
   difficulty?: "easy" | "medium" | "hard";
   isActive?: boolean;
+  image?: GameImage; // ← ajouté, il manquait complètement
 }
 
 export interface UserGamePreference {

@@ -132,7 +132,7 @@ export default function AdminDashboardPage() {
       <EnhancedDashboard />
 
       {/* Cartes Métriques Repensées */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
 
         {/* Total Recouvré */}
         <div className="bg-white border border-slate-200/80 p-4 sm:p-5 rounded-2xl shadow-sm space-y-2 relative">
@@ -164,20 +164,7 @@ export default function AdminDashboardPage() {
           </p>
         </div>
 
-        {/* Présents en Classe */}
-        <div className="bg-white border border-slate-200/80 p-4 sm:p-5 rounded-2xl shadow-sm space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
-              Présents en Classe
-            </span>
-            <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
-          </div>
-          <p className="text-lg sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-            {stats.checkedInCount} <span className="text-xs text-slate-400 font-normal">inscrits</span>
-          </p>
-        </div>
+       
 
         {/* Places Restantes */}
         <div className="bg-amber-500/10 border border-amber-500/20 p-4 sm:p-5 rounded-2xl shadow-sm space-y-2">

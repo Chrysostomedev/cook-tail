@@ -18,9 +18,9 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/context/ToastContext";
-import { uploadImageToCloudinary, deleteImageFromCloudinary } from "@/lib/cloudinary";
+import { getCloudinaryUrl, uploadImageToCloudinary, deleteImageFromCloudinary } from "@/lib/cloudinary";
 import { createGame, getAllGames, updateGame, deleteGame } from "@/lib/services/gameService";
-import { Game, CreateGameDTO } from "@/types/game";
+import { Game, CreateGameDTO, GameImage } from "@/types/game";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
@@ -44,8 +44,8 @@ interface FormData {
   minPlayers: number;
   maxPlayers: number;
   difficulty: "easy" | "medium" | "hard";
-  imageUrl?: string;
-}
+ image?: GameImage; // ← remplace imageUrl?: string
+ }
 
 export default function AdminGamesPage() {
   const { showToast } = useToast();
@@ -66,6 +66,7 @@ export default function AdminGamesPage() {
     minPlayers: 2,
     maxPlayers: 2,
     difficulty: "medium",
+    
   });
 
   // Load games
@@ -96,12 +97,15 @@ export default function AdminGamesPage() {
       const preview = URL.createObjectURL(file);
       setImagePreview(preview);
 
-      // Upload to Cloudinary
-      const result = await uploadImageToCloudinary(file, "games");
-      setFormData((prev) => ({
-        ...prev,
-        imageUrl: result.secure_url,
-      }));
+  const result = await uploadImageToCloudinary(file, "games");
+
+const image: GameImage = {
+  url: result.secure_url,
+  cloudinaryId: result.public_id,
+  thumb: getCloudinaryUrl(result.public_id, "thumbnail"),
+};
+
+setFormData((prev) => ({ ...prev, image }));
 
       showToast("Image téléchargée avec succès", "success");
     } catch (error) {
@@ -132,56 +136,58 @@ export default function AdminGamesPage() {
   // Open modal for editing
   const handleEditGame = (game: Game) => {
     setSelectedGame(game);
-    setFormData({
-      name: game.name,
-      description: game.description,
-      rules: game.rules,
-      category: game.category,
-      minPlayers: game.minPlayers,
-      maxPlayers: game.maxPlayers,
-      difficulty: game.difficulty,
-      imageUrl: game.image?.url,
-    });
+   setFormData({
+  name: game.name,
+  description: game.description,
+  rules: game.rules,
+  category: game.category,
+  minPlayers: game.minPlayers,
+  maxPlayers: game.maxPlayers,
+  difficulty: game.difficulty,
+  image: game.image, // ← plus de .url
+});
+setImagePreview(game.image?.url || null);
     setImagePreview(game.image?.url || null);
     setIsModalOpen(true);
   };
 
   // Save game
-  const handleSaveGame = async (e: React.FormEvent) => {
-    e.preventDefault();
+// Save game
+const handleSaveGame = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!formData.name || !formData.imageUrl) {
-      showToast("Le nom et l'image sont obligatoires", "error");
-      return;
+  if (!formData.name || !formData.image) {
+    showToast("Le nom et l'image sont obligatoires", "error");
+    return;
+  }
+
+  try {
+    setUploading(true);
+
+    if (selectedGame) {
+      await updateGame(selectedGame.id, formData);
+
+      showToast("Jeu modifié avec succès", "success");
+    } else {
+      const gameData: CreateGameDTO = {
+        ...formData,
+        image: formData.image,
+      };
+
+      await createGame(gameData, "admin");
+
+      showToast("Jeu créé avec succès", "success");
     }
 
-    try {
-      setUploading(true);
-
-      if (selectedGame) {
-        // Update existing
-        await updateGame(selectedGame.id, formData);
-        showToast("Jeu modifié avec succès", "success");
-      } else {
-        // Create new
-        const gameData: CreateGameDTO = {
-          ...formData,
-          imageUrl: formData.imageUrl,
-        };
-        await createGame(gameData, "admin");
-        showToast("Jeu créé avec succès", "success");
-      }
-
-      setIsModalOpen(false);
-      await loadGames();
-    } catch (error) {
-      console.error("Error saving game:", error);
-      showToast("Erreur lors de la sauvegarde", "error");
-    } finally {
-      setUploading(false);
-    }
-  };
-
+    setIsModalOpen(false);
+    await loadGames();
+  } catch (error) {
+    console.error("Error saving game:", error);
+    showToast("Erreur lors de l'enregistrement du jeu", "error");
+  } finally {
+    setUploading(false);
+  }
+};
   // Delete game
   const handleDeleteGame = async (gameId: string) => {
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce jeu ?")) return;

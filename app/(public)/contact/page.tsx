@@ -72,7 +72,7 @@ export default function ContactPage() {
               borderColor: "rgba(255,255,255,0.15)",
             }}
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            
             Secrétariat &amp; Bureau des Surveillants
           </span>
 

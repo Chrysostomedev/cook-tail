@@ -43,16 +43,17 @@ export default function ComponentsPage() {
 
   const { visibility, toggleComponent, resetVisibility } = visibilityContext;
 
-  const contentSectionMap: Record<string, EditableSection> = {
-    "home.hero": "hero",
-    "home.countdown": "countdown",
-    "home.features": "features",
-    "home.program": "program",
-    "home.testimonials": "testimonials",
-    "home.cta": "regulation",
-    "programme.timeline": "programmePage",
-    "menu.header": "menuHeader",
-  };
+ const contentSectionMap: Record<string, EditableSection> = {
+  "home.hero": "hero",
+  "home.countdown": "countdown",
+  "home.features": "features",
+  "home.program": "program",
+  "home.testimonials": "testimonials",
+  "home.cta": "regulation",
+  "programme.timeline": "programmePage",
+  "menu.header": "menuHeader",
+  "footer.main": "footer", // ← ajouté
+};
 
   const componentGroups: ComponentGroup[] = [
     {
@@ -67,6 +68,12 @@ export default function ComponentsPage() {
         { id: "home.cta", label: "Call-to-Action", description: "Section finale avec règlement & réservation" },
       ],
     },
+    {
+  name: "Footer",
+  components: [
+    { id: "footer.main", label: "Pied de page", description: "Textes, contacts, réseaux sociaux et paiement du footer" },
+  ],
+},
     {
       name: "Pages Secondaires",
       // icon: Eye,

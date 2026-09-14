@@ -121,7 +121,7 @@ export default function PublicScanPage() {
 
         <div className="space-y-2 relative z-10">
           <div className="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 px-3 py-1 rounded-full text-white text-[10px] font-mono font-bold uppercase tracking-wider">
-            <Sparkles className="w-3 h-3" />
+            
             <span>Vérifier Votre Accès</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">

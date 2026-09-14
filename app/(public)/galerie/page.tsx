@@ -28,11 +28,7 @@ export default function GaleriePage() {
       {/* Banner Titre & Filtres */}
       <div className="bg-[var(--theme-primary)] text-white p-6 md:p-8 border-3 border-black rounded-xs shadow-[8px_8px_0px_0px_var(--theme-secondary)] flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-mono font-bold uppercase bg-[var(--theme-accent)] text-[var(--theme-primary)] px-2.5 py-0.5 rounded-xs border border-black flex items-center gap-1">
-              <Sparkles className="w-3 h-3" /> Album Souvenirs
-            </span>
-          </div>
+          
           <h1 className="text-2xl md:text-4xl font-black uppercase text-[var(--theme-accent)]">Galerie de nos Créations</h1>
           <p className="text-xs font-mono text-gray-300">
             Retour en images sur nos buffets, nos cocktails signatures et nos décors thématiques.

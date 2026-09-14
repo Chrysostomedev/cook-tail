@@ -64,9 +64,7 @@ export default function ProgrammePage() {
             {/* Carte de Cours / Activité */}
             <div className="bg-white/90 backdrop-blur-md border border-amber-900/10 p-6 rounded-3xl shadow-lg shadow-amber-950/5 hover:shadow-xl transition-all space-y-3">
               <div className="flex items-center justify-between gap-4">
-                <span className="text-[10px] font-mono font-bold uppercase px-3 py-1 rounded-full border border-amber-800/10 flex items-center gap-1" style={{ backgroundColor: 'var(--theme-bgSecondary)', color: 'var(--theme-secondary)' }}>
-                  <Sparkles className="w-3 h-3" style={{ color: 'var(--theme-secondary)' }} /> {item.category}
-                </span>
+               
                 <div className="w-10 h-10 border border-amber-200 rounded-2xl flex items-center justify-center shadow-xs" style={{ backgroundColor: 'var(--theme-bgSecondary)', color: 'var(--theme-secondary)' }}>
                   {getIcon(item.iconName)}
                 </div>

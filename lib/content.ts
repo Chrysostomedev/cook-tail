@@ -1,3 +1,35 @@
+import { EVENT_INFO } from "@/lib/constants"; // en haut du fichier
+
+export interface FooterContent {
+  badge: string;
+  brandName: string;
+  brandSuffix: string;
+  description: string;
+  contactsTitle: string;
+  whatsappNumber: string;
+  locationTitle: string;
+  locationText: string;
+  locationCity: string;
+  eventDate: string;        // ← ajouté
+  socialTitle: string;      // ← ajouté (titre de la nouvelle colonne)
+  instagramHandle: string;  // ← ajouté
+  waveNumber: string;       // ← ajouté
+  waveDisplayName: string;  // ← ajouté
+  copyright: string;
+}
+
+export interface ContentConfig {
+  hero: HeroContent;
+  countdown: CountdownContent;
+  program: ProgramContent;
+  features: FeatureContent[];
+  testimonials: TestimonialContent[];
+  regulation: RegulationContent;
+  menuHeader: { badge: string; title: string; accent: string; description: string };
+  programmePage: ProgrammePageContent;
+  footer: FooterContent; // ← ajouté
+}
+
 export interface HeroContent {
   images: string[];
   badge: string;
@@ -87,6 +119,23 @@ export interface ContentConfig {
 }
 
 export const defaultContent: ContentConfig = {
+  footer: {
+  badge: "Brunch Récréation",
+  brandName: "COOK'TAIL",
+  brandSuffix: "Service",
+  description: "Une expérience immersive dédiée aux souvenirs d'enfance et aux retrouvailles des années collèges & lycées à Abidjan.",
+  contactsTitle: "Assistance & Réservations",
+  whatsappNumber: EVENT_INFO.whatsapp,
+  locationTitle: "Lieu & Rentrée",
+  locationText: EVENT_INFO.location,
+  locationCity: "Abidjan, Yopougon",
+  eventDate: EVENT_INFO.date,                    // ← ajouté
+  socialTitle: "Réseaux & Paiement",              // ← ajouté
+  instagramHandle: EVENT_INFO.instagram,          // ← ajouté
+  waveNumber: EVENT_INFO.wavePhoneNumber,         // ← ajouté
+  waveDisplayName: EVENT_INFO.waveDisplayName,    // ← ajouté
+  copyright: "© 2026 Cook'Tail Service. Tous droits réservés.",
+},
   hero: {
     // Les images viennent de Firestore; aucune image mockée n'est utilisée par défaut.
     images: [],

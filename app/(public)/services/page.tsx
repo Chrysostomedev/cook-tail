@@ -76,7 +76,6 @@ export default function ServicesPage() {
                 <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                   <div className="space-y-4">
                     <h3 className="text-xl font-extrabold tracking-tight flex items-center gap-1.5" style={{ color: 'var(--theme-textPrimary)' }}>
-                      <Sparkles className="w-4 h-4 shrink-0" style={{ color: 'var(--theme-secondary)' }} />
                       {srv.name}
                     </h3>
 

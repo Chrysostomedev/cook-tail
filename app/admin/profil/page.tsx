@@ -93,10 +93,7 @@ export default function AdminProfilePage() {
         <div className="absolute -top-16 -right-16 w-52 h-52 bg-[var(--theme-secondary)]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 space-y-2">
-          <div className="inline-flex items-center gap-1.5 bg-[var(--theme-secondary)]/10 border border-[var(--theme-secondary)]/20 px-3 py-1 rounded-full text-[var(--theme-secondary)] text-[10px] font-mono font-bold uppercase tracking-wider">
-            <Sparkles className="w-3 h-3" />
-            <span>Profil Administrateur</span>
-          </div>
+          
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             Gestion du Compte
           </h1>
