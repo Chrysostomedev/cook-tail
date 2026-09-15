@@ -137,8 +137,8 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             A
           </div>
           <div className="overflow-hidden">
-            <p className="text-xs font-bold text-white truncate">Awa Koffi</p>
-            <p className="text-[10px] text-slate-300 font-mono truncate">admin@cooktail.ci</p>
+            <p className="text-xs font-bold text-white truncate">Lorraine Ade</p>
+            {/* <p className="text-[10px] text-slate-300 font-mono truncate">admin@cooktail.ci</p> */}
           </div>
         </div>
 

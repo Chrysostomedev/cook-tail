@@ -89,13 +89,16 @@ export default function AdminDashboardPage() {
       showToast("Erreur lors du refus", "error");
     }
   };
+const activeReservations = reservations.filter((r) => r.status !== "cancelled");
+const totalCapacity = 50;
+const usedSpots = activeReservations.reduce((sum, r) => sum + (r.groupSize || 0), 0);
 
-  const stats = {
-    totalRevenue: reservations.reduce((sum, r) => sum + (r.amountPaid || 0), 0),
-    reservedSpots: reservations.filter(r => r.status !== "pending").length,
-    checkedInCount: reservations.filter(r => r.status === "confirmed").length,
-    remainingSpots: Math.max(0, 50 - reservations.length),
-  };
+const stats = {
+  totalRevenue: reservations.reduce((sum, r) => sum + (r.amountPaid || 0), 0),
+  reservedSpots: usedSpots,
+  checkedInCount: reservations.filter((r) => r.status === "confirmed").length,
+  remainingSpots: Math.max(0, totalCapacity - usedSpots),
+};
 
   const filtered = reservations.filter(
     (r) =>
