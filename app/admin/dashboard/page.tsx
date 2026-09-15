@@ -94,7 +94,7 @@ export default function AdminDashboardPage() {
     totalRevenue: reservations.reduce((sum, r) => sum + (r.amountPaid || 0), 0),
     reservedSpots: reservations.filter(r => r.status !== "pending").length,
     checkedInCount: reservations.filter(r => r.status === "confirmed").length,
-    remainingSpots: Math.max(0, 30 - reservations.length),
+    remainingSpots: Math.max(0, 50 - reservations.length),
   };
 
   const filtered = reservations.filter(

@@ -10,7 +10,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Cook'Tail Service - Brunch Récréation 2026",
-  description: "Retrouvailles nostalgiques des années collège & lycée • Pass QR exclusif • 30 places • Abidjan",
+  description: "Retrouvailles nostalgiques des années primaire, collège & lycée • Pass QR exclusif • 50 places • Abidjan",
   keywords: ["brunch", "récréation", "événement", "Abidjan"],
   authors: [{ name: "Cook'Tail Service" }],
 };
