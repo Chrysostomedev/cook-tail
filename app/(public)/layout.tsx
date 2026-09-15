@@ -53,7 +53,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     { label: "Accueil", href: "/", icon: Home, visibilityId: "nav.accueil" },
     { label: "Programme", href: "/programme", icon: Calendar, visibilityId: "nav.programme" },
     { label: "Services", href: "/services", icon: Utensils, visibilityId: "nav.services" },
-    { label: "Menu", href: "/reservation", icon: Ticket, visibilityId: "nav.mon-pass" },
+    { label: "Menu", href: "/menu", icon: Ticket, visibilityId: "nav.mon-pass" },
   ];
 
   const visibleNavTabs = allNavTabs.filter((tab) => visibility[tab.visibilityId] !== false);
@@ -342,7 +342,7 @@ const isActive = pathname === tab.href;
                   }}
                 >
                   <Ticket className="w-4 h-4" />
-                  Réserver Mon Pass QR (30 Places)
+                  Réserver Mon Pass QR 
                 </Link>
               </div>
             </motion.div>
