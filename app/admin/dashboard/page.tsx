@@ -90,7 +90,7 @@ export default function AdminDashboardPage() {
     }
   };
 const activeReservations = reservations.filter((r) => r.status !== "cancelled");
-const totalCapacity = 50;
+const totalCapacity =100;
 const usedSpots = activeReservations.reduce((sum, r) => sum + (r.groupSize || 0), 0);
 
 const stats = {
