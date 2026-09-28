@@ -8,32 +8,43 @@ export const CountdownSection = () => {
   const { content } = useContent();
   const countdown = content.countdown;
   const [timeLeft, setTimeLeft] = useState({ jours: 0, heures: 0, minutes: 0, secondes: 0 });
+  const [mounted, setMounted] = useState(false);
+
+  console.log("RENDER CountdownSection", new Date().toISOString());
 
   useEffect(() => {
+    console.log("MOUNT CountdownSection", new Date().toISOString());
+    setMounted(true);
+
     const update = () => {
       const remaining = Math.max(0, new Date(countdown.targetDate).getTime() - Date.now());
       const totalSeconds = Math.floor(remaining / 1000);
-      setTimeLeft({ jours: Math.floor(totalSeconds / 86400), heures: Math.floor(totalSeconds / 3600) % 24, minutes: Math.floor(totalSeconds / 60) % 60, secondes: totalSeconds % 60 });
+      setTimeLeft({
+        jours: Math.floor(totalSeconds / 86400),
+        heures: Math.floor(totalSeconds / 3600) % 24,
+        minutes: Math.floor(totalSeconds / 60) % 60,
+        secondes: totalSeconds % 60,
+      });
     };
     update();
     const timer = setInterval(update, 1000);
-    return () => clearInterval(timer);
+    return () => {
+      console.log("UNMOUNT CountdownSection", new Date().toISOString());
+      clearInterval(timer);
+    };
   }, [countdown.targetDate]);
 
   const timeUnits = [
-    { label: "Jours", val: timeLeft.jours },
-    { label: "Heures", val: timeLeft.heures },
-    { label: "Min", val: timeLeft.minutes },
-    { label: "Sec", val: timeLeft.secondes },
+    { label: "Jours", val: mounted ? timeLeft.jours : 0 },
+    { label: "Heures", val: mounted ? timeLeft.heures : 0 },
+    { label: "Min", val: mounted ? timeLeft.minutes : 0 },
+    { label: "Sec", val: mounted ? timeLeft.secondes : 0 },
   ];
 
   return (
     <div className="p-6 md:p-8 rounded-3xl shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden group" style={{ backgroundColor: 'var(--theme-bgSecondary)' }}>
-
-      {/* Icône décorative en arrière-plan */}
       <Clock className="absolute -bottom-6 -right-6 w-32 h-32 opacity-10 rotate-12 group-hover:rotate-0 transition-transform duration-500" style={{ color: 'var(--theme-primary)' }} />
 
-      {/* Section Texte */}
       <div className="space-y-4 text-center lg:text-left relative z-10 max-w-xl">
         <div className="flex items-center gap-2.5 justify-center lg:justify-start">
           <AlarmClock className="w-5 h-5 text-red-600 animate-pulse" style={{ color: 'var(--theme-danger)' }} />
@@ -50,7 +61,6 @@ export const CountdownSection = () => {
         </p>
       </div>
 
-      {/* Section Compteur (Style Cartes Flottantes Modernes) */}
       <div className="flex gap-2 sm:gap-4 font-mono text-center relative z-10 items-center">
         {timeUnits.map((unit, i) => (
           <React.Fragment key={i}>
@@ -62,8 +72,6 @@ export const CountdownSection = () => {
                 {unit.label}
               </span>
             </div>
-
-            {/* Séparateur clignotant (exclu après le dernier élément) */}
             {i < timeUnits.length - 1 && (
               <span className="text-3xl font-black animate-pulse hidden sm:block" style={{ color: 'var(--theme-primary)' }}>
                 :

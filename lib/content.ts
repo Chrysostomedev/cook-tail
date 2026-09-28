@@ -152,7 +152,7 @@ export const defaultContent: ContentConfig = {
     title: "Le Portail Se Ferme Bientôt !",
     highlight: "Ferme",
     description: "Ne manquez pas la rentrée récréative de l'année.",
-    targetDate: "2026-09-15T12:00:00+00:00",
+    targetDate: "2026-11-10T12:00:00+00:00",
   },
   program: {
     eyebrow: "Emploi du Temps",

@@ -58,8 +58,8 @@ const INITIAL_EVENTS: EventItem[] = [
     date: "2026-09-25",
     time: "18:30 - 23:00",
     location: "Zone 4, Marcory",
-    maxCapacity: 50,
-    reservedSpots: 50,
+    maxCapacity: 100,
+    reservedSpots: 100,
     price: 20000,
     status: "complet",
     description: "Soirée dégustation de cocktails créations Cook'Tail."
